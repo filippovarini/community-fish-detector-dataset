@@ -4,6 +4,7 @@
 
 * <a href="#overview">Overview</a>
 * <a href="#publicly-available-datasets">Publicly available datasets</a>
+* <a href="#unprocessed-datasets">Unprocessed datasets</a>
 
 ## Overview
 
@@ -463,3 +464,9 @@ The FathomNet Database is an open-source image database that can be used to trai
 
 <img src="./data_preview/fathomnet_sample_image.png" width=700 />
 
+
+## Unprocessed datasets
+
+This section includes datasets that we're aware exist, but that we haven't processed to the same level of detail as the others yet.
+
+* <a href="https://ouvert.canada.ca/data/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70">Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)</a> (~24k images of marine fish in Canada, with ~24k boxes)

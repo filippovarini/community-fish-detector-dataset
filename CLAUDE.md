@@ -5,41 +5,38 @@ Dataset compilation pipeline for the [community-fish-detector](https://github.co
 ## Project Structure
 
 ```
-data_preview/           # Phase 1: dataset preview scripts
-  visualize_<dataset>.py   # Download, process annotations, visualize a sample image with bboxes
-  utils.py                 # Shared visualization utilities
-  *.ipynb                  # Notebook-based previews for some datasets
+datasets/                          # Unified dataset processing pipeline
+  __init__.py
+  settings.py                     # Global settings (paths, split ratio, COCO config)
+  merge_all_datasets.py           # Merges all processed datasets
+  utils/
+    __init__.py                   # Re-exports all utilities
+    download.py                   # download_file, extract_downloaded_file, download_and_extract
+    visualization.py              # visualize_supervision_dataset, save_preview_image
+    coco.py                       # compress_annotations_to_single_category, convert_0_to_1_indexed
+    images.py                     # add_dataset_shortname_prefix, remove_prefix, copy_images_to_processing
+    split.py                      # split_coco_dataset_into_train_validation, get_train_images_with_random_splitting
+  <dataset>.py                    # Per-dataset unified script (download + process + preview + split)
 
-aggregation_of_final_dataset/  # Phase 2: dataset processing pipeline
-  <dataset>.py             # Per-dataset processing script
-  settings.py              # Global settings (paths, split ratio, COCO config)
-  utils.py                 # Shared utilities (category compression, splitting, renaming)
-  merge_all_datasets_into_one.py  # Merges all processed datasets
-  upload_to_roboflow.py    # Upload final dataset to Roboflow
+previews/                          # Sample annotated images output directory
+DATASETS.md                        # Per-dataset processing details
 ```
 
 ## Pipeline Overview
 
-### Phase 1: Data Preview (`data_preview/`)
-Each `visualize_<dataset>.py` script:
-1. Downloads the dataset
-2. Processes annotations into COCO format
-3. Visualizes a random image with bounding boxes overlaid
+Each `datasets/<dataset>.py` script follows a single unified 4-step pattern:
 
-### Phase 2: Data Processing (`aggregation_of_final_dataset/`)
-Each `<dataset>.py` script:
-1. Downloads and cleans the data
-2. Filters categories to keep only fish-related ones
-3. Compresses all fish categories into a single "fish" category (id=1)
-4. Converts annotations to 1-indexed COCO format
-5. Prefixes image filenames with dataset shortname (e.g., `brackish_image001.jpg`)
-6. Splits into train/val — split is done by location/source identifier (not random image split) when possible. The split logic varies per dataset (by deployment site, camera, video, or random when no grouping is available)
+1. **Download** — downloads/extracts the raw dataset
+2. **Process** — converts annotations to COCO format, compresses categories to single "fish" category (id=1), prefixes image filenames with dataset shortname
+3. **Preview** — saves a sample annotated image to `previews/`
+4. **Split** — splits into train/val by location/source identifier when possible
 
-Final output: COCO-format datasets with one category ("fish"), merged via `merge_all_datasets_into_one.py`.
+Final output: COCO-format datasets with one category ("fish"), merged via `datasets/merge_all_datasets.py`.
 
-## Key Settings (`aggregation_of_final_dataset/settings.py`)
+## Key Settings (`datasets/settings.py`)
 
 - **Data paths**: raw → `/mnt/data/dev/fish-datasets/data/raw`, processed → `.../final`, intermediate → `.../processing`
+- **Preview path**: `previews/` (repo root)
 - **Train/val split ratio**: 0.2 (20% validation)
 - **COCO category**: single category `{"id": 1, "name": "fish"}`
 - **Images folder**: `JPEGImages/`
@@ -47,9 +44,9 @@ Final output: COCO-format datasets with one category ("fish"), merged via `merge
 
 ## Datasets
 
-Preview scripts exist for: brackish, deep_vision, deepfish, fathomnet, fishclef, mit_river_herring, noaa_puget, project_natick, roboflow_fish, salmon_computer_vision, torsi, viame_fishtrack, zebrafish, coralscapes, f4k, kakadu, marine_detect (fishinv & megafauna), vmat, ozfish, fishnet, affine.
+**Complete datasets (16)**: brackish, coralscapes, deep_vision, deepfish, f4k, fathomnet, fishclef, kakadu, marine_detect, mit_river_herring, noaa_puget, project_natick, roboflow_fish, torsi, viame_fishtrack, zebrafish.
 
-Aggregation scripts exist for: brackish, deep_vision, deepfish, fathomnet, fishclef, mit_river_herring, noaa_puget, project_natick, roboflow_fish, viame_fishtrack, zebrafish.
+See [DATASETS.md](DATASETS.md) for per-dataset processing details including source URLs, download instructions, annotation formats, category filters, and split logic.
 
 ## Development
 
@@ -61,13 +58,14 @@ pip install -r requirements.txt
 Key libraries: supervision, opencv-python, pandas, numpy, fathomnet, kagglehub, tqdm, scikit-learn, roboflow.
 
 ### Adding a New Dataset
-1. Create `data_preview/visualize_<name>.py` — implement download, annotation parsing, and sample visualization
-2. Create `aggregation_of_final_dataset/<name>.py` — implement category filtering, category compression, train/val splitting (by location/source when possible), and COCO output
-3. Import the new dataset in `merge_all_datasets_into_one.py`
+1. Create `datasets/<name>.py` following the 4-step pattern (download, process, preview, split)
+2. Define `DATASET_SHORTNAME`, `CATEGORIES_FILTER`, `download_data()`, and `main()`
+3. Use shared utilities from `datasets/utils/`
+4. Document the dataset in `DATASETS.md`
 
 ### Conventions
-- Dataset preview scripts define `DATASET_SHORTNAME` and `download_data()` which are imported by the aggregation scripts
-- All aggregation scripts use shared utilities from `aggregation_of_final_dataset/utils.py`
+- Each dataset script defines `DATASET_SHORTNAME` and `CATEGORIES_FILTER` at module level
+- All scripts use shared utilities from `datasets/utils/`
 - COCO annotations must be 1-indexed
 - Image filenames are prefixed with dataset shortname to avoid collisions when merging
 - Train/val split should be by location/deployment/camera/video when possible, not by random image selection

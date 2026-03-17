@@ -43,9 +43,9 @@ Farrell DM, Ferriss B, Sanderson B, Veggerby K, Robinson L, Trivedi A, Pathak S,
 * Image information: 77,739 images
 * Annotation information: 67,990 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_noaa_puget.py">visualize_noaa_puget.py</a>
+* Code to render sample annotated image: <a href="./datasets/noaa_puget.py">noaa_puget.py</a>
   
-<img src="./data_preview/noaa_puget_sample_image.png" width=700>
+<img src="./previews/noaa_puget_sample_image.png" width=700>
 
 ### MIT Sea Grant River Herring
 
@@ -61,9 +61,9 @@ Images of freshwater fish taken from underwater videos with 91,482 bounding boxe
 * Image information: 262,050 images
 * Annotation information: 91,482 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_mit_river_herring.py">visualize_mit_river_herring.py</a>
+* Code to render sample annotated image: <a href="./datasets/mit_river_herring.py">mit_river_herring.py</a>
   
-<img src="./data_preview/mit_river_herring_sample_image.png" width=700>
+<img src="./previews/mit_river_herring_sample_image.png" width=700>
 
 ### Tasmanian Orange Roughy Stereo Image Machine Learning Dataset (TORSI)
 
@@ -79,9 +79,9 @@ Scoulding, Ben; Maguire, Kylie; Orenstein, Eric; Jackett, Chris; & CSIRO (2025):
 * Image information: 1,051 images
 * Annotation information: 14,414 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_torsi.py">visualize_torsi.py</a>
+* Code to render sample annotated image: <a href="./datasets/torsi.py">torsi.py</a>
   
-<img src="./data_preview/torsi_sample_image.png" width=700>
+<img src="./previews/torsi_sample_image.png" width=700>
   
 
 ### CoralScapes
@@ -96,9 +96,9 @@ Scoulding, Ben; Maguire, Kylie; Orenstein, Eric; Jackett, Chris; & CSIRO (2025):
 * Vehicle type: diver
 * Image information: 2,027 images
 * Annotation information: 174,000 segmentation annotations, of which 20,849 are fish
-* Code to render sample annotated image: <a href="./data_preview/visualize_noaa_puget.py">coralscapes_to_coco.py</a>
+* Code to render sample annotated image: <a href="./datasets/coralscapes.py">coralscapes.py</a>
   
-<img src="./data_preview/coralscapes-sample.jpg" width=700>
+<img src="./previews/coralscapes-sample.jpg" width=700>
 
   
 ### Project Natick Underwater Video
@@ -115,9 +115,9 @@ https://nbn-resolving.org/urn:nbn:de:0168-ssoar-57615-2
 * Image information: 1118 RGB images (~5% of images have FN annotations)
 * Annotation information: 998 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_project_natick.py">visualize_project_natick.py</a>
+* Code to render sample annotated image: <a href="./datasets/project_natick.py">project_natick.py</a>
   
-<img src="./data_preview/project_natick_sample_image.png" width=700>
+<img src="./previews/project_natick_sample_image.png" width=700>
   
   
 ### Roboflow Fish Dataset
@@ -134,9 +134,9 @@ Solawetz, J. (2023, February 21). Fish object detection dataset. Roboflow. https
 * Image information: 1350 RGB images (the taxonomy is often inaccurate)
 * Annotation information: 3142 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_roboflow_fish.py">visualize_roboflow_fish.py</a>
+* Code to render sample annotated image: <a href="./datasets/roboflow_fish.py">roboflow_fish.py</a>
   
-<img src="./data_preview/roboflow_fish_sample_image.png" width=400>
+<img src="./previews/roboflow_fish_sample_image.png" width=400>
   
   
 ### The Fishnet Dataset
@@ -152,9 +152,9 @@ Kay, J., & Merrifield, M. (2021). The Fishnet Open Images Database: A Dataset fo
 * Image information: 143,818 RGB images
 * Annotation information: 549,209 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_fishnet.ipynb">visualise_fishnet.ipynb</a>
+* Code to render sample annotated image: <a href="./datasets/fishnet.py">fishnet.py</a> (not yet implemented)
   
-<img src="./data_preview/fishnet_sample_image.png" width=700>
+<img src="./previews/fishnet_sample_image.png" width=700>
   
   
 ### DeepFish
@@ -170,9 +170,9 @@ Saleh A, Laradji IH, Konovalov DA, Bradley M, Vazquez D, Sheaves M. A realistic 
 * Vehicle type: underwater camera deployed over the side of a boat
 * Image information: 311 images with segmentation masks
 * Annotation information: 388 segmentation masks
-  Code to render sample annotated image: <a href="./data_preview/visualise_deepfish.py">visualise_deepfish.py</a>
+  Code to render sample annotated image: <a href="./datasets/deepfish.py">deepfish.py</a>
   
-<img src="./data_preview/deepfish_sample_image.jpg" width=700>  
+<img src="./previews/deepfish_sample_image.jpg" width=700>  
   
 
 ### Deep Vision Fish Dataset
@@ -189,9 +189,9 @@ Vaneeda Allken, Shale Rosen (2020) Deep Vision fish dataset https://doi.org/10.2
 * Image information: 1875 RGB images
 * Annotation information: 4834 bounding boxes, segmentation masks
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_deep_vision.py">visualise_deep_vision.py</a>
+* Code to render sample annotated image: <a href="./datasets/deep_vision.py">deep_vision.py</a>
   
-<img src="./data_preview/deep_vision_sample_image.png" width=700>
+<img src="./previews/deep_vision_sample_image.png" width=700>
   
   
 ### BrackishMOT
@@ -208,7 +208,7 @@ Pedersen M, Lehotský D, Nikolov I, Moeslund TB. Brackishmot: The brackish multi
 * Image information: N/A
 * Annotation information: N/A
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_brackishmot.ipynb">visualise_brackishmot.ipynb</a>
+* Code to render sample annotated image: <a href="./datasets/brackish.py">brackish.py</a> (BrackishMOT not yet implemented)
   
 <img src="https://lila.science/wp-content/uploads/2017/03/brackish-150.jpg" width=150>
   
@@ -227,9 +227,9 @@ Detection of Marine Animals in a New Underwater Dataset with Varying Visibility,
 * Image information: 12,444 RGB images
 * Annotation information: 35,565  bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_brackish.py">visualise_brackish.py</a>
+* Code to render sample annotated image: <a href="./datasets/brackish.py">brackish.py</a>
   
-<img src="./data_preview/brackish_dataset_sample_image.png" width=700>
+<img src="./previews/brackish_dataset_sample_image.png" width=700>
 
 
 ### Brackish Underwater Dataset
@@ -264,9 +264,9 @@ Cai, L., McGuire, N.E., Hanlon, R. et al. Semi-supervised Visual Tracking of Mar
 * Image information: N/A
 * Annotation information: N/A
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_vmat.ipynb">visualise_vmat.ipynb</a>
+* Code to render sample annotated image: <a href="./datasets/">vmat</a> (not yet implemented)
 
-<img src="./data_preview/vmat_sample_image.png" width=150>
+<img src="./previews/vmat_sample_image.png" width=150>
   
   
 ### OzFish
@@ -284,7 +284,7 @@ Australian Institute of Marine Science (AIMS), University of Western Australia (
 * Annotation information: bounding boxes
 * Typical animal size in pixels: N/A
   
-<img src="./data_preview/ozfish-sample.B000448_R.MP4.37007-700.jpg" width=700>
+<img src="./previews/ozfish-sample.B000448_R.MP4.37007-700.jpg" width=700>
   
   
 ### F4K Detection and Tracking
@@ -319,7 +319,7 @@ Joly A., Goeau H., Glotin H., Spampinato C., Bonnet P., Vellinga W.-P., Planquè
 * Image information: 20m000 images
 * Annotation information: 14,000 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_fishclef.py">visualize_fishclef.py</a>
+* Code to render sample annotated image: <a href="./datasets/fishclef.py">fishclef.py</a>
   
 <img src="http://lila.science/wp-content/uploads/2017/03/fishclef_2015-150.png" width=150>
   
@@ -334,9 +334,9 @@ Several thousand BRUV images with bounding boxes on fish and bait
 * Vehicle type: BRUV
 * Image information: ~20,000
 * Annotation information: bounding boxes
-* Code to rentdr sample annotated image: <a href="./data_preview/visualize_viame_fishtrack.py">visualize_viame_fishtrack.py</a>
+* Code to rentdr sample annotated image: <a href="./datasets/viame_fishtrack.py">viame_fishtrack.py</a>
   
-<img src="./data_preview/viame_fishtrack_sample_image.png" width=150>
+<img src="./previews/viame_fishtrack_sample_image.png" width=150>
   
   
 ### WildFish
@@ -423,9 +423,9 @@ Bruslund Haurum J, Karpova A, Pedersen M, Hein Bengtson S, Moeslund TB. Re-ident
 * Image information: 2224 images
 * Annotation information: AAU VAP bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_zebrafish.py">visualize_zebrafish.py</a>
+* Code to render sample annotated image: <a href="./datasets/zebrafish.py">zebrafish.py</a>
   
-<img src="./data_preview/Zebrafish_sample_image.png" width=150>
+<img src="./previews/Zebrafish_sample_image.png" width=150>
   
   
 ### Salmon Computer Vision
@@ -443,7 +443,7 @@ JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, N
 * Annotation information: bounding boxes
 * Typical animal size in pixels: N/A
   
-<img src="./data_preview/salmon_computer_vision_sample_image.jpg" width=700>
+<img src="./previews/salmon_computer_vision_sample_image.jpg" width=700>
 
 
 ### FathomNet Database
@@ -460,9 +460,9 @@ The FathomNet Database is an open-source image database that can be used to trai
 * Image information: 100k+ images (growing over time)
 * Annotation information: 300k+ annotations (growing over time)
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_fathomnet.py">visualize_fathomnet.py</a>
+* Code to render sample annotated image: <a href="./datasets/fathomnet.py">fathomnet.py</a>
 
-<img src="./data_preview/fathomnet_sample_image.png" width=700 />
+<img src="./previews/fathomnet_sample_image.png" width=700 />
 
 
 ## Unprocessed datasets

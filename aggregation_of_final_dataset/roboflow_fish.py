@@ -13,6 +13,7 @@ from aggregation_of_final_dataset.utils import (
     split_coco_dataset_into_train_validation,
     compress_annotations_to_single_category,
     convert_coco_annotations_from_0_indexed_to_1_indexed,
+    add_dataset_shortname_prefix_to_image_names,
 )
 
 
@@ -24,7 +25,9 @@ def get_list_of_cameras_to_include_in_train_set(train_image_folder: Path) -> lis
     Using same split as provided by Roboflow
     """
     train_image_names = list(train_image_folder.glob("*.jpg"))
-    train_image_names = [image_name.name for image_name in train_image_names]
+    # We add dataset shortname as in the data/processing directory the image
+    # file names are renamed with prefix of the dataset shortname
+    train_image_names = [f"{DATASET_SHORTNAME}_{image_name.name}" for image_name in train_image_names]
     return train_image_names
 
 
@@ -63,6 +66,13 @@ def main():
     categories_filter = None
     compress_annotations_to_single_category(
         coco_annotations_path_1_indexed, categories_filter, compressed_annotations_path
+    )
+    
+    # Add dataset shortname prefix to image names
+    add_dataset_shortname_prefix_to_image_names(
+        images_path=coco_images_path,
+        annotations_path=compressed_annotations_path,
+        dataset_shortname=DATASET_SHORTNAME,
     )
 
     # 3. FINAL

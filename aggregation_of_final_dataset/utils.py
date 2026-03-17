@@ -3,9 +3,10 @@ import shutil
 from pathlib import Path
 from typing import Callable, List, Optional
 
+import tqdm
+
 from aggregation_of_final_dataset.settings import Settings
 
-import random
 
 settings = Settings()
 
@@ -92,6 +93,64 @@ def convert_coco_annotations_from_0_indexed_to_1_indexed(
         json.dump(coco_data, f, indent=2)
 
     return output_coco_annotations_path
+
+
+def add_dataset_shortname_prefix_to_image_names(
+    images_path: Path,
+    annotations_path: Path,
+    dataset_shortname: str,
+) -> None:
+    """
+    Converts the image filenames to be f"{dataset_shortname}_{image_filename}"
+    """
+    # Assert all paths are valid
+    if not images_path.exists():
+        raise FileNotFoundError(f"Images folder not found at {images_path}")
+    if not annotations_path.exists():
+        raise FileNotFoundError(f"Annotations file not found at {annotations_path}")
+    
+    print(f"Adding dataset shortname prefix to image names: {dataset_shortname}")
+    
+    # Load the annotations
+    with open(annotations_path, "r") as f:
+        coco_data = json.load(f)
+    
+    # Add the dataset shortname prefix to the image filenames
+    for image in tqdm.tqdm(coco_data["images"], total=len(coco_data["images"])):
+        old_image_filename = Path(image["file_name"]).name
+        
+        if old_image_filename.startswith(dataset_shortname):
+            continue
+        
+        new_image_filename = f"{dataset_shortname}_{old_image_filename}"
+        
+        # Rename the image file
+        old_image_path = images_path / old_image_filename
+        new_image_path = images_path / new_image_filename
+        try:
+            assert old_image_path.exists(), f"Image not found at {old_image_path}"
+            assert not new_image_path.exists(), f"Image already exists at {new_image_path}"
+        except Exception as e:
+            print(f"⚠️⚠️ Error renaming image {old_image_filename} to {new_image_filename}: {e}")
+            continue
+        
+        old_image_path.rename(new_image_path)
+        
+        # Update the annotation with the new image filename
+        image["file_name"] = new_image_filename
+    
+    # Save the annotations
+    with open(annotations_path, "w") as f:
+        json.dump(coco_data, f, indent=2)
+    
+
+def remove_dataset_shortname_prefix_from_image_filename(
+    image_filename: str, dataset_shortname: str
+) -> str:
+    """
+    Removes the dataset shortname prefix from the image filenames.
+    """
+    return image_filename.replace(f"{dataset_shortname}_", "")
 
 
 def split_coco_dataset_into_train_validation(
@@ -213,39 +272,3 @@ def split_coco_dataset_into_train_validation(
     print(
         f"  - Validation: {len(val_coco['images'])} images, {len(val_coco['annotations'])} annotations"
     )
-
-
-def get_train_images_with_random_splitting(image_folder: Path) -> list[str]:
-    # Split the images randomly as all are from the same camera, location and datetime
-    all_images = list(image_folder.glob("*.jpg"))
-    train_ratio = 1 - settings.train_val_split_ratio
-    train_size = int(len(all_images) * train_ratio)
-    train_images = random.sample(all_images, train_size)
-    train_images = [image.name for image in train_images]
-    return train_images
-
-def copy_images_to_processing(dataset_shortname,source_images_path: Path):
-    for image in source_images_path.glob("*"):
-        destination = settings.intermediate_dir / dataset_shortname / "JPEGImages" /  image.name
-        if destination.exists():
-            raise FileExistsError(
-                f"⚠️ Conflict: '{destination.name}' already exists!"
-            )
-        shutil.copy(image, destination)
-
-def add_dataset_shortname_to_image_names(dataset_shortname, images_path:Path, annotations_path):
-    # adding dataset shortname to each image name in order to avoid conflicts when merging all the datasets
-    for image in images_path.glob("*"):
-        new_path = image.with_name(dataset_shortname + "_" + image.name)
-        image.rename(new_path)
-
-    # Adjusting the annotations with new names
-    with open(annotations_path, 'r', encoding='utf-8') as annotations_file:
-        annotations_json = json.load(annotations_file)
-    for image in annotations_json["images"]:
-        old_filename = image["file_name"]
-        new_filename = dataset_shortname + "_" + old_filename
-        image["file_name"] = new_filename
-    
-    with open(annotations_path, 'w', encoding='utf-8') as annotations_file:
-        json.dump(annotations_json, annotations_file, indent=2)

@@ -12,6 +12,8 @@ from data_preview.visualize_deepfish import (
 from aggregation_of_final_dataset.utils import (
     split_coco_dataset_into_train_validation,
     compress_annotations_to_single_category,
+    add_dataset_shortname_prefix_to_image_names,
+    remove_dataset_shortname_prefix_from_image_filename,
 )
 
 
@@ -21,7 +23,10 @@ settings = Settings()
 def get_unique_deployments(image_folder: Path) -> Set:
     deployments = set()
     for image_path in image_folder.glob("*.jpg"):
-        deployments.add(image_path.stem.split("_")[0])
+        image_filename_without_prefix = remove_dataset_shortname_prefix_from_image_filename(
+            image_path.stem, DATASET_SHORTNAME
+        )
+        deployments.add(image_filename_without_prefix.split("_")[0])
     return deployments
 
 
@@ -59,12 +64,20 @@ def main():
     compress_annotations_to_single_category(
         annotations_path, categories_filter, compressed_annotations_path
     )
+    
+    add_dataset_shortname_prefix_to_image_names(
+        images_path=images_path,
+        annotations_path=compressed_annotations_path,
+        dataset_shortname=DATASET_SHORTNAME,
+    )
 
     # 3. FINAL
     # Build Logic to split into train and val based on camera name
     train_deployments = get_list_of_deployments_to_include_in_train_set(images_path)
     should_the_image_be_included_in_train_set = (
-        lambda image_path: Path(image_path).stem.split("_")[0] in train_deployments
+        lambda image_filename: remove_dataset_shortname_prefix_from_image_filename(
+            image_filename, DATASET_SHORTNAME
+        ).split("_")[0] in train_deployments
     )
 
     train_dataset_path = (

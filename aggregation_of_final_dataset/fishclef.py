@@ -11,7 +11,12 @@ from data_preview.visualize_fishclef import (
     merge_coco_datasets_into_single_dataset,
 )
 from aggregation_of_final_dataset.settings import Settings
-from aggregation_of_final_dataset.utils import compress_annotations_to_single_category, split_coco_dataset_into_train_validation
+from aggregation_of_final_dataset.utils import (
+    compress_annotations_to_single_category,
+    split_coco_dataset_into_train_validation,
+    add_dataset_shortname_prefix_to_image_names,
+    remove_dataset_shortname_prefix_from_image_filename,
+)
 
 
 settings = Settings()
@@ -26,6 +31,7 @@ def get_list_of_videos_to_include_in_train_set(raw_download_path: Path):
     )
     return train_video_ids
 
+
 def main():
     # 1. RAW
     # Download NOAA Data in Raw Directory
@@ -39,7 +45,7 @@ def main():
 
     # Convert xml to coco format
     convert_annotations(raw_download_path, processing_dir)
-    
+
     coco_images_path = processing_dir / settings.images_folder_name
     coco_images_path.mkdir(parents=True, exist_ok=True)
     coco_annotations_path = processing_dir / settings.coco_file_name
@@ -47,12 +53,12 @@ def main():
     all_annotation_paths = list(processing_dir.rglob("*.json"))
     print(f"Merging {len(all_annotation_paths)} annotation files")
     merge_coco_datasets_into_single_dataset(all_annotation_paths, coco_annotations_path)
-    
+
     with open(coco_annotations_path, "r") as f:
         coco_annotations = json.load(f)
-    
+
     extract_frames_from_videos(raw_download_path, coco_images_path, coco_annotations)
-    
+
     # # Keep all categories. Majority of bboxes are of category "Null" which just represents "general fish"
     categories_to_keep = None
     compressed_annotations_path = (
@@ -61,14 +67,21 @@ def main():
     compressed_annotations_path = compress_annotations_to_single_category(
         coco_annotations_path, categories_to_keep, compressed_annotations_path
     )
-    
+
+    add_dataset_shortname_prefix_to_image_names(
+        coco_images_path, compressed_annotations_path, DATASET_SHORTNAME
+    )
+
     # 3. FINAL
     # Build Logic to split into train and val based on camera name
     train_videos_ids = get_list_of_videos_to_include_in_train_set(raw_download_path)
     should_the_image_be_included_in_train_set = (
-        lambda image_name: image_name.split("_frame_")[0] in train_videos_ids
+        lambda image_name: remove_dataset_shortname_prefix_from_image_filename(
+            image_name, DATASET_SHORTNAME
+        ).split("_frame_")[0]
+        in train_videos_ids
     )
-    
+
     train_dataset_path = (
         settings.processed_dir / f"{DATASET_SHORTNAME}{settings.train_dataset_suffix}"
     )
@@ -85,7 +98,7 @@ def main():
         val_dataset_path,
         should_the_image_be_included_in_train_set,
     )
-    
+
 
 if __name__ == "__main__":
     main()

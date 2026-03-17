@@ -12,6 +12,8 @@ from aggregation_of_final_dataset.utils import (
     convert_coco_annotations_from_0_indexed_to_1_indexed,
     compress_annotations_to_single_category,
     split_coco_dataset_into_train_validation,
+    add_dataset_shortname_prefix_to_image_names,
+    remove_dataset_shortname_prefix_from_image_filename,
 )
 from aggregation_of_final_dataset.settings import Settings
 
@@ -22,7 +24,14 @@ settings = Settings()
 def get_unique_deployments(image_folder: Path) -> Set:
     deployments = set()
     for image_path in image_folder.glob("*.jpg"):
-        deployment = "-".join(image_path.stem.split("_jpg")[0].split("-")[:-1])
+        image_name_without_dataset_prefix = (
+            remove_dataset_shortname_prefix_from_image_filename(
+                image_path.stem, DATASET_SHORTNAME
+            )
+        )
+        deployment = "-".join(
+            image_name_without_dataset_prefix.split("_jpg")[0].split("-")[:-1]
+        )
         deployments.add(deployment)
 
     return deployments
@@ -41,7 +50,6 @@ def get_list_of_cameras_to_include_in_train_set(image_folder: Path) -> list[str]
 
 def main():
     # 1. RAW
-    # Kagglehub downloads by default to  ~/.cache/kagglehub/
     # Download NOAA Data in Raw Directory
     raw_download_path = settings.raw_dir / DATASET_SHORTNAME
     raw_download_path.mkdir(parents=True, exist_ok=True)
@@ -74,11 +82,22 @@ def main():
         coco_annotations_path_1_indexed, categories_filter, compressed_annotations_path
     )
 
+    # We add the dataset shortname prefix to the image names to ensure
+    # that the image names are unique across datasets
+    add_dataset_shortname_prefix_to_image_names(
+        coco_images_path,
+        compressed_annotations_path,
+        DATASET_SHORTNAME,
+    )
+
     # 3. FINAL
     # Build Logic to split into train and val based on camera name
     train_deployments = get_list_of_cameras_to_include_in_train_set(coco_images_path)
-    should_the_image_be_included_in_train_set = lambda image_path: any(
-        image_path.startswith(deployment) for deployment in train_deployments
+    should_the_image_be_included_in_train_set = lambda image_filename: any(
+        remove_dataset_shortname_prefix_from_image_filename(
+            image_filename, DATASET_SHORTNAME
+        ).startswith(deployment)
+        for deployment in train_deployments
     )
 
     train_dataset_path = (

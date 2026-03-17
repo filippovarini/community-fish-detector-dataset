@@ -12,6 +12,8 @@ from data_preview.visualize_project_natick import (
 from aggregation_of_final_dataset.utils import (
     split_coco_dataset_into_train_validation,
     compress_annotations_to_single_category,
+    convert_coco_annotations_from_0_indexed_to_1_indexed,
+    add_dataset_shortname_prefix_to_image_names,
 )
 
 
@@ -57,13 +59,27 @@ def main():
     coco_annotations_path = processing_dir / settings.coco_file_name
     dataset.as_coco(str(coco_images_path), str(coco_annotations_path))
 
+    # Convert categories to 1-indexed
+    coco_annotations_path_1_indexed = (
+        processing_dir / "project_natick_1_indexed_annotations.json"
+    )
+    convert_coco_annotations_from_0_indexed_to_1_indexed(
+        coco_annotations_path, coco_annotations_path_1_indexed
+    )
+
     # Compress annotations to single category
     compressed_annotations_path = (
         processing_dir / "project_natick_compressed_annotations.json"
     )
     categories_to_keep = ["Fish", "Squid"]
     compress_annotations_to_single_category(
-        coco_annotations_path, categories_to_keep, compressed_annotations_path
+        coco_annotations_path_1_indexed, categories_to_keep, compressed_annotations_path
+    )
+
+    add_dataset_shortname_prefix_to_image_names(
+        images_path=coco_images_path,
+        annotations_path=compressed_annotations_path,
+        dataset_shortname=DATASET_SHORTNAME,
     )
 
     # 3. FINAL

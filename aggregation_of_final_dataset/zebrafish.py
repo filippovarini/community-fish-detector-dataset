@@ -8,8 +8,6 @@ from aggregation_of_final_dataset.settings import Settings
 from aggregation_of_final_dataset.utils import (
     compress_annotations_to_single_category,
     split_coco_dataset_into_train_validation,
-    add_dataset_shortname_prefix_to_image_names,
-    remove_dataset_shortname_prefix_from_image_filename,
 )
 from data_preview.visualize_zebrafish import (
     DATASET_SHORTNAME,
@@ -45,8 +43,8 @@ def main():
 
     # Copy all raw images in coco images path
     images_generator = raw_images_path.glob("*.png")
-    total_images = list(images_generator)
-    for image_path in tqdm.tqdm(total_images, total=len(total_images)):
+    total_images = len(list(images_generator))
+    for image_path in tqdm.tqdm(images_generator, total=total_images):
         shutil.copy2(image_path, coco_images_path / image_path.name)
 
     # Compress annotations to single category
@@ -57,23 +55,14 @@ def main():
         coco_annotations_path, categories_filter, compressed_annotations_path
     )
 
-    # Add dataset shortname prefix to image names
-    add_dataset_shortname_prefix_to_image_names(
-        images_path=coco_images_path,
-        annotations_path=compressed_annotations_path,
-        dataset_shortname=DATASET_SHORTNAME,
-    )
-
     # 3. FINAL
     # Build Logic to split into train and val based on camera name
     # Only 2 videos: Vid1, Vid2. Split one in train and one in validation.
     # Not the ideal split ratio, but we give priority to not polluting
     # training/val with images from the same video
-    should_the_image_be_included_in_train_set = (
-        lambda image_name: remove_dataset_shortname_prefix_from_image_filename(
-            image_name, DATASET_SHORTNAME
-        ).startswith("Vid1")
-    )
+    should_the_image_be_included_in_train_set = lambda image_path: Path(
+        image_path
+    ).stem.startswith("Vid1")
 
     train_dataset_path = (
         settings.processed_dir / f"{DATASET_SHORTNAME}{settings.train_dataset_suffix}"

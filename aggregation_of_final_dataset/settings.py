@@ -3,11 +3,15 @@ from dataclasses import dataclass
 
 @dataclass
 class Settings:
-    base_dir = Path("/mnt/data/dev/fish-datasets/data")
-    raw_dir: Path = base_dir / "raw"
-    processed_dir: Path = base_dir / "final"
-    intermediate_dir: Path = base_dir / "processing"
+    # Path of the FISH-DATASETS folder 
+    personal_root_path: Path = Path("~/fish-datasets").expanduser() 
     
+    data_path: Path = personal_root_path / "data"
+
+    raw_dir: Path =  data_path / "raw"
+    intermediate_dir: Path = data_path / "processing"
+    processed_dir: Path = data_path / "final"
+
     train_dataset_suffix: str = "_train"
     val_dataset_suffix: str = "_val"
     images_folder_name: str = "JPEGImages"
@@ -22,4 +26,3 @@ class Settings:
     random_state: int = 42
     
     
-

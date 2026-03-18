@@ -2,7 +2,7 @@
 
 Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process -> Preview -> Split.
 
-## Complete Datasets (12)
+## Complete Datasets
 
 ### brackish
 - **Source**: [Roboflow](https://public.roboflow.com/ds/vGBLxigwno?key=bhFPGoB3VB)
@@ -88,7 +88,7 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
 - **Category filter**: None (single class — fish)
 - **Split**: Random (all images from same pond environment, no location metadata)
 
-## Partial Datasets (5)
+## Partial Datasets
 
 These datasets require manual download or have special dependencies.
 

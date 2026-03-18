@@ -2,7 +2,7 @@
 
 Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process -> Preview -> Split.
 
-## Complete Datasets (11)
+## Complete Datasets (12)
 
 ### brackish
 - **Source**: [Roboflow](https://public.roboflow.com/ds/vGBLxigwno?key=bhFPGoB3VB)
@@ -80,6 +80,13 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
 - **Annotations**: CSV -> DataFrame -> COCO conversion
 - **Category filter**: None (only Zebrafish)
 - **Split**: By video (Vid1 -> train, Vid2 -> val, hardcoded)
+
+### orange_chromide
+- **Source**: [Mendeley Data](https://data.mendeley.com/datasets/7w45jx35hd/1)
+- **Download**: Automatic
+- **Annotations**: YOLO TXT -> COCO conversion (single class, 640x640 images)
+- **Category filter**: None (single class — fish)
+- **Split**: Random (all images from same pond environment, no location metadata)
 
 ## Partial Datasets (5)
 

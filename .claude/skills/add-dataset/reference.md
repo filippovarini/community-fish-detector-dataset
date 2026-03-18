@@ -62,9 +62,9 @@ Key settings used in scripts:
 ```python
 settings = Settings()
 
-settings.raw_dir           # /mnt/data/dev/fish-datasets/data/raw
-settings.processed_dir     # /mnt/data/dev/fish-datasets/data/final
-settings.intermediate_dir  # /mnt/data/dev/fish-datasets/data/processing
+settings.raw_dir           
+settings.processed_dir     
+settings.intermediate_dir  
 settings.preview_dir       # <repo>/previews/
 
 settings.images_folder_name    # "JPEGImages"

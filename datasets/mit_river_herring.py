@@ -108,10 +108,8 @@ def main():
     raw_download_path.mkdir(parents=True, exist_ok=True)
     download_data(raw_download_path)
 
-    annotations_path = Path(
-        "/mnt/data/dev/fish-datasets/data/raw/mit_river_herring/mit_river_herring/mit_sea_grant_river_herring.json"
-    )
-    images_path = Path("/mnt/data/dev/fish-datasets/data/raw/mit_river_herring/mit_river_herring")
+    annotations_path = raw_download_path / "mit_river_herring" / "mit_sea_grant_river_herring.json"
+    images_path = raw_download_path / "mit_river_herring"
 
     # 2. PROCESS
     processing_dir = settings.intermediate_dir / DATASET_SHORTNAME

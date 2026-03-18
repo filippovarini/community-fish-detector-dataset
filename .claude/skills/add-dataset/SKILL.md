@@ -21,7 +21,11 @@ Use WebFetch on the provided link. The link might be a paper, a data portal, a G
 - **License** (if listed; otherwise "N/A")
 - **Domain/environment** (coral reef, pelagic, freshwater, brackish, deep-sea, etc.)
 - **Geographic location** (if mentioned)
-- **Download URL(s)** for images + annotations (direct links, not landing pages). This is the url for direct programmatic download. Please note, extracting this url sometimes might be tricky. If you can't find it, or the ones that you found don't work please tell the user and ask for guidance on how to proceed. The user might paste it or guide you on how to get it.
+- **Download URL(s)** for images + annotations (direct links, not landing pages). This is the url for direct programmatic download. Please note, extracting this url sometimes might be tricky. If you can't find it, or the ones that you found don't work please tell the user and ask for guidance on how to proceed. The user might paste it or guide you on how to get it. Usually you can find it by looking at the html of the page where the dataset is hosted and there should be a button/url/anchor tag with some text that highlights that by clicking the button you download the data, like "Download All" or "Export" etc... Depending on the platform where the data is hosted, this might be tricky. Based on the url/html identify the platform where the data is hosted. Below you can find guidance for some commonly tricky platforms:
+    - `data.mendeley.com`: The landing page shows a file preview listing individual files. **Do not download these individually.** Look at the html of the landing page and you should find an anchor tag with "Download All" text or something similar. That will provide a path like /public-api/zip/{dataset-id}/download/1. Append that to `https://data.mendeley.com/` and that will be your url.
+    - OneDrive: Data on Onedrive requires authentication and cannot be downloaded programmatically. Share this to the user and let the user download the data. Restart once the data is downloaded. 
+
+    If you can't figure out where to find the download url, ask for guidance
 
 **Sometimes on the resource page, sometimes only after downloading the data:**
 - **Annotation format** (COCO, Pascal VOC, YOLO, CSV, XML, segmentation masks, custom)
@@ -58,45 +62,6 @@ Before proceeding, show the user everything you've gathered:
 - Any concerns or manual steps required
 
 Ask for confirmation before moving to Phase 2.
-
-## Portal-Specific Download Guidance
-
-Downloading the dataset might be challenging. Use the following guidelines. If you can't download the correct data for permission or other issues, please stop and ask for guidance.
-
-### Mendeley Data
-- The landing page shows a file preview listing individual files. **Do not download these individually.**
-- Look for a **"Download All"** button/link on the page. This provides a single ZIP with the complete dataset.
-- The bulk download URL typically follows the pattern: `https://data.mendeley.com/public-api/zip/{id}/download/1` or similar. Use WebFetch on the landing page and look for the download-all link in the HTML.
-- If the dataset has multiple versions, make sure you're downloading the latest version.
-
-### Zenodo
-- Zenodo records usually have straightforward download links for each file under the "Files" section.
-- For multiple files, you can download them individually — Zenodo does not hide files behind previews.
-- Direct download URLs follow the pattern: `https://zenodo.org/records/<record_id>/files/<filename>?download=1`
-
-### Figshare
-- Similar to Mendeley: the landing page shows file previews. Look for a **"Download all"** button.
-- Individual file downloads may work, but prefer the bulk download to ensure completeness.
-
-### LILA (Labeled Information Library of Alexandria)
-- Provides direct download links, often hosted on Azure Blob Storage.
-- URLs are usually direct and work with `wget`/`curl` without authentication.
-
-### Kaggle
-- Use the `kagglehub` Python library (already in requirements) or the Kaggle CLI.
-- Requires Kaggle API credentials. If not configured, tell the user to set up `~/.kaggle/kaggle.json`.
-
-### HuggingFace
-- Use the `huggingface_hub` Python library or direct URL downloads.
-- Public datasets can be downloaded without authentication.
-- For large datasets, use `hf_hub_download` or `snapshot_download` from the library.
-
-### General rule for unfamiliar portals
-If you encounter a data portal you don't recognize:
-1. **Fetch the landing page HTML** with WebFetch and search for download links (look for keywords: "download all", "download zip", "bulk download", "export").
-2. **Never trust the file preview** as the complete file listing — portals often paginate or truncate the preview.
-3. If you find multiple download options (individual files vs. archive), **always prefer the archive/bulk download**.
-4. If no programmatic download link is found, inform the user and ask for guidance.
 
 ## Phase 2: Test Download & Analyze Data
 

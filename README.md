@@ -43,6 +43,15 @@ All datasets are normalized to a common format before merging. Your processing s
 
 ### How to contribute
 
+#### Option A: Just suggest a dataset (no coding required)
+
+If you've come across a dataset that matches the acceptance criteria above but don't have the time or experience to write a processing script, you can still help:
+
+* Add it to the <a href="#unprocessed-datasets">Unprocessed datasets</a> list at the bottom of this README via a pull request, or
+* Email it to <a href="mailto:fppvrn@gmail.com">Filippo</a> and we'll add it to the list
+
+#### Option B: Write a processing script
+
 1. **Install dependencies**: `pip install -r requirements.txt`
 
 2. **Create a script** at `datasets/<dataset_name>.py` that follows the 4-step pattern used by all other dataset scripts:
@@ -60,6 +69,16 @@ All datasets are normalized to a common format before merging. Your processing s
 5. **Add a dataset entry** to this README under <a href="#processed-datasets">Processed datasets</a>, following the same metadata format as the existing entries.
 
 6. **Submit a pull request** with your script, the preview image, and the README update.
+
+#### Option C: Use Claude Code to generate the processing script
+
+This repo includes a custom [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill that automates the entire dataset processing workflow — from downloading and analyzing the data, to generating the script, running it, and updating the documentation. To use it:
+
+1. Install Claude Code and open this repo
+2. Paste the dataset URL (e.g. a Zenodo link, a paper, a GitHub repo) and type `/add-dataset <url>`
+3. Claude Code will walk you through the full pipeline: research the dataset, test the download, write the processing script, run it, and update the docs
+
+This is the fastest way to add a new dataset if you're already familiar with Claude Code.
 
 
 ## Fish datasets

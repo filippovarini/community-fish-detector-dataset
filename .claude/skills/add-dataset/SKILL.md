@@ -1,58 +1,138 @@
 ---
 name: add-dataset
-description: Add a new underwater fish dataset to the pipeline. Use when the user shares a link to a dataset (Zenodo, GitHub, LILA, Kaggle, FTP, etc.) and wants to integrate it into the community-fish-detector-dataset project.
-argument-hint: <dataset-url-or-resource>
-disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, WebFetch
+description: End-to-end workflow for adding a new underwater fish dataset to the community-fish-detector pipeline. Handles research, download testing, script creation, execution, and documentation updates. Use this skill whenever the user shares a link (paper, LinkedIn post, Zenodo, GitHub, LILA, Kaggle, FTP, data portal, etc.) and wants to add it as a dataset, process a new dataset, or integrate new fish/marine data. Even if the user just pastes a URL with minimal context like "add this" or "process this dataset", trigger this skill.
 ---
 
 # Add Dataset Skill
 
-You are adding a new underwater fish/marine dataset to the community-fish-detector-dataset pipeline. The user has provided a dataset resource: **$ARGUMENTS**
+You are adding a new underwater fish/marine dataset to the community-fish-detector-dataset pipeline. The user has shared a resource: **$ARGUMENTS**
 
-## Phase 1: Research the Dataset
+This is a multi-phase workflow. Each phase builds on the previous one. You will use a **tmux session called `cfd-extension`** for all downloads and script execution so the user can attach and monitor progress.
 
-Fetch and analyze the dataset resource to gather metadata:
+## Phase 1: Research & Extract Metadata
 
-1. **Fetch the resource page** using WebFetch to extract:
-   - Dataset name and description
-   - Download URL(s) for the data files (images + annotations)
-   - Annotation format (COCO, Pascal VOC, YOLO, CSV, XML, segmentation masks, etc.)
-   - File format and compression (zip, tar, etc.)
-   - Number of images and annotations (if listed)
-   - License information
-   - Any papers or citations
-   - Whether images are underwater or above-water
+### 1.1 Fetch and analyze the resource
 
-2. **Determine the dataset shortname**: a short, lowercase, underscore-separated identifier (e.g., `deep_vision`, `noaa_puget`). Ask the user to confirm.
+Use WebFetch on the provided link. The link might be a paper, a data portal, a GitHub repo, a LinkedIn post, a Zenodo record — anything. Extract as much metadata as you can from the resource page(s):
 
-3. **Check eligibility** — STOP and inform the user if:
-   - The dataset contains **above-water images** (only underwater datasets are accepted)
-   - The dataset has **no fish-related annotations** (fish, sharks, rays, whales, eels, marine fish species are accepted; turtles, plastic, debris, humans, coral-only are NOT)
-   - The dataset has no bounding box or segmentation annotations (classification-only datasets cannot be used)
+**Almost Always extractable from the resource:**
+- **Dataset name** and a one-line description
+- **Citation** (authors, year, title, DOI if available)
+- **License** (if listed; otherwise "N/A")
+- **Domain/environment** (coral reef, pelagic, freshwater, brackish, deep-sea, etc.)
+- **Geographic location** (if mentioned)
+- **Download URL(s)** for images + annotations (direct links, not landing pages)
 
-4. **Identify fish-relevant categories**: List ALL annotation categories from the dataset. Determine which ones to KEEP (fish, sharks, rays, whales, eels, and any fish species) and which to DISCARD (turtles, plastic, debris, humans, invertebrates, coral, etc.). This becomes the `CATEGORIES_FILTER` list. If ALL categories are fish-related, set `CATEGORIES_FILTER = None`.
+**Sometimes on the resource page, sometimes only after downloading the data:**
+- **Annotation format** (COCO, Pascal VOC, YOLO, CSV, XML, segmentation masks, custom)
+- **Compression format** (zip, tar, tar.gz, etc.)
+- **Number of images and annotations**
+- **Category/species list** (what labels exist in the annotations)
+- **Whether images are underwater**
 
-5. **Determine the split strategy** (in order of preference):
-   - By location/site/deployment if identifiable from filenames or metadata
-   - By camera/sensor if multiple cameras
-   - By video ID if frames extracted from video
-   - By date/time if temporal metadata available
-   - Random split as last resort
+For the second group, record whatever the resource page mentions. Anything missing will be filled in during Phase 2 after downloading and inspecting the actual data. Mark unknown fields as "TBD — will determine after download."
 
-6. **Present findings to the user** and ask for confirmation before proceeding. Include:
-   - Dataset name, source, description
-   - Download method and URLs
-   - Annotation format and conversion needed
-   - Categories to keep vs discard
-   - Proposed split strategy
-   - Any manual steps required
+If the initial link is a paper or social media post, look for links to the actual data repository (Zenodo, GitHub releases, LILA, institutional data portal, etc.) and fetch those pages too.
 
-## Phase 2: Create the Dataset Script
+### 1.2 Determine the dataset shortname
 
-Create `datasets/<shortname>.py` following the **exact 4-step pattern** used by all other scripts. For detailed utility API reference and code examples, see [reference.md](reference.md) and [examples/](examples/).
+Choose a short, lowercase, underscore-separated identifier (e.g., `deep_vision`, `noaa_puget`, `orange_chromide`). Propose it to the user for confirmation.
 
-### Script Structure
+### 1.3 Check eligibility (preliminary)
+
+Based on what you know so far, STOP and inform the user if any of these clearly apply:
+- The dataset is **above-water only** (on-deck cameras are borderline — ask the user)
+- There are **no fish-related annotations** — fish, sharks, rays, whales, dolphins, eels, and any fish species are accepted. Crabs, turtles, plastic, debris, humans, coral-only, invertebrates are NOT.
+- The dataset is **classification-only** (no bounding boxes or segmentation masks)
+
+If eligibility can't be fully determined from the resource page alone (e.g., the category list isn't published), note this and defer the final check to Phase 2 when you can inspect the actual data.
+
+### 1.4 Present findings to user
+
+Before proceeding, show the user everything you've gathered:
+- Dataset name, source, description
+- License, domain, location
+- Download URL(s) and method
+- What you know about annotation format, categories, image count
+- What's still TBD and will be confirmed after download
+- Any concerns or manual steps required
+
+Ask for confirmation before moving to Phase 2.
+
+## Phase 2: Test Download & Analyze Data
+
+This phase is about verifying the download works and understanding the data structure before writing any script.
+
+### 2.1 Set up tmux session
+
+Create a tmux session for all downloads and script runs:
+```bash
+tmux new-session -d -s cfd-extension 2>/dev/null || true
+```
+
+All download and execution commands in subsequent phases should be sent to this tmux session using:
+```bash
+tmux send-keys -t cfd-extension '<command>' Enter
+```
+
+Tell the user: "I've created a tmux session called `cfd-extension`. You can attach to it with `tmux attach -t cfd-extension` to monitor progress."
+
+### 2.2 Test the download URL
+
+Write a small test script or use curl/wget to test whether the download URL actually works. Run it in the tmux session.
+
+**If the download fails:**
+1. Go back to the original resource and look for alternative download links (different mirrors, API endpoints, direct vs redirect URLs)
+2. Retry with the alternative URL
+3. If it still fails, the dataset likely requires authentication or manual acceptance of terms. Tell the user: "This dataset doesn't seem to have a programmatic download URL. You'll need to download it manually to `<raw_dir>/<shortname>/`. Let me know once the files are there and I'll continue processing."
+
+**If the download succeeds**, proceed to analyze the data.
+
+### 2.3 Analyze the downloaded data
+
+Once you have the data (or a sample of it), examine:
+
+1. **Folder structure**: `ls -R` or `find` to understand how files are organized
+2. **Image files**: formats (jpg, png, tif), naming conventions, how many
+3. **Annotation files**: open and inspect the format, schema, field names
+4. **Metadata files**: any README, CSV, JSON that describes the data
+5. **Filename patterns**: do filenames encode location, camera, video, date, or deployment info? This is critical for the split strategy.
+
+### 2.4 Fill in TBD metadata and confirm eligibility
+
+Now that you have the actual data, resolve anything marked "TBD" from Phase 1:
+- **Annotation format**: confirmed by inspecting the annotation files
+- **Number of images**: count them (`find ... | wc -l` or similar)
+- **Number of annotations/bounding boxes**: parse the annotation files
+- **Category/species list**: extract the full list from the annotations
+- **Whether images are underwater**: sample a few images to confirm
+
+With the full category list now known, finalize the **eligibility check** and **`CATEGORIES_FILTER`**:
+- List ALL categories found in the annotations
+- KEEP fish-looking animals (fish, shark, whale, dolphin, ray, eel, species names)
+- DISCARD non-fish (crab, turtle, coral, starfish, jellyfish, human, debris)
+- If ALL categories are fish-relevant, set `CATEGORIES_FILTER = None`
+
+If anything disqualifies the dataset (no fish annotations, above-water only, classification-only), STOP and inform the user.
+
+### 2.5 Determine split strategy
+
+Based on the data analysis, decide the split strategy (in order of preference):
+1. **By location/site/deployment** — if filenames or metadata contain location identifiers
+2. **By camera/sensor** — if multiple cameras are identifiable
+3. **By video ID** — if images are frames extracted from video
+4. **By date/time** — if temporal metadata is available
+5. **Random split** — last resort only
+
+The goal: all images from one physical location should go into either training or evaluation, never both. This prevents data leakage.
+
+Present the split strategy to the user with your reasoning.
+
+## Phase 3: Create the Dataset Script
+
+Create `datasets/<shortname>.py` following the **exact 4-step pattern** used by all other scripts. Consult [reference.md](reference.md) for the utility API and [examples/](examples/) for complete working examples.
+
+### Script structure
 
 ```python
 """
@@ -68,46 +148,25 @@ from pathlib import Path
 
 from datasets.settings import Settings
 from datasets.utils import (
-    # Import only what you need from:
-    # download_and_extract, download_file, extract_downloaded_file, CompressionType,
-    # compress_annotations_to_single_category,
-    # convert_coco_annotations_from_0_indexed_to_1_indexed,
-    # add_dataset_shortname_prefix_to_image_names,
-    # copy_images_to_processing,
-    # split_coco_dataset_into_train_validation,
-    # get_train_images_with_random_splitting,
-    # save_preview_image,
+    # Import only what you need — see reference.md for full API
 )
-
 
 DATASET_SHORTNAME = "<shortname>"
 CATEGORIES_FILTER = [...]  # or None if all categories are fish
-# DATA_URL = "<url>"  # if automatic download
 
 settings = Settings()
 
 
 def download_data(download_path: Path):
     """Download and extract the raw dataset."""
-    # Use download_and_extract() for simple URL downloads
-    # Or implement custom download logic
-
-
-def create_coco_dataset(...):
-    """Convert raw annotations to COCO format (if not already COCO)."""
-    # Only needed if source format is not COCO
-
-
-def get_list_of_<groups>_to_include_in_train_set(image_folder: Path) -> list[str]:
-    """Determine train/val split based on <split strategy>."""
-    # Return list of group identifiers for the training set
+    ...
 
 
 def main():
     # 1. DOWNLOAD
     raw_download_path = settings.raw_dir / DATASET_SHORTNAME
     raw_download_path.mkdir(parents=True, exist_ok=True)
-    # ... download logic
+    download_data(raw_download_path)
 
     # 2. PROCESS
     processing_dir = settings.intermediate_dir / DATASET_SHORTNAME
@@ -128,54 +187,100 @@ if __name__ == "__main__":
     main()
 ```
 
-### Critical Rules for the Script
+### Critical rules
 
-- **COCO annotations must be 1-indexed** (category IDs start at 1, not 0). Use `convert_coco_annotations_from_0_indexed_to_1_indexed` if source is 0-indexed.
-- **Image filenames must be prefixed** with `DATASET_SHORTNAME` using `add_dataset_shortname_prefix_to_image_names` to avoid collisions when merging.
-- **Single "fish" category**: Always compress to single category using `compress_annotations_to_single_category`.
-- **COCO bbox format**: `[x, y, width, height]` (top-left corner + dimensions). Convert from other formats if needed (e.g., `[xmin, ymin, xmax, ymax]` needs `width = xmax - xmin`).
-- **Check for existing files**: Add guards like `if path.exists(): return` to avoid re-downloading or re-processing.
-- If the dataset requires **manual download** (e.g., requires login, acceptance of terms), implement the processing steps but have `download_data()` print instructions and check if files exist.
+- **1-indexed COCO annotations**: Category IDs start at 1, not 0. Use `convert_coco_annotations_from_0_indexed_to_1_indexed` if the source is 0-indexed.
+- **Prefix image filenames** with `DATASET_SHORTNAME` using `add_dataset_shortname_prefix_to_image_names` — this prevents filename collisions when datasets are merged.
+- **Single "fish" category**: Always compress to a single category using `compress_annotations_to_single_category`.
+- **COCO bbox format**: `[x, y, width, height]` (top-left corner + dimensions). Convert from `[xmin, ymin, xmax, ymax]` if needed.
+- **Idempotent guards**: Add `if path.exists(): return` checks to avoid re-downloading or re-processing on rerun.
+- **Manual download fallback**: If the dataset requires login or term acceptance, have `download_data()` check if files already exist and print instructions if not.
 
-### Annotation Format Conversions
-
-Depending on the source format, you may need to convert annotations:
+### Annotation format conversions
 
 | Source Format | Conversion Approach |
 |---|---|
 | COCO JSON | Direct use, just compress categories |
-| Pascal VOC XML | Use `supervision.DetectionDataset.from_pascal_voc()` then export to COCO |
-| YOLO TXT | Use `supervision.DetectionDataset.from_yolo()` then export to COCO |
+| Pascal VOC XML | `supervision.DetectionDataset.from_pascal_voc()` → export to COCO |
+| YOLO TXT | `supervision.DetectionDataset.from_yolo()` → export to COCO |
 | CSV with bbox columns | Build COCO dict manually (see deep_vision example) |
-| Segmentation masks | Use connected components to extract bounding boxes |
-| Custom XML | Parse XML and build COCO dict manually |
+| Segmentation masks | Connected components → bounding boxes |
+| Custom XML | Parse XML → build COCO dict manually |
+| Parquet/HuggingFace | Load with pandas/datasets → build COCO dict |
 
-## Phase 3: Update DATASETS.md
+## Phase 4: Run the Script
 
-Add an entry for the new dataset to `DATASETS.md` under the appropriate section ("Complete Datasets" if fully automatic, "Partial Datasets" if manual steps needed). Follow the existing format:
+Run the dataset script in the tmux session so the user can monitor:
+
+```bash
+tmux send-keys -t cfd-extension 'cd <project-root> && python -m datasets.<shortname>' Enter
+```
+
+Tell the user it's running and they can monitor with `tmux attach -t cfd-extension`.
+
+**Wait for the script to complete.** Periodically check if the process is still running. Downloads can take a long time — that's expected. Once the script finishes:
+
+1. **Check for errors**: Read any error output. If the script failed, diagnose and fix the issue, then rerun.
+2. **Verify outputs exist**:
+   - Preview image in `previews/<shortname>_sample_image.png`
+   - Train dataset in `<processed_dir>/<shortname>_train/`
+   - Val dataset in `<processed_dir>/<shortname>_val/`
+3. **Show the preview image** to the user so they can verify the annotations look correct.
+
+If there are errors, fix the script and rerun. Iterate until the pipeline completes successfully.
+
+## Phase 5: Update Documentation
+
+### 5.1 Update README.md
+
+Add an entry for the new dataset under the "Publicly available datasets" section. Follow the existing format exactly:
+
+```markdown
+### <Dataset Full Name>
+
+<One-line description>
+
+<Citation: Authors (Year). Title. Journal/Source. DOI/URL>
+
+* Data downloadable via <method> from <source> (<a href="<download_url>">download link</a>)
+* License: <license or N/A>
+* Metadata raw format: <annotation format>
+* Categories/species: <what species/categories>
+* Vehicle type: <camera type/deployment method>
+* Image information: <number of images>
+* Annotation information: <number of bounding boxes>
+* Typical animal size in pixels: N/A
+* Code to render sample annotated image: <a href="./datasets/<shortname>.py"><shortname>.py</a>
+
+<img src="./previews/<shortname>_sample_image.png" width=700>
+```
+
+### 5.2 Update DATASETS.md
+
+Add an entry under "Complete Datasets" (or "Partial Datasets" if manual steps are needed). Update the dataset count in the section header.
 
 ```markdown
 ### <shortname>
 - **Source**: [<name>](<url>)
 - **Download**: Automatic / Manual - <instructions>
-- **Annotations**: <format> -> <conversion if any>
+- **Annotations**: <format> → <conversion if any>
 - **Category filter**: <categories kept or None>
 - **Split**: By <split strategy> (<details>)
-- **Special**: <any special requirements> (only if applicable)
 ```
 
-Also update the dataset count in the section header.
+### 5.3 Update merge_all_datasets.py
 
-## Phase 4: Update merge_all_datasets.py
+Check `datasets/merge_all_datasets.py`. If it has a hardcoded list of datasets, add the new shortname. If it dynamically discovers datasets, no change needed.
 
-Check `datasets/merge_all_datasets.py` — if it has a hardcoded list of datasets, add the new shortname to it. If it dynamically discovers datasets, no change needed.
+## Phase 6: Summary
 
-## Phase 5: Summary
+Present a final summary to the user:
 
-After creating all files, present a summary:
-- Dataset shortname and source
-- Script location: `datasets/<shortname>.py`
-- Categories kept/filtered
-- Split strategy used
-- Any manual steps the user needs to take (e.g., download files manually, install dependencies)
-- How to run: `python -m datasets.<shortname>`
+- **Dataset**: shortname, full name, source URL
+- **Script**: `datasets/<shortname>.py`
+- **Categories**: what was kept/filtered
+- **Split strategy**: what was used and why
+- **Preview**: path to preview image
+- **Docs updated**: README.md, DATASETS.md, merge_all_datasets.py (if applicable)
+- **Stats**: number of images, annotations, train/val split counts (read from the output annotations)
+- **Manual steps** (if any): what the user still needs to do

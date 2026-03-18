@@ -336,6 +336,23 @@ Two merged Roboflow datasets with bounding boxes on fish, sharks, rays, turtles 
 
 <img src="./previews/marine_detect_fishinv_sample_image.png" width=700>
 
+### Salmon Computer Vision
+
+Boxes on 532,000 frames from 1,567 videos of salmon in two weirs
+  
+JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, Nam, Brandon, Ma, Xiaoqiang, Cleveland, Mark, Doire, Janvier, Moore, Jonathan, Shea, Ryan, Liu, Jiangchuan, 2023/09/20, Wild salmon enumeration and monitoring using deep learning empowered detection and tracking, 10, 10.3389/fmars.2023.1200408, Frontiers in Marine Science
+
+* Data downloadable via https from GitHub (<a href="https://github.com/Salmon-Computer-Vision/salmon-computer-vision">download link</a>)
+* License: CC BY 4.0 
+* Metadata raw format: YOLOv6
+* Categories/species: pacific salmon
+* Vehicle type: multi-object tracking (MOT) and object detection
+* Image information: 1567 images
+* Annotation information: bounding boxes
+* Typical animal size in pixels: N/A
+  
+<img src="./previews/salmon_computer_vision_sample_image.jpg" width=700>
+
 
 ## Skipped datasets
 
@@ -357,6 +374,5 @@ Datasets that were evaluated but not included in the pipeline.
 
 Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 
-* <a href="https://github.com/Salmon-Computer-Vision/salmon-computer-vision">Salmon Computer Vision</a> (boxes on 532k frames from 1,567 videos of salmon in two weirs)
 * <a href="https://ouvert.canada.ca/data/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70">Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)</a> (~24k images of marine fish in Canada, with ~24k boxes)
 * <a href="https://zenodo.org/records/17432128">PomerFish: A dataset for fishes across Pomerania freshwater waterbodies in-situ environments</a> ([paper](https://www.nature.com/articles/s41597-025-06393-8)) (~20k segmentation masks on ~15k images)

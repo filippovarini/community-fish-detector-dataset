@@ -3,6 +3,7 @@
 ## TOC
 
 * <a href="#overview">Overview</a>
+* <a href="#contributing-a-new-dataset">Contributing a new dataset</a>
 * <a href="#publicly-available-datasets">Publicly available datasets</a>
 * <a href="#skipped-datasets">Skipped datasets</a>
 * <a href="#unprocessed-datasets">Unprocessed datasets</a>
@@ -28,7 +29,51 @@ This effort was supported by the following folks:
 Email <a href="mailto:fppvrn@gmail.com">Filippo</a> if anything seems off, or if you know of datasets we're missing.
 
 
-## Publicly available datasets
+## Contributing a new dataset
+
+We welcome contributions! If you know of an underwater fish dataset that isn't listed here, you can help by processing it and submitting a pull request. Check the <a href="#unprocessed-datasets">Unprocessed datasets</a> section at the bottom of this README for datasets we already know about but haven't processed yet — picking one from that list is a great way to start.
+
+### Acceptance criteria
+
+A dataset must meet the following requirements to be included:
+
+* **Underwater imagery** — images must be captured below the water surface (above-water and aerial fish images are rejected)
+* **Contains fish** — the dataset must include annotations (bounding boxes or segmentation masks) on fish or fish-like organisms
+* **Publicly available** — the data must be downloadable without requiring special access or paid subscriptions
+
+### Processing rules
+
+All datasets are normalized to a common format before merging. Your processing script must apply the following:
+
+1. **Single category** — all fish-related annotations must be compressed into a single category: `{"id": 1, "name": "fish"}`. Regardless of how many species or sub-categories the source dataset has, we merge them all into one. Use `compress_annotations_to_single_category()` from `datasets/utils/`.
+2. **1-indexed annotations** — COCO category and annotation IDs must be 1-indexed (not 0-indexed). Use `convert_coco_annotations_from_0_indexed_to_1_indexed()` if needed.
+3. **Filter out non-fish categories** — if the source dataset contains non-fish categories (e.g. coral, crab, starfish), filter them out and keep only fish-related annotations. Define a `CATEGORIES_FILTER` list in your script to specify which source categories to keep.
+4. **Prefix image filenames** — all image filenames must be prefixed with the dataset shortname (e.g. `noaa_puget_000001.jpg`) to avoid filename collisions when datasets are merged. Use `add_dataset_shortname_prefix_to_image_names()`.
+5. **Train/val split** — split the dataset into training and validation sets. When possible, split by location, camera, video, or deployment rather than by random image selection. Use `split_coco_dataset_into_train_validation()`.
+6. **COCO output format** — the final annotations must be in COCO format with bounding boxes.
+
+### How to contribute
+
+1. **Install dependencies**: `pip install -r requirements.txt`
+
+2. **Create a script** at `datasets/<dataset_name>.py` that follows the 4-step pattern used by all other dataset scripts:
+   - **Download** — download and extract the raw data to `data/raw/<dataset_name>/`
+   - **Process** — convert annotations to COCO format, apply the processing rules above, and save to `data/processing/<dataset_name>/`
+   - **Preview** — generate a sample annotated image and save it to `previews/`
+   - **Split** — split into train/val and save to `data/final/<dataset_name>_train/` and `data/final/<dataset_name>_val/`
+
+3. **Use shared utilities** from `datasets/utils/` — see existing scripts like <a href="./datasets/roboflow_fish.py">roboflow_fish.py</a> for a straightforward example.
+
+4. **Define module-level constants**:
+   - `DATASET_SHORTNAME` — a short, unique identifier (e.g. `"noaa_puget"`)
+   - `CATEGORIES_FILTER` — list of source category names to keep (or `None` if all categories are fish)
+
+5. **Add a dataset entry** to this README under <a href="#publicly-available-datasets">Publicly available datasets</a>, following the same metadata format as the existing entries.
+
+6. **Submit a pull request** with your script, the preview image, and the README update.
+
+
+
 
 ### NOAA Puget Sound Nearshore Fish 2017-2018
 

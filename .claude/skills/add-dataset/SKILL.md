@@ -21,7 +21,7 @@ Use WebFetch on the provided link. The link might be a paper, a data portal, a G
 - **License** (if listed; otherwise "N/A")
 - **Domain/environment** (coral reef, pelagic, freshwater, brackish, deep-sea, etc.)
 - **Geographic location** (if mentioned)
-- **Download URL(s)** for images + annotations (direct links, not landing pages)
+- **Download URL(s)** for images + annotations (direct links, not landing pages). This is the url for direct programmatic download. Please note, extracting this url sometimes might be tricky. If you can't find it, or the ones that you found don't work please tell the user and ask for guidance on how to proceed. The user might paste it or guide you on how to get it.
 
 **Sometimes on the resource page, sometimes only after downloading the data:**
 - **Annotation format** (COCO, Pascal VOC, YOLO, CSV, XML, segmentation masks, custom)
@@ -215,6 +215,8 @@ Run the dataset script in the tmux session so the user can monitor:
 ```bash
 tmux send-keys -t cfd-extension 'cd <project-root> && python -m datasets.<shortname>' Enter
 ```
+
+When running the script, load the virtual environment at ./venv/bin/activate
 
 Tell the user it's running and they can monitor with `tmux attach -t cfd-extension`.
 

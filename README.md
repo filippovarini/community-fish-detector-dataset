@@ -4,9 +4,10 @@
 
 * <a href="#overview">Overview</a>
 * <a href="#contributing-a-new-dataset">Contributing a new dataset</a>
-* <a href="#publicly-available-datasets">Publicly available datasets</a>
-* <a href="#skipped-datasets">Skipped datasets</a>
-* <a href="#unprocessed-datasets">Unprocessed datasets</a>
+* <a href="#fish-datasets">Fish datasets</a>
+  * <a href="#processed-datasets">Processed datasets</a>
+  * <a href="#skipped-datasets">Skipped datasets</a>
+  * <a href="#unprocessed-datasets">Unprocessed datasets</a>
 
 ## Overview
 
@@ -56,14 +57,16 @@ All datasets are normalized to a common format before merging. Your processing s
    - `DATASET_SHORTNAME` — a short, unique identifier (e.g. `"noaa_puget"`)
    - `CATEGORIES_FILTER` — list of source category names to keep (or `None` if all categories are fish)
 
-5. **Add a dataset entry** to this README under <a href="#publicly-available-datasets">Publicly available datasets</a>, following the same metadata format as the existing entries.
+5. **Add a dataset entry** to this README under <a href="#processed-datasets">Processed datasets</a>, following the same metadata format as the existing entries.
 
 6. **Submit a pull request** with your script, the preview image, and the README update.
 
 
+## Fish datasets
 
+### Processed datasets
 
-### NOAA Puget Sound Nearshore Fish 2017-2018
+#### NOAA Puget Sound Nearshore Fish 2017-2018
 
 Images with 67,990 bounding boxes on fish and crustaceans
   
@@ -81,7 +84,7 @@ Farrell DM, Ferriss B, Sanderson B, Veggerby K, Robinson L, Trivedi A, Pathak S,
   
 <img src="./previews/noaa_puget_sample_image.png" width=700>
 
-### MIT Sea Grant River Herring
+#### MIT Sea Grant River Herring
 
 Images of freshwater fish taken from underwater videos with 91,482 bounding boxes
   
@@ -99,7 +102,7 @@ Images of freshwater fish taken from underwater videos with 91,482 bounding boxe
   
 <img src="./previews/mit_river_herring_sample_image.png" width=700>
 
-### Tasmanian Orange Roughy Stereo Image Machine Learning Dataset (TORSI)
+#### Tasmanian Orange Roughy Stereo Image Machine Learning Dataset (TORSI)
 
 Annotated stereo imagery of orange roughy from 2019 Tasmanian survey, with expert-labeled bounding boxes for machine learning detection in fisheries science.
   
@@ -118,7 +121,7 @@ Scoulding, Ben; Maguire, Kylie; Orenstein, Eric; Jackett, Chris; & CSIRO (2025):
 <img src="./previews/torsi_sample_image.png" width=700>
   
 
-### CoralScapes
+#### CoralScapes
 
 2,027 images captured by diver-borne GoPro cameras from a variety of global coral reefs.
   
@@ -135,7 +138,7 @@ Scoulding, Ben; Maguire, Kylie; Orenstein, Eric; Jackett, Chris; & CSIRO (2025):
 <img src="./previews/coralscapes-sample.jpg" width=700>
 
   
-### Project Natick Underwater Video
+#### Project Natick Underwater Video
 
 ~1k images of fish/squid w/bounding boxes
   
@@ -154,7 +157,7 @@ https://nbn-resolving.org/urn:nbn:de:0168-ssoar-57615-2
 <img src="./previews/project_natick_sample_image.png" width=700>
   
   
-### Roboflow Fish Dataset
+#### Roboflow Fish Dataset
 
 ~1k images of fish w/bounding boxes
   
@@ -173,7 +176,7 @@ Solawetz, J. (2023, February 21). Fish object detection dataset. Roboflow. https
 <img src="./previews/roboflow_fish_sample_image.png" width=400>
   
   
-### DeepFish
+#### DeepFish
 
 ~40k images with a mix of classification, segmentation, and counting labels
   
@@ -191,7 +194,7 @@ Saleh A, Laradji IH, Konovalov DA, Bradley M, Vazquez D, Sheaves M. A realistic 
 <img src="./previews/deepfish_sample_image.jpg" width=700>  
   
 
-### Deep Vision Fish Dataset
+#### Deep Vision Fish Dataset
 
 Bboxed images of pelagic fish and associated segmentations
   
@@ -210,7 +213,7 @@ Vaneeda Allken, Shale Rosen (2020) Deep Vision fish dataset https://doi.org/10.2
 <img src="./previews/deep_vision_sample_image.png" width=700>
   
 
-### The Brackish Dataset
+#### The Brackish Dataset
 
 ~90 videos with bounding boxes on fish.  Largely redundant with BrackishMOT (see above).
   
@@ -228,7 +231,7 @@ Detection of Marine Animals in a New Underwater Dataset with Varying Visibility,
   
 <img src="./previews/brackish_dataset_sample_image.png" width=700>
   
-### F4K Detection and Tracking
+#### F4K Detection and Tracking
 
 17 10-minute videos with tracking points
   
@@ -248,7 +251,7 @@ I. Kavasidis, S. Palazzo, R. Di Salvo, D. Giordano, C. Spampinato, A semi-automa
 <img src="./previews/f4k_detection_tracking_sample.jpg" width=700>
   
   
-### FishCLEF-2015 
+#### FishCLEF-2015
 
 14k boxes on fish in 20k images
   
@@ -266,7 +269,7 @@ Joly A., Goeau H., Glotin H., Spampinato C., Bonnet P., Vellinga W.-P., Planquè
 <img src="./previews/fishclef_sample_image.png" width=700>
   
   
-### VIAME FishTrack
+#### VIAME FishTrack
 
 Several thousand BRUV images with bounding boxes on fish and bait
   
@@ -281,7 +284,7 @@ Several thousand BRUV images with bounding boxes on fish and bait
 <img src="./previews/viame_fishtrack_sample_image.png" width=700>
   
   
-### Object detection of tropical freshwater fish in Australia (Kakadu)
+#### Object detection of tropical freshwater fish in Australia (Kakadu)
 
 ~44k images of fish w/ ~83kbounding boxes
   
@@ -300,7 +303,7 @@ Jansen, A., Walden, D., Walker, S., & Buccella, C. (2022). A deep learning datas
 <img src="./previews/kakadu_sample_image.png" width=700>
   
 
-### AAU Zebrafish Re-Identification Dataset
+#### AAU Zebrafish Re-Identification Dataset
 
 2200 images of zebrafish with individual IDs
   
@@ -319,7 +322,7 @@ Bruslund Haurum J, Karpova A, Pedersen M, Hein Bengtson S, Moeslund TB. Re-ident
 <img src="./previews/Zebrafish_sample_image.png" width=700>
   
   
-### Orange Chromide Pond Fish Detection
+#### Orange Chromide Pond Fish Detection
 
 586 annotated underwater images of Orange Chromide (Etroplus maculatus) fish in South Indian pond environments with 10,607 bounding boxes
 
@@ -338,7 +341,7 @@ Vijayalakshmi M, Sasithradevi A (2024). Annotated underwater fish detection data
 <img src="./previews/orange_chromide_sample_image.png" width=700>
 
 
-### FathomNet Database
+#### FathomNet Database
 
 Katija, K., Orenstein, E., Schlining, B. _et al._ FathomNet: A global image database for enabling artificial intelligence in the ocean. Sci Rep 12, 15914 (2022). [https://doi.org/10.1038/s41598-022-19939-2](https://doi.org/10.1038/s41598-022-19939-2)
 
@@ -357,7 +360,7 @@ The FathomNet Database is an open-source image database that can be used to trai
 <img src="./previews/fathomnet_sample_image.png" width=700 />
 
 
-### Marine Detect (FishInv + Megafauna)
+#### Marine Detect (FishInv + Megafauna)
 
 Two merged Roboflow datasets with bounding boxes on fish, sharks, rays, turtles and other reef species
 
@@ -369,7 +372,7 @@ Two merged Roboflow datasets with bounding boxes on fish, sharks, rays, turtles 
 
 <img src="./previews/marine_detect_fishinv_sample_image.png" width=700>
 
-### Salmon Computer Vision
+#### Salmon Computer Vision
 
 Boxes on 532,000 frames from 1,567 videos of salmon in two weirs
   
@@ -387,7 +390,7 @@ JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, N
 <img src="./previews/salmon_computer_vision_sample_image.jpg" width=700>
 
 
-## Skipped datasets
+### Skipped datasets
 
 Datasets that were evaluated but not included in the pipeline.
 
@@ -403,7 +406,7 @@ Datasets that were evaluated but not included in the pipeline.
 * **Croatian Fish** — Skipped
 * **Application of a Deep Learning Image Classifier for Identification of Amazonian Fishes** — Skipped
 
-## Unprocessed datasets
+### Unprocessed datasets
 
 Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 

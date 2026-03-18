@@ -66,7 +66,7 @@ Downloading the dataset might be challenging. Use the following guidelines. If y
 ### Mendeley Data
 - The landing page shows a file preview listing individual files. **Do not download these individually.**
 - Look for a **"Download All"** button/link on the page. This provides a single ZIP with the complete dataset.
-- The bulk download URL typically follows the pattern: `https://data.mendeley.com/public-api/zip/7w45jx35hd/download/1` or similar. Use WebFetch on the landing page and look for the download-all link in the HTML.
+- The bulk download URL typically follows the pattern: `https://data.mendeley.com/public-api/zip/{id}/download/1` or similar. Use WebFetch on the landing page and look for the download-all link in the HTML.
 - If the dataset has multiple versions, make sure you're downloading the latest version.
 
 ### Zenodo

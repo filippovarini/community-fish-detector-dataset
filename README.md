@@ -4,6 +4,7 @@
 
 * <a href="#overview">Overview</a>
 * <a href="#publicly-available-datasets">Publicly available datasets</a>
+* <a href="#skipped-datasets">Skipped datasets</a>
 * <a href="#unprocessed-datasets">Unprocessed datasets</a>
 
 ## Overview
@@ -336,12 +337,27 @@ Two merged Roboflow datasets with bounding boxes on fish, sharks, rays, turtles 
 <img src="./previews/marine_detect_fishinv_sample_image.png" width=700>
 
 
+## Skipped datasets
+
+Datasets that were evaluated but not included in the pipeline.
+
+* **The Fishnet Dataset** (<a href="https://www.fishnet.ai/">link</a>) — ~163k bounding boxes on ~35k images of fish and people on fishing vessels
+* **FishNet Large-scale** — Rejected because the fish is out of water (may revisit in the future)
+* **Visual Marine Animal Tracking (VMAT)** (<a href="https://link.springer.com/article/10.1007/s11263-023-01762-5#article-info">link</a>) — 32 video sequences with bounding boxes on marine organisms from AUVs. Decided to skip with Dan Morris and Sonny Burniston (meeting 28/04/2025)
+* **BrackishMOT** — Same data as the Brackish dataset
+* **Brackish Underwater Dataset** — Same data as the Brackish dataset
+* **OzFish** — Annotations are of too poor quality
+* **WildFish** — Images are already cropped, useless for training an object detector
+* **Angling Freshwater Fish Netherlands (affine)** — Rejected as images are above water
+* **Brook trout imagery for individual ID** — Rejected as images are above water
+* **3D-ZeF20** — Rejected as images are above water and in lab environments
+* **Croatian Fish** — Skipped
+* **Application of a Deep Learning Image Classifier for Identification of Amazonian Fishes** — Skipped
+
 ## Unprocessed datasets
 
-This section includes datasets that we're aware exist, but that we haven't processed to the same level of detail as the others yet.
+Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 
-* <a href="https://www.fishnet.ai/">The Fishnet Dataset</a> (~163k bounding boxes on ~35k images of fish and people on fishing vessels)
-* <a href="https://link.springer.com/article/10.1007/s11263-023-01762-5#article-info">Visual Marine Animal Tracking (VMAT)</a> (32 video sequences with bounding boxes on marine organisms from AUVs)
 * <a href="https://github.com/Salmon-Computer-Vision/salmon-computer-vision">Salmon Computer Vision</a> (boxes on 532k frames from 1,567 videos of salmon in two weirs)
 * <a href="https://ouvert.canada.ca/data/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70">Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)</a> (~24k images of marine fish in Canada, with ~24k boxes)
 * <a href="https://zenodo.org/records/17432128">PomerFish: A dataset for fishes across Pomerania freshwater waterbodies in-situ environments</a> ([paper](https://www.nature.com/articles/s41597-025-06393-8)) (~20k segmentation masks on ~15k images)

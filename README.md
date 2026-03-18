@@ -341,9 +341,8 @@ Two merged Roboflow datasets with bounding boxes on fish, sharks, rays, turtles 
 
 Datasets that were evaluated but not included in the pipeline.
 
-* **The Fishnet Dataset** (<a href="https://www.fishnet.ai/">link</a>) — ~163k bounding boxes on ~35k images of fish and people on fishing vessels
-* **FishNet Large-scale** — Rejected because the fish is out of water (may revisit in the future)
-* **Visual Marine Animal Tracking (VMAT)** (<a href="https://link.springer.com/article/10.1007/s11263-023-01762-5#article-info">link</a>) — 32 video sequences with bounding boxes on marine organisms from AUVs. Decided to skip with Dan Morris and Sonny Burniston (meeting 28/04/2025)
+* **The Fishnet Dataset** (<a href="https://www.fishnet.ai/">link</a>) — ~163k bounding boxes on ~35k images of fish and people on fishing vessels. Rejected because above-water (may revisit in the future)
+* **Visual Marine Animal Tracking (VMAT)** (<a href="https://link.springer.com/article/10.1007/s11263-023-01762-5#article-info">link</a>) — 32 video sequences with bounding boxes on marine organisms from AUVs. Decided to skip with Dan Morris and Sonny Burniston (meeting 28/04/2025).
 * **BrackishMOT** — Same data as the Brackish dataset
 * **Brackish Underwater Dataset** — Same data as the Brackish dataset
 * **OzFish** — Annotations are of too poor quality

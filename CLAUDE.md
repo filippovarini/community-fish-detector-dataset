@@ -33,18 +33,14 @@ Each `datasets/<dataset>.py` script follows a single unified 4-step pattern:
 
 Final output: COCO-format datasets with one category ("fish"), merged via `datasets/merge_all_datasets.py`.
 
-## Key Settings (`datasets/settings.py`)
+## Key Settings
 
-- **Data paths**: raw → `/mnt/data/dev/fish-datasets/data/raw`, processed → `.../final`, intermediate → `.../processing`
-- **Preview path**: `previews/` (repo root)
-- **Train/val split ratio**: 0.2 (20% validation)
-- **COCO category**: single category `{"id": 1, "name": "fish"}`
-- **Images folder**: `JPEGImages/`
-- **Annotations file**: `annotations_coco.json`
+Take them from `datasets/settings.py`
+
 
 ## Datasets
 
-**Complete datasets (16)**: brackish, coralscapes, deep_vision, deepfish, f4k, fathomnet, fishclef, kakadu, marine_detect, mit_river_herring, noaa_puget, project_natick, roboflow_fish, torsi, viame_fishtrack, zebrafish.
+**Complete datasets (17)**: brackish, coralscapes, deep_vision, deepfish, f4k, fathomnet, fishclef, kakadu, marine_detect, mit_river_herring, noaa_puget, orange_chromide, project_natick, roboflow_fish, torsi, viame_fishtrack, zebrafish.
 
 See [DATASETS.md](DATASETS.md) for per-dataset processing details including source URLs, download instructions, annotation formats, category filters, and split logic.
 

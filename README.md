@@ -428,6 +428,25 @@ Bruslund Haurum J, Karpova A, Pedersen M, Hein Bengtson S, Moeslund TB. Re-ident
 <img src="./previews/Zebrafish_sample_image.png" width=150>
   
   
+### Orange Chromide Pond Fish Detection
+
+586 annotated underwater images of Orange Chromide (Etroplus maculatus) fish in South Indian pond environments with 10,607 bounding boxes
+
+Vijayalakshmi M, Sasithradevi A (2024). Annotated underwater fish detection dataset from pond environments. Mendeley Data, V1. https://doi.org/10.17632/7w45jx35hd.1
+
+* Data downloadable via https from Mendeley Data (<a href="https://data.mendeley.com/datasets/7w45jx35hd/1">download link</a>)
+* License: CC BY 4.0
+* Metadata raw format: YOLO TXT
+* Categories/species: Orange Chromide (Etroplus maculatus)
+* Vehicle type: Crosstour CT9000 underwater camera at <4m depth
+* Image information: 586 images (640x640)
+* Annotation information: 10,607 bounding boxes
+* Typical animal size in pixels: N/A
+* Code to render sample annotated image: <a href="./datasets/orange_chromide.py">orange_chromide.py</a>
+
+<img src="./previews/orange_chromide_sample_image.png" width=700>
+
+
 ### Salmon Computer Vision
 
 Boxes on 532,000 frames from 1,567 videos of salmon in two weirs

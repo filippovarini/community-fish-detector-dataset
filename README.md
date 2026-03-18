@@ -10,21 +10,9 @@
 
 ## Overview
 
-This is a list of datasets with annotated marine/freshwater imagery, suitable for training fish detectors/classifiers. 
+This repository contains a list of datasets with annotated marine/freshwater imagery and the scripts we used to process, clean and aggregate them to create the [Community Fish Detector (CFD) Dataset](https://lila.science/datasets/community-fish-detection-dataset/), which we used to train the [CFD model](https://github.com/filippovarini/community-fish-detector). 
 
-It was suggested by [Dan Morris](https://dmorris.net) to emulate the [list of datasets with annotated wildlife in drone/aerial images](https://github.com/agentmorris/agentmorrispublic/blob/main/drone-datasets.md), with standardized metadata for each dataset, and consistent sample code for match annotations to images and rendering sample images.
-
-This effort was supported by the following folks:
-* <a href="https://www.linkedin.com/in/filippo-varini/">Filippo Varini</a>
-* <a href="https://dmorris.net">Dan Morris</a>
-* <a href="https://www.mbari.org/person/kevin-barnard/">Kevin Barnard</a>
-* <a href="https://www.mbari.org/person/laura-chrobak/">Laura Chrobak</a>
-* <a href="https://www.oceaneboulais.net/">Oceane Boulais</a>
-* <a href="https://alexvmt.github.io/">Alexander Merdian-Tarko</a>
-* <a href="https://www.linkedin.com/in/kameswari-devi-ayyagari-031820b7/">Devi Ayyagari</a>
-* <a href="https://www.linkedin.com/in/sonny-burniston/">Sonny Burniston</a>
-* <a href="https://www.linkedin.com/in/mona-dhiflaoui/">Mona Dhiflaoui</a>
-* <a href="https://www.linkedin.com/in/jiashu-chen-w/">Joshua Chen</a>
+This effort was supported by the following folks: <a href="https://www.linkedin.com/in/filippo-varini/">Filippo Varini</a>, <a href="https://dmorris.net">Dan Morris</a>, <a href="https://www.mbari.org/person/kevin-barnard/">Kevin Barnard</a>, <a href="https://www.mbari.org/person/laura-chrobak/">Laura Chrobak</a>, <a href="https://www.oceaneboulais.net/">Oceane Boulais</a>, <a href="https://alexvmt.github.io/">Alexander Merdian-Tarko</a>, <a href="https://www.linkedin.com/in/kameswari-devi-ayyagari-031820b7/">Devi Ayyagari</a>, <a href="https://www.linkedin.com/in/sonny-burniston/">Sonny Burniston</a>, <a href="https://www.linkedin.com/in/mona-dhiflaoui/">Mona Dhiflaoui</a>, <a href="https://www.linkedin.com/in/jiashu-chen-w/">Joshua Chen</a>
 
 Email <a href="mailto:fppvrn@gmail.com">Filippo</a> if anything seems off, or if you know of datasets we're missing.
 

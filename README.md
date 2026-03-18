@@ -4,6 +4,7 @@
 
 * <a href="#overview">Overview</a>
 * <a href="#publicly-available-datasets">Publicly available datasets</a>
+* <a href="#skipped-datasets">Skipped datasets</a>
 * <a href="#unprocessed-datasets">Unprocessed datasets</a>
 
 ## Overview
@@ -43,9 +44,9 @@ Farrell DM, Ferriss B, Sanderson B, Veggerby K, Robinson L, Trivedi A, Pathak S,
 * Image information: 77,739 images
 * Annotation information: 67,990 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_noaa_puget.py">visualize_noaa_puget.py</a>
+* Code to render sample annotated image: <a href="./datasets/noaa_puget.py">noaa_puget.py</a>
   
-<img src="./data_preview/noaa_puget_sample_image.png" width=700>
+<img src="./previews/noaa_puget_sample_image.png" width=700>
 
 ### MIT Sea Grant River Herring
 
@@ -61,9 +62,9 @@ Images of freshwater fish taken from underwater videos with 91,482 bounding boxe
 * Image information: 262,050 images
 * Annotation information: 91,482 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_mit_river_herring.py">visualize_mit_river_herring.py</a>
+* Code to render sample annotated image: <a href="./datasets/mit_river_herring.py">mit_river_herring.py</a>
   
-<img src="./data_preview/mit_river_herring_sample_image.png" width=700>
+<img src="./previews/mit_river_herring_sample_image.png" width=700>
 
 ### Tasmanian Orange Roughy Stereo Image Machine Learning Dataset (TORSI)
 
@@ -79,9 +80,9 @@ Scoulding, Ben; Maguire, Kylie; Orenstein, Eric; Jackett, Chris; & CSIRO (2025):
 * Image information: 1,051 images
 * Annotation information: 14,414 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_torsi.py">visualize_torsi.py</a>
+* Code to render sample annotated image: <a href="./datasets/torsi.py">torsi.py</a>
   
-<img src="./data_preview/torsi_sample_image.png" width=700>
+<img src="./previews/torsi_sample_image.png" width=700>
   
 
 ### CoralScapes
@@ -96,9 +97,9 @@ Scoulding, Ben; Maguire, Kylie; Orenstein, Eric; Jackett, Chris; & CSIRO (2025):
 * Vehicle type: diver
 * Image information: 2,027 images
 * Annotation information: 174,000 segmentation annotations, of which 20,849 are fish
-* Code to render sample annotated image: <a href="./data_preview/visualize_noaa_puget.py">coralscapes_to_coco.py</a>
+* Code to render sample annotated image: <a href="./datasets/coralscapes.py">coralscapes.py</a>
   
-<img src="./data_preview/coralscapes-sample.jpg" width=700>
+<img src="./previews/coralscapes-sample.jpg" width=700>
 
   
 ### Project Natick Underwater Video
@@ -115,9 +116,9 @@ https://nbn-resolving.org/urn:nbn:de:0168-ssoar-57615-2
 * Image information: 1118 RGB images (~5% of images have FN annotations)
 * Annotation information: 998 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_project_natick.py">visualize_project_natick.py</a>
+* Code to render sample annotated image: <a href="./datasets/project_natick.py">project_natick.py</a>
   
-<img src="./data_preview/project_natick_sample_image.png" width=700>
+<img src="./previews/project_natick_sample_image.png" width=700>
   
   
 ### Roboflow Fish Dataset
@@ -134,27 +135,9 @@ Solawetz, J. (2023, February 21). Fish object detection dataset. Roboflow. https
 * Image information: 1350 RGB images (the taxonomy is often inaccurate)
 * Annotation information: 3142 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_roboflow_fish.py">visualize_roboflow_fish.py</a>
+* Code to render sample annotated image: <a href="./datasets/roboflow_fish.py">roboflow_fish.py</a>
   
-<img src="./data_preview/roboflow_fish_sample_image.png" width=400>
-  
-  
-### The Fishnet Dataset
-
-~163k bounding boxes on ~35k images of fish and people on fishing vessels
-  
-Kay, J., & Merrifield, M. (2021). The Fishnet Open Images Database: A Dataset for Fish Detection and Fine-Grained Categorization in Fisheries. Retrieved from https://arxiv.org/abs/2106.09178
-
-* Data downloadable via via https from The Nature Conservancy (<a href="https://www.fishnet.ai/">download link</a>)
-* Metadata raw format: csv
-* Categories/species: 34 fish types and humans
-* Vehicle type: on-deck cameras
-* Image information: 143,818 RGB images
-* Annotation information: 549,209 bounding boxes
-* Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_fishnet.ipynb">visualise_fishnet.ipynb</a>
-  
-<img src="./data_preview/fishnet_sample_image.png" width=700>
+<img src="./previews/roboflow_fish_sample_image.png" width=400>
   
   
 ### DeepFish
@@ -170,9 +153,9 @@ Saleh A, Laradji IH, Konovalov DA, Bradley M, Vazquez D, Sheaves M. A realistic 
 * Vehicle type: underwater camera deployed over the side of a boat
 * Image information: 311 images with segmentation masks
 * Annotation information: 388 segmentation masks
-  Code to render sample annotated image: <a href="./data_preview/visualise_deepfish.py">visualise_deepfish.py</a>
+* Code to render sample annotated image: <a href="./datasets/deepfish.py">deepfish.py</a>
   
-<img src="./data_preview/deepfish_sample_image.jpg" width=700>  
+<img src="./previews/deepfish_sample_image.jpg" width=700>  
   
 
 ### Deep Vision Fish Dataset
@@ -189,28 +172,9 @@ Vaneeda Allken, Shale Rosen (2020) Deep Vision fish dataset https://doi.org/10.2
 * Image information: 1875 RGB images
 * Annotation information: 4834 bounding boxes, segmentation masks
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_deep_vision.py">visualise_deep_vision.py</a>
+* Code to render sample annotated image: <a href="./datasets/deep_vision.py">deep_vision.py</a>
   
-<img src="./data_preview/deep_vision_sample_image.png" width=700>
-  
-  
-### BrackishMOT
-
-98 videos of fish with tracking boxes (i.e., boxes with stable frame-to-frame IDs).
-  
-Pedersen M, Lehotský D, Nikolov I, Moeslund TB. Brackishmot: The brackish multi-object tracking dataset. InScandinavian Conference on Image Analysis 2023 Apr 18 (pp. 17-33). Cham: Springer Nature Switzerland.
-
-* Data downloadable via https from Kaggle (<a href="https://www.kaggle.com/datasets/maltepedersen/brackishmot">download link</a>)
-* License: CC BY (licensed updated from NC in 2025.04)
-* Metadata raw format: N/A
-* Categories/species: small fish
-* Vehicle type: underwater cameras in brackish water
-* Image information: N/A
-* Annotation information: N/A
-* Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_brackishmot.ipynb">visualise_brackishmot.ipynb</a>
-  
-<img src="https://lila.science/wp-content/uploads/2017/03/brackish-150.jpg" width=150>
+<img src="./previews/deep_vision_sample_image.png" width=700>
   
 
 ### The Brackish Dataset
@@ -227,65 +191,9 @@ Detection of Marine Animals in a New Underwater Dataset with Varying Visibility,
 * Image information: 12,444 RGB images
 * Annotation information: 35,565  bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_brackish.py">visualise_brackish.py</a>
+* Code to render sample annotated image: <a href="./datasets/brackish.py">brackish.py</a>
   
-<img src="./data_preview/brackish_dataset_sample_image.png" width=700>
-
-
-### Brackish Underwater Dataset
-
-12.5k boxes on fish and other species in 15k images.  Largely redundant with BrackishMOT (see above).
-  
-Pedersen, M., Haurum, J. B., Gade, R., Moeslund, T. B., & Madsen, N. (2019). Detection of Marine Animals in a New Underwater Dataset with Varying Visibility. In The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, June 2019.
-
-* Data downloadable via https from Roboflow (<a href="https://public.roboflow.com/object-detection/brackish-underwater/">download link</a>)
-* License: CC BY 4.0 DEED 
-* Metadata raw format: YOLOv2, YOLOv3 CNNs
-* Categories/species: marine animals
-* Vehicle type: underwater cameras
-* Image information: 14,674 images (12,444 of which contain objects of interest with bounding box annotations)
-* Annotation information: bounding boxes
-* Typical animal size in pixels: 416 × 416
-  
-<img src="https://i.imgur.com/3dtuNhv.png" width=700>
-
-  
-### Visual Marine Animal Tracking
-
-32 video sequences with bounding boxes on a variety of species
-  
-Cai, L., McGuire, N.E., Hanlon, R. et al. Semi-supervised Visual Tracking of Marine Animals Using Autonomous Underwater Vehicles. Int J Comput Vis 131, 1406–1427 (2023). https://doi.org/10.1007/s11263-023-01762-5
-
-* Data downloadable via from Springer (<a href="https://link.springer.com/article/10.1007/s11263-023-01762-5#article-info">download link</a>)
-* License: CC BY 4.0 DEED
-* Metadata raw format: N/A
-* Categories/species: marine organisms
-* Vehicle type: autonomous underwater vehicles
-* Image information: N/A
-* Annotation information: N/A
-* Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualise_vmat.ipynb">visualise_vmat.ipynb</a>
-
-<img src="./data_preview/vmat_sample_image.png" width=150>
-  
-  
-### OzFish
-
-80k cropped fish images with 45k bounding boxes
-  
-Australian Institute of Marine Science (AIMS), University of Western Australia (UWA) and Curtin University. (2019). OzFish Dataset - Machine learning dataset for Baited Remote Underwater Video Stations . https://doi.org/10.25845/5e28f062c5097, accessed 28-Feb-2024.
-
-* Data downloadable via https from GitHub (<a href="https://github.com/open-AIMS/ozfish?tab=readme-ov-file">download link</a>)
-* License: CC BY 3.0 DEED
-* Metadata raw format: N/A
-* Categories/species: N/A
-* Vehicle type: BRUV
-* Image information: Over 3000 images
-* Annotation information: bounding boxes
-* Typical animal size in pixels: N/A
-  
-<img src="./data_preview/ozfish-sample.B000448_R.MP4.37007-700.jpg" width=700>
-  
+<img src="./previews/brackish_dataset_sample_image.png" width=700>
   
 ### F4K Detection and Tracking
 
@@ -302,8 +210,9 @@ I. Kavasidis, S. Palazzo, R. Di Salvo, D. Giordano, C. Spampinato, A semi-automa
 * Image information: N/A
 * Annotation information: N/A
 * Typical animal size in pixels: N/A
-  
-<img src="https://raw.githubusercontent.com/JianmengYu/f4k/master/dissertation/graph/5-6.png" width=700>
+* Code to render sample annotated image: <a href="./datasets/f4k.py">f4k.py</a>
+
+<img src="./previews/f4k_detection_tracking_sample.jpg" width=700>
   
   
 ### FishCLEF-2015 
@@ -316,12 +225,12 @@ Joly A., Goeau H., Glotin H., Spampinato C., Bonnet P., Vellinga W.-P., Planquè
 * Metadata raw format: XML
 * Categories/species: marine ray-finned fish 
 * Vehicle type: N/A
-* Image information: 20m000 images
+* Image information: 20,000 images
 * Annotation information: 14,000 bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_fishclef.py">visualize_fishclef.py</a>
+* Code to render sample annotated image: <a href="./datasets/fishclef.py">fishclef.py</a>
   
-<img src="http://lila.science/wp-content/uploads/2017/03/fishclef_2015-150.png" width=150>
+<img src="./previews/fishclef_sample_image.png" width=700>
   
   
 ### VIAME FishTrack
@@ -334,29 +243,12 @@ Several thousand BRUV images with bounding boxes on fish and bait
 * Vehicle type: BRUV
 * Image information: ~20,000
 * Annotation information: bounding boxes
-* Code to rentdr sample annotated image: <a href="./data_preview/visualize_viame_fishtrack.py">visualize_viame_fishtrack.py</a>
-  
-<img src="./data_preview/viame_fishtrack_sample_image.png" width=150>
-  
-  
-### WildFish
+* Code to render sample annotated image: <a href="./datasets/viame_fishtrack.py">viame_fishtrack.py</a>
 
-54,459 images of fish in 1000 categories
-  
-Zhuang, P., Wang, Y., & Qiao, Y. (2018). WildFish: A Large Benchmark for Fish Recognition in the Wild. In 2018 ACM Multimedia Conference on Multimedia Conference (pp. 1301-1309). ACM
-
-* Data downloadable via https from Github (<a href="https://github.com/PeiqinZhuang/WildFish">download link</a>)
-* Metadata raw format: N/A
-* Categories/species: N/A
-* Vehicle type: N/A
-* Image information: 54,459 images
-* Annotation information: N/A
-* Typical animal size in pixels: N/A
-  
-<img src="https://github.com/PeiqinZhuang/WildFish/raw/master/paper/WildFish_cover.jpg" width=700>
+<img src="./previews/viame_fishtrack_sample_image.png" width=700>
   
   
-### Object detection of tropical freshwater fish in Australia
+### Object detection of tropical freshwater fish in Australia (Kakadu)
 
 ~44k images of fish w/ ~83kbounding boxes
   
@@ -370,45 +262,11 @@ Jansen, A., Walden, D., Walker, S., & Buccella, C. (2022). A deep learning datas
 * Image information: 44,112 images (images were derived from Remote Underwater Video (RUV) deployments in deep channel and shallow lowland billabongs, Kakadu National Park, Northern Territory Australia)
 * Annotation information: 82,904 bounding boxes
 * Typical animal size in pixels: N/A
-  
-<img src="http://lila.science/wp-content/uploads/2017/03/kakadu_fish_150.jpg" width=150>
-  
-  
-### AFFiNe
+* Code to render sample annotated image: <a href="./datasets/kakadu.py">kakadu.py</a>
 
-7k labeled images of freshwater fish, generally not in the water, cropped close
+<img src="./previews/kakadu_sample_image.png" width=700>
   
-* Data downloadable via https from Kaggle (<a href="https://www.kaggle.com/datasets/jorritvenema/affine">download link</a>)
-* License: CC BY-NC-SA 4.0 DEED
-* Metadata raw format: YOLO
-* Categories/species: N/A
-* Vehicle type: N/A
-* Image information: >7000 images
-* Annotation information: N/A
-* Typical animal size in pixels: N/A
-  
-<img src="http://lila.science/wp-content/uploads/2017/03/affine-150.jpg" width=150>
-  
-  
-### Brook trout imagery for individual ID
 
-435 images of brook trout with individual ID labels
-
-
-  
-Hitt, N.P., Kessler, K.G., and Letcher, B.H., 2022, Brook trout imagery data for individual recognition with deep learning: U.S. Geological Survey data release, https://doi.org/10.5066/P94UL1Z1.
-
-* Data downloadable via via browser from ScienceBase (<a href="https://www.sciencebase.gov/catalog/item/627e8af0d34e3bef0c9a2cde">download link</a>)
-* Metadata raw format: xml
-* Categories/species: N/A
-* Vehicle type: GoPro camera mounted approximately 50 cm above a fish board
-* Image information: 435 images (images were collected at the Paint Bank State Fish Hatchery (Paint Bank, VA) on August 9, 2021 using a GoPro Hero 9)
-* Annotation information: N/A
-* Typical animal size in pixels: N/A
-  
-<img src="http://lila.science/wp-content/uploads/2017/03/brook-trout-150.jpg" width=150>
-  
-  
 ### AAU Zebrafish Re-Identification Dataset
 
 2200 images of zebrafish with individual IDs
@@ -423,27 +281,28 @@ Bruslund Haurum J, Karpova A, Pedersen M, Hein Bengtson S, Moeslund TB. Re-ident
 * Image information: 2224 images
 * Annotation information: AAU VAP bounding boxes
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_zebrafish.py">visualize_zebrafish.py</a>
+* Code to render sample annotated image: <a href="./datasets/zebrafish.py">zebrafish.py</a>
   
-<img src="./data_preview/Zebrafish_sample_image.png" width=150>
+<img src="./previews/Zebrafish_sample_image.png" width=700>
   
   
-### Salmon Computer Vision
+### Orange Chromide Pond Fish Detection
 
-Boxes on 532,000 frames from 1,567 videos of salmon in two weirs
-  
-JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, Nam, Brandon, Ma, Xiaoqiang, Cleveland, Mark, Doire, Janvier, Moore, Jonathan, Shea, Ryan, Liu, Jiangchuan, 2023/09/20, Wild salmon enumeration and monitoring using deep learning empowered detection and tracking, 10, 10.3389/fmars.2023.1200408, Frontiers in Marine Science
+586 annotated underwater images of Orange Chromide (Etroplus maculatus) fish in South Indian pond environments with 10,607 bounding boxes
 
-* Data downloadable via https from GitHub (<a href="https://github.com/Salmon-Computer-Vision/salmon-computer-vision">download link</a>)
-* License: CC BY 4.0 
-* Metadata raw format: YOLOv6
-* Categories/species: pacific salmon
-* Vehicle type: multi-object tracking (MOT) and object detection
-* Image information: 1567 images
-* Annotation information: bounding boxes
+Vijayalakshmi M, Sasithradevi A (2024). Annotated underwater fish detection dataset from pond environments. Mendeley Data, V1. https://doi.org/10.17632/7w45jx35hd.1
+
+* Data downloadable via https from Mendeley Data (<a href="https://data.mendeley.com/datasets/7w45jx35hd/1">download link</a>)
+* License: CC BY 4.0
+* Metadata raw format: YOLO TXT
+* Categories/species: Orange Chromide (Etroplus maculatus)
+* Vehicle type: Crosstour CT9000 underwater camera at <4m depth
+* Image information: 586 images (640x640)
+* Annotation information: 10,607 bounding boxes
 * Typical animal size in pixels: N/A
-  
-<img src="./data_preview/salmon_computer_vision_sample_image.jpg" width=700>
+* Code to render sample annotated image: <a href="./datasets/orange_chromide.py">orange_chromide.py</a>
+
+<img src="./previews/orange_chromide_sample_image.png" width=700>
 
 
 ### FathomNet Database
@@ -460,14 +319,60 @@ The FathomNet Database is an open-source image database that can be used to trai
 * Image information: 100k+ images (growing over time)
 * Annotation information: 300k+ annotations (growing over time)
 * Typical animal size in pixels: N/A
-* Code to render sample annotated image: <a href="./data_preview/visualize_fathomnet.py">visualize_fathomnet.py</a>
+* Code to render sample annotated image: <a href="./datasets/fathomnet.py">fathomnet.py</a>
 
-<img src="./data_preview/fathomnet_sample_image.png" width=700 />
+<img src="./previews/fathomnet_sample_image.png" width=700 />
 
+
+### Marine Detect (FishInv + Megafauna)
+
+Two merged Roboflow datasets with bounding boxes on fish, sharks, rays, turtles and other reef species
+
+* Data downloadable via Roboflow (manual download required)
+* Metadata raw format: COCO (after Roboflow export)
+* Categories/species: fish, shark, ray, turtle, and various reef fish families
+* Vehicle type: underwater cameras
+* Code to render sample annotated image: <a href="./datasets/marine_detect.py">marine_detect.py</a>
+
+<img src="./previews/marine_detect_fishinv_sample_image.png" width=700>
+
+### Salmon Computer Vision
+
+Boxes on 532,000 frames from 1,567 videos of salmon in two weirs
+  
+JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, Nam, Brandon, Ma, Xiaoqiang, Cleveland, Mark, Doire, Janvier, Moore, Jonathan, Shea, Ryan, Liu, Jiangchuan, 2023/09/20, Wild salmon enumeration and monitoring using deep learning empowered detection and tracking, 10, 10.3389/fmars.2023.1200408, Frontiers in Marine Science
+
+* Data downloadable via https from GitHub (<a href="https://github.com/Salmon-Computer-Vision/salmon-computer-vision">download link</a>)
+* License: CC BY 4.0 
+* Metadata raw format: YOLOv6
+* Categories/species: pacific salmon
+* Vehicle type: multi-object tracking (MOT) and object detection
+* Image information: 1567 images
+* Annotation information: bounding boxes
+* Typical animal size in pixels: N/A
+  
+<img src="./previews/salmon_computer_vision_sample_image.jpg" width=700>
+
+
+## Skipped datasets
+
+Datasets that were evaluated but not included in the pipeline.
+
+* **The Fishnet Dataset** (<a href="https://www.fishnet.ai/">link</a>) — ~163k bounding boxes on ~35k images of fish and people on fishing vessels. Rejected because above-water (may revisit in the future)
+* **Visual Marine Animal Tracking (VMAT)** (<a href="https://link.springer.com/article/10.1007/s11263-023-01762-5#article-info">link</a>) — 32 video sequences with bounding boxes on marine organisms from AUVs. Decided to skip with Dan Morris and Sonny Burniston (meeting 28/04/2025).
+* **BrackishMOT** — Same data as the Brackish dataset
+* **Brackish Underwater Dataset** — Same data as the Brackish dataset
+* **OzFish** — Annotations are of too poor quality
+* **WildFish** — Images are already cropped, useless for training an object detector
+* **Angling Freshwater Fish Netherlands (affine)** — Rejected as images are above water
+* **Brook trout imagery for individual ID** — Rejected as images are above water
+* **3D-ZeF20** — Rejected as images are above water and in lab environments
+* **Croatian Fish** — Skipped
+* **Application of a Deep Learning Image Classifier for Identification of Amazonian Fishes** — Skipped
 
 ## Unprocessed datasets
 
-This section includes datasets that we're aware exist, but that we haven't processed to the same level of detail as the others yet.
+Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 
 * <a href="https://ouvert.canada.ca/data/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70">Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)</a> (~24k images of marine fish in Canada, with ~24k boxes)
 * <a href="https://zenodo.org/records/17432128">PomerFish: A dataset for fishes across Pomerania freshwater waterbodies in-situ environments</a> ([paper](https://www.nature.com/articles/s41597-025-06393-8)) (~20k segmentation masks on ~15k images)

@@ -9,9 +9,10 @@
   * <a href="#skipped-datasets">Skipped datasets</a>
   * <a href="#unprocessed-datasets">Unprocessed datasets</a>
 
+
 ## Overview
 
-This repository contains a list of datasets with annotated marine/freshwater imagery and the scripts we used to process, clean and aggregate them to create the [Community Fish Detector (CFD) Dataset](https://lila.science/datasets/community-fish-detection-dataset/), which we used to train the [CFD model](https://github.com/filippovarini/community-fish-detector). 
+This repository contains a list of datasets with annotated marine/freshwater imagery and the scripts we used to process, clean and aggregate them to create the [Community Fish Detector (CFD) Dataset](https://lila.science/datasets/community-fish-detection-dataset/), which we used to train the [Community Fish Detector](https://github.com/filippovarini/community-fish-detector). 
 
 This effort was supported by the following folks: <a href="https://www.linkedin.com/in/filippo-varini/">Filippo Varini</a>, <a href="https://dmorris.net">Dan Morris</a>, <a href="https://www.mbari.org/person/kevin-barnard/">Kevin Barnard</a>, <a href="https://www.mbari.org/person/laura-chrobak/">Laura Chrobak</a>, <a href="https://www.oceaneboulais.net/">Oceane Boulais</a>, <a href="https://alexvmt.github.io/">Alexander Merdian-Tarko</a>, <a href="https://www.linkedin.com/in/kameswari-devi-ayyagari-031820b7/">Devi Ayyagari</a>, <a href="https://www.linkedin.com/in/sonny-burniston/">Sonny Burniston</a>, <a href="https://www.linkedin.com/in/mona-dhiflaoui/">Mona Dhiflaoui</a>, <a href="https://www.linkedin.com/in/jiashu-chen-w/">Joshua Chen</a>
 
@@ -22,6 +23,7 @@ Email <a href="mailto:fppvrn@gmail.com">Filippo</a> if anything seems off, or if
 
 We welcome contributions! If you know of an underwater fish dataset that isn't listed here, you can help by processing it and submitting a pull request. Check the <a href="#unprocessed-datasets">Unprocessed datasets</a> section at the bottom of this README for datasets we already know about but haven't processed yet — picking one from that list is a great way to start.
 
+
 ### Acceptance criteria
 
 A dataset must meet the following requirements to be included:
@@ -29,6 +31,7 @@ A dataset must meet the following requirements to be included:
 * **Underwater imagery** — images must be captured below the water surface (above-water and aerial fish images are rejected)
 * **Contains fish** — the dataset must include annotations (bounding boxes or segmentation masks) on fish or fish-like organisms
 * **Publicly available** — the data must be downloadable without requiring special access or paid subscriptions
+
 
 ### Processing rules
 
@@ -40,6 +43,7 @@ All datasets are normalized to a common format before merging. Your processing s
 4. **Prefix image filenames** — all image filenames must be prefixed with the dataset shortname (e.g. `noaa_puget_000001.jpg`) to avoid filename collisions when datasets are merged. Use `add_dataset_shortname_prefix_to_image_names()`.
 5. **Train/val split** — split the dataset into training and validation sets. When possible, split by location, camera, video, or deployment rather than by random image selection. Use `split_coco_dataset_into_train_validation()`.
 6. **COCO output format** — the final annotations must be in COCO format with bounding boxes.
+
 
 ### How to contribute
 
@@ -83,7 +87,7 @@ This is the fastest way to add a new dataset if you're already familiar with Cla
 
 ## Fish datasets
 
-### Processed datasets
+### Datasets that were included in the Community Fish Detection Dataset
 
 #### NOAA Puget Sound Nearshore Fish 2017-2018
 
@@ -103,6 +107,7 @@ Farrell DM, Ferriss B, Sanderson B, Veggerby K, Robinson L, Trivedi A, Pathak S,
   
 <img src="./previews/noaa_puget_sample_image.png" width=700>
 
+
 #### MIT Sea Grant River Herring
 
 Images of freshwater fish taken from underwater videos with 91,482 bounding boxes
@@ -120,6 +125,7 @@ Images of freshwater fish taken from underwater videos with 91,482 bounding boxe
 * Code to render sample annotated image: <a href="./datasets/mit_river_herring.py">mit_river_herring.py</a>
   
 <img src="./previews/mit_river_herring_sample_image.png" width=700>
+
 
 #### Tasmanian Orange Roughy Stereo Image Machine Learning Dataset (TORSI)
 
@@ -249,7 +255,8 @@ Detection of Marine Animals in a New Underwater Dataset with Varying Visibility,
 * Code to render sample annotated image: <a href="./datasets/brackish.py">brackish.py</a>
   
 <img src="./previews/brackish_dataset_sample_image.png" width=700>
-  
+
+
 #### F4K Detection and Tracking
 
 17 10-minute videos with tracking points
@@ -301,8 +308,8 @@ Several thousand BRUV images with bounding boxes on fish and bait
 * Code to render sample annotated image: <a href="./datasets/viame_fishtrack.py">viame_fishtrack.py</a>
 
 <img src="./previews/viame_fishtrack_sample_image.png" width=700>
-  
-  
+
+
 #### Object detection of tropical freshwater fish in Australia (Kakadu)
 
 ~44k images of fish w/ ~83kbounding boxes
@@ -320,7 +327,7 @@ Jansen, A., Walden, D., Walker, S., & Buccella, C. (2022). A deep learning datas
 * Code to render sample annotated image: <a href="./datasets/kakadu.py">kakadu.py</a>
 
 <img src="./previews/kakadu_sample_image.png" width=700>
-  
+
 
 #### AAU Zebrafish Re-Identification Dataset
 
@@ -391,6 +398,7 @@ Two merged Roboflow datasets with bounding boxes on fish, sharks, rays, turtles 
 
 <img src="./previews/marine_detect_fishinv_sample_image.png" width=700>
 
+
 #### Salmon Computer Vision
 
 Boxes on 532,000 frames from 1,567 videos of salmon in two weirs
@@ -409,21 +417,20 @@ JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, N
 <img src="./previews/salmon_computer_vision_sample_image.jpg" width=700>
 
 
-### Skipped datasets
+### Datasets that were not included in the Community Fish Detection Dataset
 
-Datasets that were evaluated but not included in the pipeline.
+* [Fishnet.AI](https://www.fishnet.ai/): ~163k bounding boxes on ~35k images of fish and people on fishing vessels.  Excluded because images are above-water.
+* [Visual Marine Animal Tracking (VMAT)](https://link.springer.com/article/10.1007/s11263-023-01762-5#article-info): 32 video sequences with bounding boxes on marine organisms from AUVs.
+* [OzFish](https://github.com/open-AIMS/ozfish): Excluded due to annotation quality issues.
+* [WildFish](https://github.com/PeiqinZhuang/WildFish): Excluded because images are cropped.
+* [Angling Freshwater Fish Netherlands (AFFiNe)](https://www.kaggle.com/datasets/jorritvenema/affine): 7k images of 30 species, excluded because images are above water.
+* [Brook trout imagery for individual ID](https://www.usgs.gov/data/brook-trout-imagery-data-individual-recognition-deep-learning): Excluded because images are above water.
+* [3D-ZeF](https://huggingface.co/datasets/vapaau/3D-ZeF): Excluded because images are above water and in lab environments.
+* [Croatian Fish](https://www.kaggle.com/datasets/ashfaqsyed/croatian-fish-dataset): 794 images of 12 species, excluded because images are cropped.
+* [Amazonian Fish ML Classifier](https://sidatasciencelab.github.io/Amazonian_Fish_ML_Classifier/): Excluded because images are in staging environments.
+* [BrackishMOT](https://www.kaggle.com/datasets/maltepedersen/brackishmot): Same data as the Brackish Dataset.
+* Brackish Underwater Dataset: Same data as the Brackish Dataset.
 
-* **The Fishnet Dataset** (<a href="https://www.fishnet.ai/">link</a>) — ~163k bounding boxes on ~35k images of fish and people on fishing vessels. Rejected because above-water (may revisit in the future)
-* **Visual Marine Animal Tracking (VMAT)** (<a href="https://link.springer.com/article/10.1007/s11263-023-01762-5#article-info">link</a>) — 32 video sequences with bounding boxes on marine organisms from AUVs. Decided to skip with Dan Morris and Sonny Burniston (meeting 28/04/2025).
-* **BrackishMOT** — Same data as the Brackish dataset
-* **Brackish Underwater Dataset** — Same data as the Brackish dataset
-* **OzFish** — Annotations are of too poor quality
-* **WildFish** — Images are already cropped, useless for training an object detector
-* **Angling Freshwater Fish Netherlands (affine)** — Rejected as images are above water
-* **Brook trout imagery for individual ID** — Rejected as images are above water
-* **3D-ZeF20** — Rejected as images are above water and in lab environments
-* **Croatian Fish** — Skipped
-* **Application of a Deep Learning Image Classifier for Identification of Amazonian Fishes** — Skipped
 
 ### Unprocessed datasets
 

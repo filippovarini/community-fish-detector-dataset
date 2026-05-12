@@ -438,3 +438,4 @@ Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 
 * <a href="https://ouvert.canada.ca/data/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70">Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)</a> (~24k images of marine fish in Canada, with ~24k boxes)
 * <a href="https://zenodo.org/records/17432128">PomerFish: A dataset for fishes across Pomerania freshwater waterbodies in-situ environments</a> ([paper](https://www.nature.com/articles/s41597-025-06393-8)) (~20k segmentation masks on ~15k images)
+* <a href="https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html">J-EDI: AI training dataset for detecting organisms from images taken during deep-sea survey. The detection targets are labeled into 19 rough categories such as "shrimp" and "fish" (~8,000 images, COCO annotation)

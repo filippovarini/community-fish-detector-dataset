@@ -416,6 +416,23 @@ JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, N
   
 <img src="./previews/salmon_computer_vision_sample_image.jpg" width=700>
 
+#### OBSEA
+
+Underwater images from the OBSEA observatory fish detection training dataset, with bounding boxes on Mediterranean fish and fish-like organisms.
+
+* Data downloadable via Zenodo (<a href="https://zenodo.org/records/14888440">download link</a>)
+* License: CC BY 4.0
+* Metadata raw format: YOLO
+* Categories/species: 23 source classes, compressed to one fish category for CFD training; Diver and Octopus vulgaris filtered out
+* Vehicle type: fixed underwater observatory camera
+* Image information: 4,120 images
+* Annotation information: 34,144 bounding boxes after filtering
+* Typical animal size in pixels: N/A
+* Code to render sample annotated image: <a href="./datasets/obsea.py">obsea.py</a>
+
+<img src="./previews/obsea_sample_image.png" width=700>
+
+
 
 ### Datasets that were not included in the Community Fish Detection Dataset
 

@@ -418,15 +418,15 @@ JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, N
 
 #### OBSEA
 
-Underwater images from the OBSEA observatory fish detection training dataset, with bounding boxes on Mediterranean fish and fish-like organisms.
+Underwater images from the OBSEA seafloor observatory, with manual bounding-box annotations on Mediterranean fish taxa from 2013-2014.
 
-* Data downloadable via Zenodo (<a href="https://zenodo.org/records/14888440">download link</a>)
+* Data downloadable via PANGAEA (<a href="https://doi.org/10.1594/PANGAEA.946149">download link</a>)
 * License: CC BY 4.0
-* Metadata raw format: YOLO
-* Categories/species: 23 source classes, compressed to one fish category for CFD training; Diver and Octopus vulgaris filtered out
+* Metadata raw format: PANGAEA tab-delimited table
+* Categories/species: 30 source fish taxa/categories, compressed to one fish category for CFD training
 * Vehicle type: fixed underwater observatory camera
-* Image information: 4,120 images
-* Annotation information: 34,144 bounding boxes after filtering
+* Image information: 14,952 images
+* Annotation information: 69,818 bounding boxes after clipping and compression
 * Typical animal size in pixels: N/A
 * Code to render sample annotated image: <a href="./datasets/obsea.py">obsea.py</a>
 

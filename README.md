@@ -421,9 +421,11 @@ JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, N
 Underwater images from the OBSEA seafloor observatory, with manual bounding-box annotations on Mediterranean fish taxa from 2013-2014.
 
 * Data downloadable via PANGAEA (<a href="https://doi.org/10.1594/PANGAEA.946149">download link</a>)
+* Image archive: download PANGAEA's bulk ZIP from <a href="https://download.pangaea.de/dataset/946149/allfiles.zip">allfiles.zip</a> and place it in the raw data folder
 * License: CC BY 4.0
 * Metadata raw format: PANGAEA tab-delimited table
 * Categories/species: 30 source fish taxa/categories, compressed to one fish category for CFD training
+* Split: temporal train/validation split by held-out months, because PANGAEA does not expose balanced independent camera/deployment groups
 * Vehicle type: fixed underwater observatory camera
 * Image information: 14,952 images
 * Annotation information: 69,818 bounding boxes after clipping and compression

@@ -1,7 +1,9 @@
 """
 OBSEA Dataset
 Source: https://doi.org/10.1594/PANGAEA.946149
-Split logic: By month; selected months held out for validation
+Split logic: Grouped temporal split by held-out months. This is not a
+deployment-independent or scene-independent split; PANGAEA does not expose
+balanced independent camera/deployment groups for this source.
 Categories kept: All fish species from the PANGAEA annotation table
 """
 
@@ -22,9 +24,16 @@ from datasets.utils.images import add_dataset_shortname_prefix_to_image_names
 
 DATASET_SHORTNAME = "obsea"
 PANGAEA_TABLE_NAME = "obsea_fish_2013_14.tab"
-PANGAEA_IMAGE_ARCHIVE_NAME = "obsea_fish_2013_14_allfiles.zip"
 
-# Hold out complete months to avoid using the random split from derived YOLO exports.
+# Download this ZIP from PANGAEA's bulk file endpoint:
+# https://download.pangaea.de/dataset/946149/allfiles.zip
+PANGAEA_IMAGE_ARCHIVE_NAMES = (
+    "allfiles.zip",
+    "obsea_fish_2013_14_allfiles.zip",
+)
+
+# Hold out complete months to avoid random image splitting. This creates a
+# grouped temporal validation set, not an independent deployment/scene split.
 VALIDATION_MONTHS = {
     "2013-04",
     "2013-08",
@@ -52,6 +61,21 @@ def read_pangaea_table(table_path: Path) -> list[dict]:
                 return list(reader)
 
     raise ValueError(f"Could not find PANGAEA data header in {table_path}")
+
+
+def find_pangaea_image_archive(raw_data_path: Path) -> Path:
+    for archive_name in PANGAEA_IMAGE_ARCHIVE_NAMES:
+        archive_path = raw_data_path / archive_name
+        if archive_path.exists():
+            return archive_path
+
+    accepted_names = ", ".join(PANGAEA_IMAGE_ARCHIVE_NAMES)
+    raise FileNotFoundError(
+        f"OBSEA image archive not found in {raw_data_path}. Expected one of: "
+        f"{accepted_names}. Download the ZIP from "
+        "https://download.pangaea.de/dataset/946149/allfiles.zip and place it "
+        "in the OBSEA raw data folder."
+    )
 
 
 def extract_images_from_archive(
@@ -199,7 +223,7 @@ def convert_obsea_pangaea_to_coco(
 def main():
     raw_data_path = settings.raw_dir / "obsea_pangaea"
     table_path = raw_data_path / PANGAEA_TABLE_NAME
-    image_archive_path = raw_data_path / PANGAEA_IMAGE_ARCHIVE_NAME
+    image_archive_path = find_pangaea_image_archive(raw_data_path)
 
     processing_dir = settings.intermediate_dir / DATASET_SHORTNAME
     processing_dir.mkdir(parents=True, exist_ok=True)

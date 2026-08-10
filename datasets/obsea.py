@@ -4,18 +4,27 @@ OBSEA Dataset
 Source: Zenodo record 14888328, obsea_dataset_v4.1.zip
 https://doi.org/10.5281/zenodo.14888328
 
-This script uses the non-pre-split Zenodo source package, not table-based
-source files and not the random pre-split YOLO training package. Fish and
-fish-like source classes are mapped into the repo's single fish category.
-Zero-fish/background images are kept in the COCO images list with no
-annotations. The validation split is a filename/source-grouped holdout using
-AIPC608UW_10_167 and C4k0193; it should not be described as a proven
-deployment-independent split.
+Expects obsea_dataset_v4.1.zip to be at:
+
+    [repo root]/data/raw/obsea/obsea_dataset_v4.1.zip
+
+The zip file contains a folder called "obsea_dataset_v4.1"; if necessary, this script
+will extract that folder such that the final folder structure looks like:
+
+    [repo root]/data/raw/obsea/obsea_dataset_v4.1/images
+    [repo root]/data/raw/obsea/obsea_dataset_v4.1/labels
+
+* Fish and fish-like source classes are mapped into the repo's single "fish" category.
+* Zero-fish/background images are kept in the COCO images list with no annotations.
+* The validation split is a based on filenames that indicate unique deployments
 """
 
 import json
 import os
 import shutil
+import zipfile
+
+from tqdm import tqdm
 from pathlib import Path
 
 from PIL import Image
@@ -29,7 +38,6 @@ DATASET_SHORTNAME = "obsea"
 SOURCE_ZIP_NAME = "obsea_dataset_v4.1.zip"
 SOURCE_ZIP_MD5 = "7a2012d7a39fb42d155b29fc67d8753f"
 SOURCE_FOLDER_NAME = "obsea_dataset_v4.1"
-SOURCE_EXTRACTED_FOLDER_NAME = "obsea_dataset_v4.1_extracted"
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png"}
 
@@ -58,70 +66,16 @@ EXPECTED_NON_FISH_CLASS_NAMES = {
     49: "Rhizostoma pulmo",
 }
 
+# Deployment IDs assigned to the validation set
 VALIDATION_GROUPS = {"AIPC608UW_10_167", "C4k0193"}
 
 settings = Settings()
 
 
-def find_obsea_source_root() -> Path:
-    """
-    Find the extracted non-pre-split OBSEA Zenodo source folder.
-
-    The project docs normally place raw data under data/raw/. Some local audit
-    workflows keep large raw archives one level above this repo, under
-    ../datasets/raw/. Support both without falling back to the old pre-split
-    YOLO layout.
-    """
-    repo_root = Path(__file__).resolve().parents[1]
-    candidate_roots = [
-        settings.raw_dir / DATASET_SHORTNAME,
-        settings.raw_dir / DATASET_SHORTNAME / SOURCE_EXTRACTED_FOLDER_NAME,
-        repo_root.parent / "datasets" / "raw" / DATASET_SHORTNAME,
-        repo_root.parent
-        / "datasets"
-        / "raw"
-        / DATASET_SHORTNAME
-        / SOURCE_EXTRACTED_FOLDER_NAME,
-    ]
-
-    candidates = []
-    for root in candidate_roots:
-        candidates.extend(
-            [
-                root / SOURCE_FOLDER_NAME,
-                root / SOURCE_EXTRACTED_FOLDER_NAME / SOURCE_FOLDER_NAME,
-            ]
-        )
-
-    for candidate in candidates:
-        if (
-            (candidate / "images").is_dir()
-            and (candidate / "labels").is_dir()
-            and (candidate / "obsea_dataset.json").is_file()
-        ):
-            return candidate
-
-    searched = "\n".join(f"  - {candidate}" for candidate in candidates)
-    raise FileNotFoundError(
-        "Could not find extracted OBSEA Zenodo source folder. Expected an "
-        "extracted obsea_dataset_v4.1 folder with images/, labels/, and "
-        f"obsea_dataset.json. Searched:\n{searched}"
-    )
-
-
-def find_source_zip() -> Path | None:
-    repo_root = Path(__file__).resolve().parents[1]
-    candidates = [
-        settings.raw_dir / DATASET_SHORTNAME / SOURCE_ZIP_NAME,
-        repo_root.parent / "datasets" / "raw" / DATASET_SHORTNAME / SOURCE_ZIP_NAME,
-    ]
-    for candidate in candidates:
-        if candidate.is_file():
-            return candidate
-    return None
-
-
 def load_source_class_names(source_root: Path) -> list[str]:
+    """
+    Load the list of class names from obsea_dataset.json
+    """
     metadata_path = source_root / "obsea_dataset.json"
     with open(metadata_path, "r") as f:
         metadata = json.load(f)
@@ -142,6 +96,9 @@ def load_source_class_names(source_root: Path) -> list[str]:
 
 
 def list_images(source_root: Path) -> dict[str, Path]:
+    """
+    Return all images in [source_root] (non-recursive).
+    """
     images = {}
     for image_path in sorted((source_root / "images").iterdir()):
         if image_path.is_file() and image_path.suffix.lower() in IMAGE_EXTENSIONS:
@@ -150,6 +107,9 @@ def list_images(source_root: Path) -> dict[str, Path]:
 
 
 def list_labels(source_root: Path) -> dict[str, Path]:
+    """
+    Return all .txt files in [source_root] (non-recursive).
+    """
     return {
         label_path.stem: label_path
         for label_path in sorted((source_root / "labels").glob("*.txt"))
@@ -161,6 +121,10 @@ def parse_yolo_label_file(
     label_path: Path,
     class_count: int,
 ) -> list[tuple[int, float, float, float, float]]:
+    """
+    Read a list of [class_id, x_center, y_center, box_width, box_height] bounding
+    boxes from the .txt file [label_path].
+    """
     rows = []
     with open(label_path, "r") as f:
         for line_number, line in enumerate(f, start=1):
@@ -191,10 +155,10 @@ def parse_yolo_label_file(
                 )
 
             if not (
-                0 <= x_center <= 1
-                and 0 <= y_center <= 1
-                and 0 < box_width <= 1
-                and 0 < box_height <= 1
+                (0 <= x_center <= 1)
+                and (0 <= y_center <= 1)
+                and (0 < box_width <= 1)
+                and (0 < box_height <= 1)
             ):
                 raise ValueError(
                     f"YOLO coordinates outside normalized bounds at "
@@ -214,6 +178,9 @@ def yolo_box_to_coco_box(
     image_width: int,
     image_height: int,
 ) -> list[float]:
+    """
+    Convert a YOLO box (x,y,w,h) to COCO format (x1,y2,x2,y2)
+    """
     x_min = (x_center - box_width / 2) * image_width
     y_min = (y_center - box_height / 2) * image_height
     x_max = (x_center + box_width / 2) * image_width
@@ -228,6 +195,10 @@ def yolo_box_to_coco_box(
 
 
 def get_source_group(image_stem_or_filename: str) -> str:
+    """
+    Extract an OBSEA deployment ID from a filename, returns
+    "unknown" if it can't find a known deployment ID.
+    """
     stem = Path(image_stem_or_filename).stem
     if stem.startswith(f"{DATASET_SHORTNAME}_"):
         stem = stem[len(f"{DATASET_SHORTNAME}_") :]
@@ -253,27 +224,40 @@ def copy_source_images_to_processing(
     source_images: dict[str, Path],
     coco_images_path: Path,
 ) -> None:
+    """
+    Copy all the files in the list [source_images] to the
+    folder [coco_images_path].
+    """
     coco_images_path.mkdir(parents=True, exist_ok=True)
-    for i, image_path in enumerate(source_images.values(), start=1):
-        if i == 1 or i % 500 == 0 or i == len(source_images):
-            print(f"Copying image {i} of {len(source_images)}")
+    source_image_filenames = list(source_images.values())
+    print('Copying {} files to {}'.format(
+        len(source_image_filenames), str(coco_images_path)))
+    for image_path in tqdm(source_image_filenames):
         shutil.copy2(image_path, coco_images_path / image_path.name)
 
 
-def convert_obsea_zenodo_to_coco(
+def convert_obsea_to_coco(
     source_root: Path,
     coco_images_path: Path,
     coco_annotations_path: Path,
 ) -> dict:
+    """
+    The main function in this module, converts the entire OBSEA dataset from YOLO
+    to COCO.
+    """
     class_names = load_source_class_names(source_root)
     source_images = list_images(source_root)
     source_labels = list_labels(source_root)
+
+    print("Read {} class names, enumerated {} images, enumerated {} labels".format(
+        len(class_names),len(source_images),len(source_labels)))
+    assert (len(class_names) > 0) and (len(source_images) > 0) and (len(source_labels) > 0)
 
     missing_labels = sorted(set(source_images) - set(source_labels))
     missing_images = sorted(set(source_labels) - set(source_images))
     if missing_labels or missing_images:
         raise ValueError(
-            "OBSEA image/label stem mismatch. "
+            "OBSEA image/label mismatch. "
             f"Images without labels: {len(missing_labels)}. "
             f"Labels without images: {len(missing_images)}."
         )
@@ -293,9 +277,11 @@ def convert_obsea_zenodo_to_coco(
     image_id_by_stem = {}
 
     annotation_id = 1
-    for image_id, (image_stem, source_image_path) in enumerate(
-        source_images.items(), start=1
-    ):
+
+    print("Converting data from YOLO to COCO")
+
+    for image_id, (image_stem, source_image_path) in tqdm(enumerate(
+        source_images.items(), start=1), total=len(source_images)):
         with Image.open(source_image_path) as image:
             image_width, image_height = image.size
 
@@ -399,15 +385,20 @@ def try_save_preview_image(
 
 
 def main():
-    source_root = find_obsea_source_root()
-    source_zip = find_source_zip()
 
-    print(f"Using OBSEA Zenodo source folder: {source_root}")
-    if source_zip is not None:
-        print(f"Found source ZIP: {source_zip}")
-        print(f"Expected source ZIP md5: {SOURCE_ZIP_MD5}")
-    else:
-        print(f"Source ZIP not found; using extracted folder only: {source_root}")
+    source_root = settings.raw_dir / DATASET_SHORTNAME / SOURCE_FOLDER_NAME
+
+    if (not source_root.is_dir()):
+        print(f"Source folder not found at {source_root}, checking for zipfile")
+        source_zip = settings.raw_dir / DATASET_SHORTNAME / SOURCE_ZIP_NAME
+        if (not source_zip.is_file()):
+            raise ValueError(f"Source zipfile not found at {source_zip}")
+        with zipfile.ZipFile(source_zip, 'r') as zipf:
+            zipf.extractall(settings.raw_dir / DATASET_SHORTNAME)
+        if (not source_root.is_dir()):
+            raise ValueError(f"Extracted zipfile {source_zip}, but folder {source_root} not found")
+
+    print(f"Using OBSEA source folder: {source_root}")
 
     processing_dir = settings.intermediate_dir / DATASET_SHORTNAME
     processing_dir.mkdir(parents=True, exist_ok=True)
@@ -420,10 +411,10 @@ def main():
     if coco_annotations_path.exists():
         coco_annotations_path.unlink()
 
-    summary = convert_obsea_zenodo_to_coco(
-        source_root,
-        coco_images_path,
-        coco_annotations_path,
+    summary = convert_obsea_to_coco(
+        source_root=source_root,
+        coco_images_path=coco_images_path,
+        coco_annotations_path=coco_annotations_path,
     )
 
     add_dataset_shortname_prefix_to_image_names(

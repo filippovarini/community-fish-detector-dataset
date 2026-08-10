@@ -6,6 +6,7 @@
 * <a href="#contributing-a-new-dataset">Contributing a new dataset</a>
 * <a href="#fish-datasets">Fish datasets</a>
   * <a href="#processed-datasets">Processed datasets</a>
+  * <a href="#datasets-that-were-added-after-the-most-recent-cfd-training">Datasets that were added after the most recent CFD training</a>
   * <a href="#skipped-datasets">Skipped datasets</a>
   * <a href="#unprocessed-datasets">Unprocessed datasets</a>
 
@@ -385,9 +386,9 @@ The FathomNet Database is an open-source image database that can be used to trai
 <img src="./previews/fathomnet_sample_image.png" width=700 />
 
 
-#### Marine Detect (FishInv + Megafauna)
+#### Marine Detect (FishInv and Megafauna)
 
-Two merged Roboflow datasets with bounding boxes on fish, sharks, rays, turtles and other reef species
+Two Roboflow datasets with bounding boxes on fish, sharks, rays, turtles and other reef species
 
 * Data downloadable via Roboflow (manual download required)
 * Metadata raw format: COCO (after Roboflow export)
@@ -415,27 +416,24 @@ Atlas WI, Ma S, Chou YC, Connors K, Scurfield D, Nam B, Ma X, Cleveland M, Doire
   
 <img src="./previews/salmon_computer_vision_sample_image.jpg" width=700>
 
+
+### Datasets that were added after the most recent CFD training
+
 #### OBSEA
 
-Underwater images from the OBSEA seafloor observatory, with manual bounding-box annotations on Mediterranean fish and fish-like taxa.
+Boxes on fish and other objects in images from the OBSEA seafloor observatory in the Mediterranean
 
 * Data downloadable via Zenodo (<a href="https://doi.org/10.5281/zenodo.14888328">download link</a>)
-* Source archive: `obsea_dataset_v4.1.zip` (md5: `7a2012d7a39fb42d155b29fc67d8753f`)
-* Extracted source folder: `obsea_dataset_v4.1`, containing `images/`, `labels/`, and `obsea_dataset.json`
 * License: CC BY 4.0
-* Metadata raw format: YOLO labels with `obsea_dataset.json` class-count metadata
-* Source note: the random pre-split YOLO package `obsea_split_YOLO.zip` is not used
-* Categories/species: 74 source classes; 9 clear non-fish classes are filtered and the remaining fish/fish-like classes are compressed to one fish category for CFD training
-* Background handling: zero-fish/background images are kept as images with no annotations
-* Split: filename/source-grouped validation holdout using `AIPC608UW_10_167` and `C4k0193`; this is not claimed to be a deployment-independent split
+* Metadata raw format: YOLO
+* Categories/species: 74 source classes
 * Vehicle type: fixed underwater observatory camera
-* Image information: 4,120 images, including 470 zero-fish/background images kept after filtering
-* Annotation information: 34,728 fish/fish-like bounding boxes after filtering and compression
+* Image information: 4,120 images, including 470 zero-fish/background images
+* Annotation information: 34,728 fish/fish-like bounding boxes after filtering
 * Typical animal size in pixels: N/A
 * Code to render sample annotated image: <a href="./datasets/obsea.py">obsea.py</a>
 
 <img src="./previews/obsea_sample_image.png" width=700>
-
 
 
 ### Datasets that were not included in the Community Fish Detection Dataset

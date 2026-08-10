@@ -131,7 +131,7 @@ Images of freshwater fish taken from underwater videos with 91,482 bounding boxe
 
 Annotated stereo imagery of orange roughy from 2019 Tasmanian survey, with expert-labeled bounding boxes for machine learning detection in fisheries science.
   
-Scoulding, Ben; Maguire, Kylie; Orenstein, Eric; Jackett, Chris; & CSIRO (2025): Tasmanian Orange Roughy Stereo Image Machine Learning Dataset. v1. CSIRO. Data Collection. https://doi.org/10.25919/a90r-4962
+Scoulding B, Maguire K, Orenstein E, Jackett C, CSIRO.  <a href="https://doi.org/10.25919/a90r-4962">Tasmanian Orange Roughy Stereo Image Machine Learning Dataset</a>. v1. CSIRO. Data Collection. 2025.
 
 * Data downloadable via via https from the CSIRO Portal (<a href="https://data.csiro.au/collection/64913">download link</a>)
 * License: CC BY-NC-SA 4.0
@@ -167,8 +167,7 @@ Scoulding, Ben; Maguire, Kylie; Orenstein, Eric; Jackett, Chris; & CSIRO (2025):
 
 ~1k images of fish/squid w/bounding boxes
   
-Simon, K. (2018). Project Natick - Microsoft's Self-sufficient Underwater Datacenters. IndraStra Global, 4(6), 1-4.
-https://nbn-resolving.org/urn:nbn:de:0168-ssoar-57615-2
+Simon K. <a href="https://nbn-resolving.org/urn:nbn:de:0168-ssoar-57615-2">ProjectNatick - Microsoft's Self-sufficient Underwater Datacenters</a>. IndraStra Global, 4(6), 1-4. 2018.
 
 * Data downloadable via via https from GitHub (<a href="https://github.com/Microsoft/Project_Natick_Analysis/releases/tag/annotated_data">download link</a>)
 * Metadata raw format: Pascal VOC
@@ -186,7 +185,7 @@ https://nbn-resolving.org/urn:nbn:de:0168-ssoar-57615-2
 
 ~1k images of fish w/bounding boxes
   
-Solawetz, J. (2023, February 21). Fish object detection dataset. Roboflow. https://public.roboflow.com/object-detection/fish 
+Solawetz J Fish object detection dataset. Roboflow. 2023. 
 
 * Data downloadable via via https from Roboflow (<a href="https://public.roboflow.com/object-detection/fish/1">download link</a>)
 * License: CC0 1.0 DEED
@@ -223,7 +222,7 @@ Saleh A, Laradji IH, Konovalov DA, Bradley M, Vazquez D, Sheaves M. A realistic 
 
 Bboxed images of pelagic fish and associated segmentations
   
-Vaneeda Allken, Shale Rosen (2020) Deep Vision fish dataset https://doi.org/10.21335/NMDC-551736490
+Allken V, Rosen S. <a href="https://doi.org/10.21335/NMDC-551736490">Deep Vision fish dataset</a>. 2020.
 
 * Data downloadable via via https from the Norwegian Marine Data Centre (<a href="https://metadata.nmdc.no/metadata-api/landingpage/01d102345aef4639f063a13ea20cd3f3">download link</a>)
 * License: CC BY 4.0
@@ -242,7 +241,7 @@ Vaneeda Allken, Shale Rosen (2020) Deep Vision fish dataset https://doi.org/10.2
 
 ~90 videos with bounding boxes on fish.  Largely redundant with BrackishMOT (see above).
   
-Detection of Marine Animals in a New Underwater Dataset with Varying Visibility, Pedersen, Malte and Haurum, Joakim Bruslund and Gade, Rikke and Moeslund, Thomas B. and Madsen, Niels, June, 2019
+Pedersen M, Haurum JB, Gade R, Moeslund TB, Madsen N.  Detection of Marine Animals in a New Underwater Dataset with Varying Visibility. 2019.
 
 * Data downloadable via via https from Kaggle (<a href="https://www.kaggle.com/datasets/aalborguniversity/brackish-dataset">download link</a>)
 * License: CC BY-SA 4.0
@@ -261,9 +260,9 @@ Detection of Marine Animals in a New Underwater Dataset with Varying Visibility,
 
 17 10-minute videos with tracking points
   
-I. Kavasidis, S. Palazzo, R. Di Salvo, D. Giordano, C. Spampinato, An innovative web-based collaborative platform for video annotation, Multimedia Tools and Applications, vol. 70, pp. 413-432, 2013.
+Kavasidis I, Palazzo S, Di Salvo R, Giordano D, Spampinato C. An innovative web-based collaborative platform for video annotation, Multimedia Tools and Applications. 2013.
 
-I. Kavasidis, S. Palazzo, R. Di Salvo, D. Giordano, C. Spampinato, A semi-automatic tool for detection and tracking ground truth generation in videos, Proceedings of the 1st International Workshop on Visual Interfaces for Ground Truth Collection in Computer Vision Applications, pp. 6:1-6:5, 2012.
+Kavasidis I, Palazzo S, Di Salvo R, Giordano D, Spampinato C. A semi-automatic tool for detection and tracking ground truth generation in videos. Proceedings of the 1st International Workshop on Visual Interfaces for Ground Truth Collection in Computer Vision Applications. 2012.
 
 * Data downloadable via https from GitHub (<a href="https://github.com/perceivelab/f4k-detection-and-tracking">download link</a>)
 * Metadata raw format: XML, FLV
@@ -281,7 +280,7 @@ I. Kavasidis, S. Palazzo, R. Di Salvo, D. Giordano, C. Spampinato, A semi-automa
 
 14k boxes on fish in 20k images
   
-Joly A., Goeau H., Glotin H., Spampinato C., Bonnet P., Vellinga W.-P., Planquè R., Rauber A., Palazzo S., Fisher R., and others}, LifeCLEF 2015: multimedia life species identification challenges, International Conference of the Cross-Language Evaluation Forum for European Languages, pp. 462-483, Springer, 2015.
+Joly A, Goeau H, Glotin H, Spampinato C, Bonnet P, Vellinga W-P, Planquè R, Rauber A, Palazzo S, Fisher R.  LifeCLEF 2015: multimedia life species identification challenges, International Conference of the Cross-Language Evaluation Forum for European Languages. 2015.
 
 * Data downloadable via https from Zenodo (<a href="https://zenodo.org/records/15202605/files/fishclef_2015_release.zip?download=1">download link</a>). Note, the dataset was [originally hosted on SharePoint](https://github.com/perceivelab/FishCLEF-2015). We uploaded it to Zenodo to make it downloadable programmatically.
 * Metadata raw format: XML
@@ -314,7 +313,7 @@ Several thousand BRUV images with bounding boxes on fish and bait
 
 ~44k images of fish w/ ~83kbounding boxes
   
-Jansen, A., Walden, D., Walker, S., & Buccella, C. (2022). A deep learning dataset for underwater object detection of tropical freshwater fish species in northern Australia (1.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.7250921
+Jansen A, Walden D, Walker S, Buccella C.  <a href="https://doi.org/10.5281/zenodo.7250921">A deep learning dataset for underwater object detection of tropical freshwater fish species in northern Australia</a> (dataset).  2022.
 
 * Data downloadable via https from zenodo (<a href="https://zenodo.org/records/7250921#.ZEAmZezMJqs">download link</a>)
 * License: CC BY 4.0 LEGAL CODE
@@ -333,7 +332,7 @@ Jansen, A., Walden, D., Walker, S., & Buccella, C. (2022). A deep learning datas
 
 2200 images of zebrafish with individual IDs
   
-Bruslund Haurum J, Karpova A, Pedersen M, Hein Bengtson S, Moeslund TB. Re-identification of zebrafish using metric learning. InProceedings of the IEEE/CVF winter conference on applications of computer vision workshops 2020 (pp. 1-11).
+Bruslund HJ, Karpova A, Pedersen M, Hein BS, Moeslund TB. Re-identification of zebrafish using metric learning. InProceedings of the IEEE/CVF winter conference on applications of computer vision workshops. 2020.
 
 * Data downloadable via https from Kaggle (<a href="https://www.kaggle.com/datasets/aalborguniversity/aau-zebrafish-reid">download link</a>)
 * License: CC BY 4.0 DEED
@@ -352,7 +351,7 @@ Bruslund Haurum J, Karpova A, Pedersen M, Hein Bengtson S, Moeslund TB. Re-ident
 
 586 annotated underwater images of Orange Chromide (Etroplus maculatus) fish in South Indian pond environments with 10,607 bounding boxes
 
-Vijayalakshmi M, Sasithradevi A (2024). Annotated underwater fish detection dataset from pond environments. Mendeley Data, V1. https://doi.org/10.17632/7w45jx35hd.1
+Vijayalakshmi M, Sasithradevi A.  <a href="https://doi.org/10.17632/7w45jx35hd.1">Annotated underwater fish detection dataset from pond environments</a>. 2024
 
 * Data downloadable via https from Mendeley Data (<a href="https://data.mendeley.com/datasets/7w45jx35hd/1">download link</a>)
 * License: CC BY 4.0
@@ -369,7 +368,7 @@ Vijayalakshmi M, Sasithradevi A (2024). Annotated underwater fish detection data
 
 #### FathomNet Database
 
-Katija, K., Orenstein, E., Schlining, B. _et al._ FathomNet: A global image database for enabling artificial intelligence in the ocean. Sci Rep 12, 15914 (2022). [https://doi.org/10.1038/s41598-022-19939-2](https://doi.org/10.1038/s41598-022-19939-2)
+Katija K, Orenstein E, Schlining B, et al. <a href="https://doi.org/10.1038/s41598-022-19939-2">FathomNet: A global image database for enabling artificial intelligence in the ocean</a>. Sci Rep 12, 15914 (2022).
 
 The FathomNet Database is an open-source image database that can be used to train, test, and validate state-of-the-art artificial intelligence algorithms to help us understand our ocean and its inhabitants. 
 
@@ -403,7 +402,7 @@ Two merged Roboflow datasets with bounding boxes on fish, sharks, rays, turtles 
 
 Boxes on 532,000 frames from 1,567 videos of salmon in two weirs
   
-JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, Nam, Brandon, Ma, Xiaoqiang, Cleveland, Mark, Doire, Janvier, Moore, Jonathan, Shea, Ryan, Liu, Jiangchuan, 2023/09/20, Wild salmon enumeration and monitoring using deep learning empowered detection and tracking, 10, 10.3389/fmars.2023.1200408, Frontiers in Marine Science
+Atlas WI, Ma S, Chou YC, Connors K, Scurfield D, Nam B, Ma X, Cleveland M, Doire J, Moore JW, Shea R. Wild salmon enumeration and monitoring using deep learning empowered detection and tracking. Frontiers in Marine Science. 2023 Sep 20.
 
 * Data downloadable via https from GitHub (<a href="https://github.com/Salmon-Computer-Vision/salmon-computer-vision">download link</a>)
 * License: CC BY 4.0 
@@ -460,4 +459,6 @@ Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 
 * <a href="https://ouvert.canada.ca/data/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70">Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)</a> (~24k images of marine fish in Canada, with ~24k boxes)
 * <a href="https://zenodo.org/records/17432128">PomerFish: A dataset for fishes across Pomerania freshwater waterbodies in-situ environments</a> ([paper](https://www.nature.com/articles/s41597-025-06393-8)) (~20k segmentation masks on ~15k images)
-* <a href="https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html">J-EDI: AI training dataset for detecting organisms from images taken during deep-sea survey. The detection targets are labeled into 19 rough categories such as "shrimp" and "fish" (~8,000 images, COCO annotation)
+* <a href="https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html">J-EDI</a> (~8k images with 19 deep-sea animal categories)
+* <a href="https://zenodo.org/records/14888328">OBSEA</a> (~35k boxes on ~4k images from a cabled observatory in the Mediterranean)
+* <a href="https://zenodo.org/records/17950781">FjordFish</a> (~6k boxes on ~3k images from a BRUV in the North Atlantic)

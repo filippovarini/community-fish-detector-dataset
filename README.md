@@ -418,17 +418,20 @@ JOUR, Atlas, William, Ma, Sami, Chou, Yi, Connors, Katrina, Scurfield, Daniel, N
 
 #### OBSEA
 
-Underwater images from the OBSEA seafloor observatory, with manual bounding-box annotations on Mediterranean fish taxa from 2013-2014.
+Underwater images from the OBSEA seafloor observatory, with manual bounding-box annotations on Mediterranean fish and fish-like taxa.
 
-* Data downloadable via PANGAEA (<a href="https://doi.org/10.1594/PANGAEA.946149">download link</a>)
-* Image archive: download PANGAEA's bulk ZIP from <a href="https://download.pangaea.de/dataset/946149/allfiles.zip">allfiles.zip</a> and place it in the raw data folder
+* Data downloadable via Zenodo (<a href="https://doi.org/10.5281/zenodo.14888328">download link</a>)
+* Source archive: `obsea_dataset_v4.1.zip` (md5: `7a2012d7a39fb42d155b29fc67d8753f`)
+* Extracted source folder: `obsea_dataset_v4.1`, containing `images/`, `labels/`, and `obsea_dataset.json`
 * License: CC BY 4.0
-* Metadata raw format: PANGAEA tab-delimited table
-* Categories/species: 30 source fish taxa/categories, compressed to one fish category for CFD training
-* Split: temporal train/validation split by held-out months, because PANGAEA does not expose balanced independent camera/deployment groups
+* Metadata raw format: YOLO labels with `obsea_dataset.json` class-count metadata
+* Source note: the random pre-split YOLO package `obsea_split_YOLO.zip` is not used
+* Categories/species: 74 source classes; 9 clear non-fish classes are filtered and the remaining fish/fish-like classes are compressed to one fish category for CFD training
+* Background handling: zero-fish/background images are kept as images with no annotations
+* Split: filename/source-grouped validation holdout using `AIPC608UW_10_167` and `C4k0193`; this is not claimed to be a deployment-independent split
 * Vehicle type: fixed underwater observatory camera
-* Image information: 14,952 images
-* Annotation information: 69,818 bounding boxes after clipping and compression
+* Image information: 4,120 images, including 470 zero-fish/background images kept after filtering
+* Annotation information: 34,728 fish/fish-like bounding boxes after filtering and compression
 * Typical animal size in pixels: N/A
 * Code to render sample annotated image: <a href="./datasets/obsea.py">obsea.py</a>
 

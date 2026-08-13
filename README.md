@@ -460,3 +460,4 @@ Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 * <a href="https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html">J-EDI</a> (~8k images with 19 deep-sea animal categories)
 * <a href="https://zenodo.org/records/14888328">OBSEA</a> (~35k boxes on ~4k images from a cabled observatory in the Mediterranean)
 * <a href="https://zenodo.org/records/17950781">FjordFish</a> (~6k boxes on ~3k images from a BRUV in the North Atlantic)
+* <a href="https://github.com/JosepSanchezCano/SFISHTRACK">SFISHTRACK</a> (~24k frames with segmentation masks)

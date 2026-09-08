@@ -463,4 +463,5 @@ Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 - [OBSEA](https://zenodo.org/records/14888328) (~35k boxes on ~4k images from a cabled observatory in the Mediterranean)
 - [FjordFish](https://zenodo.org/records/17950781) (~6k boxes on ~3k images from a BRUV in the North Atlantic)
 - [SFISHTRACK](https://github.com/JosepSanchezCano/SFISHTRACK) (~24k frames with segmentation masks)
+- [CoralscapesV2](https://josauder.github.io/coralscapesv2/) (~2.4k images with ~66k fish instance masks; Coralscapes v1 is already included in CFD)
 

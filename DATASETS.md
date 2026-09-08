@@ -88,6 +88,13 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
 - **Category filter**: None (single class — fish)
 - **Split**: Random (all images from same pond environment, no location metadata)
 
+### pomerfish
+- **Source**: [Zenodo](https://zenodo.org/records/17432128)
+- **Download**: Automatic (`PomerFish.rar`, 25.1 GB via `unar`)
+- **Annotations**: COCO format (already provided, 1-indexed)
+- **Category filter**: None (all 10 categories are freshwater fish species)
+- **Split**: By video/deployment ID (extracted from `dataset_<id>_frame_<n>.PNG` filename pattern, 27 unique IDs)
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

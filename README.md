@@ -417,7 +417,30 @@ Atlas WI, Ma S, Chou YC, Connors K, Scurfield D, Nam B, Ma X, Cleveland M, Doire
 <img src="./previews/salmon_computer_vision_sample_image.jpg" width=700>
 
 
+<<<<<<< Updated upstream
 ### Datasets that were added after the most recent CFD training
+=======
+#### PomerFish
+
+Underwater video surveillance of freshwater fish species collected 2015–2024 in Pomeranian rivers using GoPro Hero 5 cameras.
+
+Shi, X., Tanwari, K. A., Krepski, T., Shi, Z., & Czerniawski, R. (2025). PomerFish: A dataset for fishes across Pomerania freshwater waterbodies in-situ environments. Zenodo. https://doi.org/10.5281/zenodo.17432128
+
+* Data downloadable via HTTPS from Zenodo (<a href="https://zenodo.org/records/17432128/files/PomerFish.rar?download=1">download link</a>)
+* License: CC-BY-4.0
+* Metadata raw format: COCO JSON
+* Categories/species: Perca fluviatilis, Thymallus thymallus, Salmo trutta (male/female), Salmoninae (Juvenile), Salmo trutta morpha fario (Adult/juvenile), Rutilus rutilus, Oncorhynchus mykiss, Leuciscus idus
+* Vehicle type: GoPro Hero 5 (in-situ freshwater)
+* Image information: 14,989 images
+* Annotation information: 21,267 bounding boxes
+* Typical animal size in pixels: N/A
+* Code to render sample annotated image: <a href="./datasets/pomerfish.py">pomerfish.py</a>
+
+<img src="./previews/pomerfish_sample_image.png" width=700>
+
+
+### Skipped datasets
+>>>>>>> Stashed changes
 
 #### OBSEA
 

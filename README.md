@@ -458,6 +458,7 @@ Boxes on fish and other objects in images from the OBSEA seafloor observatory in
 
 Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 
+- [WIO-ReefFish](https://zenodo.org/records/21360120) (~6.8k boxes on 1k images with 24k labeled fish taxa from the Indian Ocean)
 - [Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)](https://ouvert.canada.ca/data/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70) (~24k images of marine fish in Canada, with ~24k boxes)
 - [J-EDI](https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html) (~8k images with 19 deep-sea animal categories)
 - [OBSEA](https://zenodo.org/records/14888328) (~35k boxes on ~4k images from a cabled observatory in the Mediterranean)

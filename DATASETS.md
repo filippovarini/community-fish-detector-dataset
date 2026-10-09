@@ -115,12 +115,14 @@ These datasets require manual download or have special dependencies.
 - **Split**: By date (2019-07-13/14/15 train, 2019-07-16/17 val, ~19% val ratio)
 
 ### f4k
-- **Source**: [UniCT OneDrive](https://studentiunict-my.sharepoint.com/...)
-- **Download**: Manual - download zip and place in `data/raw/f4k/`
-- **Annotations**: XML contour annotations -> bounding boxes, frames extracted from .mp4 videos
-- **Category filter**: `fish`
+- **Source**: [UniCT OneDrive](https://bit.ly/f4k-detection-tracking)
+- **Download**: Manual - download `f4k_detection_tracking.zip` and place in `data/raw/f4k/`
+- **Annotations**: XML contour annotations -> bounding boxes, keyframes extracted from `gt_<video_id>.flv` videos with OpenCV
+- **Category mapping**:
+  - fish: `fish`
+  - non-fish: none
+  - discard: `open_sea`, `sea`, `rocks`, `coral`, `plant`, `dark_area`, `other`, `algae` (background regions, one polygon per scene)
 - **Split**: By video ID (106-109 val, 110-124 train)
-- **Special**: Requires `ffmpeg` for video frame extraction
 
 ### kakadu
 - **Source**: Manual download

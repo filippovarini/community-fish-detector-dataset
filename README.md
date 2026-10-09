@@ -295,7 +295,10 @@ Kavasidis I, Palazzo S, Di Salvo R, Giordano D, Spampinato C. A semi-automatic t
 
 - Data downloadable via https from GitHub ([download link](https://github.com/perceivelab/f4k-detection-and-tracking))
 - Metadata raw format: XML, FLV
-- Categories/species: N/A
+- Categories/species: fish, plus background regions (open sea, sea, rocks, coral, plant, dark area, algae, other)
+  - fish: `fish`
+  - non-fish: none
+  - discarded: `open_sea`, `sea`, `rocks`, `coral`, `plant`, `dark_area`, `other`, `algae`
 - Vehicle type: N/A
 - Image information: N/A
 - Annotation information: N/A

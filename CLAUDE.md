@@ -1,6 +1,6 @@
 # Community Fish Detector Dataset
 
-Dataset compilation pipeline for the [community-fish-detector](https://github.com/WildHackers/community-fish-detector) — a model that detects a single label ("fish") in underwater images. This repo aggregates multiple publicly available datasets into a unified COCO-format dataset.
+Dataset compilation pipeline for the [community-fish-detector](https://github.com/WildHackers/community-fish-detector) — a model that detects fish (and other marine animals, as "non-fish") in underwater images. This repo aggregates multiple publicly available datasets into a unified COCO-format dataset.
 
 ## Project Structure
 
@@ -13,7 +13,7 @@ datasets/                          # Unified dataset processing pipeline
     __init__.py                   # Re-exports all utilities
     download.py                   # download_file, extract_downloaded_file, download_and_extract
     visualization.py              # visualize_supervision_dataset, save_preview_image
-    coco.py                       # compress_annotations_to_single_category, convert_0_to_1_indexed
+    coco.py                       # map_annotations_to_fish_and_non_fish, convert_0_to_1_indexed
     images.py                     # add_dataset_shortname_prefix, remove_prefix, copy_images_to_processing
     split.py                      # split_coco_dataset_into_train_validation, get_train_images_with_random_splitting
   <dataset>.py                    # Per-dataset unified script (download + process + preview + split)
@@ -27,11 +27,21 @@ DATASETS.md                        # Per-dataset processing details
 Each `datasets/<dataset>.py` script follows a single unified 4-step pattern:
 
 1. **Download** — downloads/extracts the raw dataset
-2. **Process** — converts annotations to COCO format, compresses categories to single "fish" category (id=1), prefixes image filenames with dataset shortname
+2. **Process** — converts annotations to COCO format, maps every source category to "fish" (id=1) or "non-fish" (id=2) or discards it, prefixes image filenames with dataset shortname
 3. **Preview** — saves a sample annotated image to `previews/`
 4. **Split** — splits into train/val by location/source identifier when possible
 
-Final output: COCO-format datasets with one category ("fish"), merged via `datasets/merge_all_datasets.py`.
+Final output: COCO-format datasets with two categories ("fish", "non-fish"), merged via `datasets/merge_all_datasets.py`.
+
+## Class Definitions
+
+- **fish** (id=1): any cartilaginous, ray-finned, or bony fish — e.g. sharks, rays, tunas, groupers, eels, seahorses.
+- **non-fish** (id=2): any marine animal bigger than ~3 cm that is not a fish — e.g. turtles, dolphins, whales, manatees, seals, crabs, shrimp, octopus, squid, jellyfish, starfish, urchins.
+- **discard**: everything else — corals, algae, plants, rocks, debris, humans/divers, equipment, bait, animals smaller than ~3 cm.
+
+Watch for misleading names: jellyfish, starfish, cuttlefish, crayfish are non-fish; dolphins, whales, manatees are non-fish despite being fish-shaped.
+
+When adding a dataset, list ALL source classes and assign each one to fish / non-fish / discard. Inspect sample images for generic classes ("animal", "unknown", "other") before deciding. Record the mapping in the script and in DATASETS.md.
 
 ## Key Settings
 
@@ -55,12 +65,13 @@ Key libraries: supervision, opencv-python, pandas, numpy, fathomnet, kagglehub, 
 
 ### Adding a New Dataset
 1. Create `datasets/<name>.py` following the 4-step pattern (download, process, preview, split)
-2. Define `DATASET_SHORTNAME`, `CATEGORIES_FILTER`, `download_data()`, and `main()`
+2. Define `DATASET_SHORTNAME`, `CATEGORIES_FILTER` (mapping of every source class to fish / non-fish; unlisted classes are discarded), `download_data()`, and `main()`
 3. Use shared utilities from `datasets/utils/`
 4. Document the dataset in `DATASETS.md`
 
 ### Conventions
 - Each dataset script defines `DATASET_SHORTNAME` and `CATEGORIES_FILTER` at module level
+- Every source class must be explicitly assigned to fish, non-fish, or discard (see Class Definitions)
 - All scripts use shared utilities from `datasets/utils/`
 - COCO annotations must be 1-indexed
 - Image filenames are prefixed with dataset shortname to avoid collisions when merging

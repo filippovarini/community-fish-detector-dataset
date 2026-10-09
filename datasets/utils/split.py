@@ -102,10 +102,11 @@ def split_coco_dataset_into_train_validation(
 
     # Split annotations based on image IDs
     for annotation in coco_data.get("annotations", []):
-        # Ensure all annotations have already been filtered to only include the fish category
+        # Ensure all annotations have already been mapped to fish / non-fish
+        valid_category_ids = Settings.category_name_to_id.values()
         assert (
-            annotation["category_id"] == Settings.coco_category_id
-        ), f"Annotation category_id is {annotation['category_id']} not {Settings.coco_category_id}"
+            annotation["category_id"] in valid_category_ids
+        ), f"Annotation category_id is {annotation['category_id']}, not one of {list(valid_category_ids)}"
 
         image_id = annotation["image_id"]
 

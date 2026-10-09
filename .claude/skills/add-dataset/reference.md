@@ -19,12 +19,16 @@ Convenience function: downloads to `data_dir/<shortname>.<ext>` then extracts to
 
 ## COCO Utilities (`datasets.utils.coco`)
 
-### `compress_annotations_to_single_category(annotations_path: Path, categories_filter: Optional[List[str]], output_path: Path) -> Path`
-Compresses all annotations to single "fish" category (id=1).
-- If `categories_filter` is a list of strings, only annotations whose category name is in the list are kept.
-- If `categories_filter` is `None`, ALL annotations are kept (all categories assumed to be fish).
+### `map_annotations_to_fish_and_non_fish(annotations_path: Path, categories_mapping: Dict[str, str], output_path: Path) -> Path`
+Maps every source category to `fish` (id=1) or `non-fish` (id=2).
+- `categories_mapping` is `{source category name: "fish" | "non-fish"}` — pass the script's `CATEGORIES_FILTER`.
+- Annotations whose category is not in the mapping are discarded.
+- Prints per-source-category counts with their target, and warns about mapping keys absent from the source.
+- Looks up categories by id, so source ids need not match list indices (but must be 1-indexed).
 - Writes result to `output_path`. Returns `output_path`.
-- **Important**: Assumes category IDs are 1-indexed and match list indices (category_id - 1 = index in categories list).
+
+### `compress_annotations_to_single_category(...)` (deprecated)
+Legacy helper that maps a list of categories (or all, if `None`) to `fish` only. Do not use in new scripts.
 
 ### `convert_coco_annotations_from_0_indexed_to_1_indexed(input_path: Path, output_path: Path) -> Path`
 Increments all category IDs and annotation category_ids by 1. Use when source dataset uses 0-indexed categories.
@@ -69,8 +73,10 @@ settings.preview_dir       # <repo>/previews/
 
 settings.images_folder_name    # "JPEGImages"
 settings.coco_file_name        # "annotations_coco.json"
-settings.coco_category_id      # 1
-settings.coco_categories       # [{"id": 1, "name": "fish"}]
+settings.fish_category_id      # 1
+settings.non_fish_category_id  # 2
+settings.coco_categories       # [{"id": 1, "name": "fish"}, {"id": 2, "name": "non-fish"}]
+settings.category_name_to_id   # {"fish": 1, "non-fish": 2}
 
 settings.train_dataset_suffix  # "_train"
 settings.val_dataset_suffix    # "_val"

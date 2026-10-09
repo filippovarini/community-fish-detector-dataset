@@ -321,7 +321,7 @@ def convert_obsea_to_coco(
                 {
                     "id": annotation_id,
                     "image_id": image_id_by_stem[image_stem],
-                    "category_id": Settings.coco_category_id,
+                    "category_id": Settings.fish_category_id,
                     "bbox": bbox,
                     "area": bbox[2] * bbox[3],
                     "iscrowd": 0,

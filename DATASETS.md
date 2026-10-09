@@ -49,9 +49,12 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
 ### noaa_puget
 - **Source**: [LILA](https://storage.googleapis.com/public-datasets-lila/noaa-psnf/)
 - **Download**: Automatic (separate image and annotation downloads)
-- **Annotations**: COCO format (annotations cleaned to remove empty bboxes)
-- **Category filter**: `fish`
-- **Split**: By camera (third token of filename)
+- **Annotations**: COCO format (images containing `fish_or_crab` / `unknown` boxes are dropped entirely)
+- **Category mapping**:
+  - fish: `fish`
+  - non-fish: `crab`
+  - discard: `empty` (no-animal marker, no bbox), `fish_or_crab`, `unknown`
+- **Split**: By camera (`SDxx` camera ID, first token of filename)
 
 ### project_natick
 - **Source**: [GitHub](https://github.com/microsoft/Project_Natick_Analysis/releases/download/annotated_data/data_release.zip)

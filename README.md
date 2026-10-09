@@ -119,6 +119,9 @@ Farrell DM, Ferriss B, Sanderson B, Veggerby K, Robinson L, Trivedi A, Pathak S,
 - License: CDLA-permissive 1.0
 - Metadata raw format: COCO
 - Categories/species: fish and crustaceans
+  - fish: `fish`
+  - non-fish: `crab`
+  - discarded: `empty`, `fish_or_crab`, `unknown` (images with `fish_or_crab` / `unknown` boxes are dropped entirely)
 - Vehicle type: N/A
 - Image information: 77,739 images
 - Annotation information: 67,990 bounding boxes

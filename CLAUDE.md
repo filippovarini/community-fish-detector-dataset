@@ -13,7 +13,7 @@ datasets/                          # Unified dataset processing pipeline
     __init__.py                   # Re-exports all utilities
     download.py                   # download_file, extract_downloaded_file, download_and_extract
     visualization.py              # visualize_supervision_dataset, save_preview_image
-    coco.py                       # compress_annotations_to_single_category, convert_0_to_1_indexed
+    coco.py                       # map_annotations_to_fish_and_non_fish, convert_0_to_1_indexed
     images.py                     # add_dataset_shortname_prefix, remove_prefix, copy_images_to_processing
     split.py                      # split_coco_dataset_into_train_validation, get_train_images_with_random_splitting
   <dataset>.py                    # Per-dataset unified script (download + process + preview + split)

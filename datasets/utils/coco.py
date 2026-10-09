@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
-from typing import List, Optional
+from collections import Counter
+from typing import Dict, List, Optional
 
 from datasets.settings import Settings
 
@@ -13,6 +14,9 @@ def compress_annotations_to_single_category(
     For the ones that are kept, it renames all categories to a single category, fish.
 
     NOTE: If categories_filter is None, all annotations are kept.
+
+    DEPRECATED: kept only for scripts not yet migrated to
+    map_annotations_to_fish_and_non_fish, which also keeps non-fish annotations.
     """
     # Check if new annotation file already exists
     if output_path.exists():
@@ -44,7 +48,7 @@ def compress_annotations_to_single_category(
         ), f"Annotation category_id is {annotation['category_id']} not {annotation_category['id']}"
 
         if not categories_filter or annotation_category["name"] in categories_filter:
-            annotation["category_id"] = Settings.coco_category_id
+            annotation["category_id"] = Settings.fish_category_id
             new_annotations.append(annotation)
 
     # Print the number of annotations before and after compression
@@ -58,6 +62,61 @@ def compress_annotations_to_single_category(
     coco_data["annotations"] = new_annotations
 
     # Store the new annotation file
+    with open(output_path, "w") as f:
+        json.dump(coco_data, f, indent=2)
+
+    return output_path
+
+
+def map_annotations_to_fish_and_non_fish(
+    annotations_path: Path, categories_mapping: Dict[str, str], output_path: Path
+):
+    """
+    Maps every source category to "fish" or "non-fish" according to categories_mapping
+    ({source category name: "fish" | "non-fish"}). Annotations whose category is not
+    in categories_mapping are discarded.
+    """
+    if output_path.exists():
+        print(f"New annotation file already exists at {output_path}")
+        return output_path
+
+    invalid_targets = set(categories_mapping.values()) - set(Settings.category_name_to_id)
+    assert not invalid_targets, f"Invalid target categories: {invalid_targets}"
+
+    with open(annotations_path, "r") as f:
+        coco_data = json.load(f)
+
+    source_category_names = {c["id"]: c["name"] for c in coco_data["categories"]}
+    missing = set(categories_mapping) - set(source_category_names.values())
+    if missing:
+        print(f"WARNING: categories in mapping but not in source: {sorted(missing)}")
+
+    new_annotations = []
+    source_counts = Counter()
+    for annotation in coco_data["annotations"]:
+        source_name = source_category_names[annotation["category_id"]]
+        source_counts[source_name] += 1
+        target_name = categories_mapping.get(source_name)
+        if target_name is not None:
+            annotation["category_id"] = Settings.category_name_to_id[target_name]
+            new_annotations.append(annotation)
+
+    print("Category mapping (source -> target: count):")
+    for source_name, count in source_counts.most_common():
+        target_name = categories_mapping.get(source_name, "discard")
+        print(f"  {source_name} -> {target_name}: {count}")
+    target_counts = Counter()
+    for source_name, count in source_counts.items():
+        if source_name in categories_mapping:
+            target_counts[categories_mapping[source_name]] += count
+    print(
+        f"Kept {len(new_annotations)} of {len(coco_data['annotations'])} annotations: "
+        f"{dict(target_counts)}"
+    )
+
+    coco_data["categories"] = Settings.coco_categories
+    coco_data["annotations"] = new_annotations
+
     with open(output_path, "w") as f:
         json.dump(coco_data, f, indent=2)
 

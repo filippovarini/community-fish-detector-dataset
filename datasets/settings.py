@@ -14,9 +14,14 @@ class Settings:
     val_dataset_suffix: str = "_val"
     images_folder_name: str = "JPEGImages"
 
-    # We only use one category for the fish
-    coco_category_id: int = 1
-    coco_categories = [{"id": coco_category_id, "name": "fish"}]
+    # Every source category is mapped to "fish", "non-fish", or discarded
+    fish_category_id: int = 1
+    non_fish_category_id: int = 2
+    coco_categories = [
+        {"id": fish_category_id, "name": "fish"},
+        {"id": non_fish_category_id, "name": "non-fish"},
+    ]
+    category_name_to_id = {c["name"]: c["id"] for c in coco_categories}
     coco_file_name: str = "annotations_coco.json"
 
     # AI

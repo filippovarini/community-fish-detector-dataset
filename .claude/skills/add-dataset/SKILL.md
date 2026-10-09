@@ -191,7 +191,7 @@ def main():
     processing_dir = settings.intermediate_dir / DATASET_SHORTNAME
     processing_dir.mkdir(parents=True, exist_ok=True)
     # ... convert to COCO if needed
-    # ... compress_annotations_to_single_category() (see "Category mapping" rule below)
+    # ... map_annotations_to_fish_and_non_fish(annotations_path, CATEGORIES_FILTER, mapped_annotations_path)
     # ... add_dataset_shortname_prefix_to_image_names()
 
     # 3. PREVIEW
@@ -210,7 +210,7 @@ if __name__ == "__main__":
 
 - **1-indexed COCO annotations**: Category IDs start at 1, not 0. Use `convert_coco_annotations_from_0_indexed_to_1_indexed` if the source is 0-indexed.
 - **Prefix image filenames** with `DATASET_SHORTNAME` using `add_dataset_shortname_prefix_to_image_names` — this prevents filename collisions when datasets are merged.
-- **Category mapping**: Output categories are `{"id": 1, "name": "fish"}` and `{"id": 2, "name": "non-fish"}`. Every source category must appear in `CATEGORIES_FILTER` mapped to `"fish"` or `"non-fish"`; unlisted categories are discarded. Note: `compress_annotations_to_single_category` currently only emits the `fish` category — until the shared utilities support `non-fish`, pass it the fish keys (`[name for name, cls in CATEGORIES_FILTER.items() if cls == "fish"]`) and tell the user that `non-fish` annotations are dropped for now.
+- **Category mapping**: Output categories are `{"id": 1, "name": "fish"}` and `{"id": 2, "name": "non-fish"}`. Every source category must appear in `CATEGORIES_FILTER` mapped to `"fish"` or `"non-fish"`; unlisted categories are discarded. Use `map_annotations_to_fish_and_non_fish` with `CATEGORIES_FILTER` to apply the mapping.
 - **COCO bbox format**: `[x, y, width, height]` (top-left corner + dimensions). Convert from `[xmin, ymin, xmax, ymax]` if needed.
 - **Idempotent guards**: Add `if path.exists(): return` checks to avoid re-downloading or re-processing on rerun.
 - **Manual download fallback**: If the dataset requires login or term acceptance, have `download_data()` check if files already exist and print instructions if not.

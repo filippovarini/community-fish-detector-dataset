@@ -1,13 +1,16 @@
 """
 F4K (Fish4Knowledge) Detection/Tracking Dataset
-Source: https://studentiunict-my.sharepoint.com/...
+Source: https://bit.ly/f4k-detection-tracking
 Split logic: By video ID (106-109 val, 110-124 train)
-Categories kept: fish
+Category mapping:
+  fish: fish
+  non-fish: none
+  discard: open_sea, sea, rocks, coral, plant, dark_area, other, algae
+    (background regions, one polygon per scene)
 
-Manual download required: download the zip file from the source URL
-and place it in fish-datasets/data/raw/f4k/
-
-NOTE: This script requires ffmpeg for video frame extraction.
+Manual download required: download f4k_detection_tracking.zip from the source URL
+and place it in data/raw/f4k/. The zip contains flat gt_<video_id>.flv videos and
+gt_<video_id>.xml labels; keyframes are read from the .flv files with OpenCV.
 """
 
 import json
@@ -23,7 +26,7 @@ from datasets.settings import Settings
 from datasets.utils import (
     extract_downloaded_file,
     split_coco_dataset_into_train_validation,
-    compress_annotations_to_single_category,
+    map_annotations_to_fish_and_non_fish,
     convert_coco_annotations_from_0_indexed_to_1_indexed,
     copy_images_to_processing,
     add_dataset_shortname_prefix_to_image_names,
@@ -32,13 +35,13 @@ from datasets.utils import (
 
 
 DATASET_SHORTNAME = "f4k"
-CATEGORIES_FILTER = ["fish"]
+CATEGORIES_FILTER = {"fish": "fish"}
 
 settings = Settings()
 
 processing_dir = settings.intermediate_dir / DATASET_SHORTNAME
 annotations_path = processing_dir / "annotations.json"
-compressed_annotations_path = processing_dir / "annotations_coco_compressed.json"
+mapped_annotations_path = processing_dir / "annotations_coco_mapped.json"
 images_path = processing_dir / "JPEGImages"
 
 raw_data_dir = settings.raw_dir / DATASET_SHORTNAME / "f4k_detection_tracking"
@@ -46,11 +49,11 @@ input_images_dir = settings.raw_dir / DATASET_SHORTNAME / "coco"
 
 
 def find_all_videos(path):
-    """Find all video files in the given path."""
+    """Find all video IDs (gt_<video_id>.flv) in the given path."""
     videos = []
     for filename in os.listdir(path):
-        if filename.endswith(".mp4"):
-            videos.append(filename.removesuffix(".mp4"))
+        if filename.startswith("gt_") and filename.endswith(".flv"):
+            videos.append(filename.removeprefix("gt_").removesuffix(".flv"))
     return videos
 
 
@@ -138,13 +141,11 @@ def extract_data():
     """Extract the zip file and process videos into frames with COCO annotations."""
     zip_path = settings.raw_dir / DATASET_SHORTNAME / "f4k_detection_tracking.zip"
     if zip_path.exists():
-        extract_downloaded_file(zip_path, settings.raw_dir / DATASET_SHORTNAME)
+        extract_downloaded_file(zip_path, raw_data_dir)
 
     output_dir = input_images_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    videos_dir = raw_data_dir / "videos"
-    labels_dir = raw_data_dir / "labels"
     category_id_map = get_all_categories()
 
     all_coco = {
@@ -154,10 +155,10 @@ def extract_data():
     }
     annotation_id = 1
 
-    video_names = find_all_videos(str(videos_dir))
+    video_names = find_all_videos(str(raw_data_dir))
     for video_name in tqdm(video_names, desc="Processing videos"):
-        video_path = videos_dir / f"{video_name}.mp4"
-        label_path = labels_dir / f"{video_name}.xml"
+        video_path = raw_data_dir / f"gt_{video_name}.flv"
+        label_path = raw_data_dir / f"gt_{video_name}.xml"
 
         if not label_path.exists():
             print(f"Label file not found: {label_path}")
@@ -191,12 +192,12 @@ def processing():
     corrected_annotations_path = processing_dir / "corrected_annotations.json"
     convert_coco_annotations_from_0_indexed_to_1_indexed(annotations_path, corrected_annotations_path)
 
-    compress_annotations_to_single_category(
-        corrected_annotations_path, CATEGORIES_FILTER, compressed_annotations_path
+    map_annotations_to_fish_and_non_fish(
+        corrected_annotations_path, CATEGORIES_FILTER, mapped_annotations_path
     )
 
     add_dataset_shortname_prefix_to_image_names(
-        images_path, compressed_annotations_path, DATASET_SHORTNAME
+        images_path, mapped_annotations_path, DATASET_SHORTNAME
     )
 
 
@@ -217,7 +218,7 @@ def dataset_splitting():
 
     split_coco_dataset_into_train_validation(
         images_path,
-        compressed_annotations_path,
+        mapped_annotations_path,
         train_dataset_path,
         val_dataset_path,
         should_the_image_be_included_in_train_set,
@@ -233,7 +234,7 @@ def main():
     processing()
 
     # 3. PREVIEW
-    save_preview_image(images_path, compressed_annotations_path, DATASET_SHORTNAME)
+    save_preview_image(images_path, mapped_annotations_path, DATASET_SHORTNAME)
 
     # 4. SPLIT
     dataset_splitting()

@@ -46,7 +46,7 @@ Choose a short, lowercase, underscore-separated identifier (e.g., `deep_vision`,
 
 Based on what you know so far, STOP and inform the user if any of these clearly apply:
 - The dataset is **above-water only** (on-deck cameras are borderline — ask the user)
-- There are **no fish-related annotations** — fish, sharks, rays, whales, dolphins, eels, and any fish species are accepted. Crabs, turtles, plastic, debris, humans, coral-only, invertebrates are NOT.
+- There are **no fish annotations** — at least one class must be `fish` as defined in [Class definitions](#class-definitions). A dataset that only annotates non-fish animals (e.g. only turtles or crabs) is not eligible.
 - The dataset is **classification-only** (no bounding boxes or segmentation masks)
 
 If eligibility can't be fully determined from the resource page alone (e.g., the category list isn't published), note this and defer the final check to Phase 2 when you can inspect the actual data.
@@ -112,10 +112,21 @@ Now that you have the actual data, resolve anything marked "TBD" from Phase 1:
 - **Whether images are underwater**: sample a few images to confirm
 
 With the full category list now known, finalize the **eligibility check** and **`CATEGORIES_FILTER`**:
-- List ALL categories found in the annotations
-- KEEP fish-looking animals (fish, shark, whale, dolphin, ray, eel, species names)
-- DISCARD non-fish (crab, turtle, coral, starfish, jellyfish, human, debris)
-- If ALL categories are fish-relevant, set `CATEGORIES_FILTER = None`
+- List ALL categories found in the annotations, with their annotation counts
+- Assign EVERY category to `fish`, `non-fish`, or discard, following the [Class definitions](#class-definitions)
+- For species names you don't recognize, look them up rather than guessing from the name
+- For generic/ambiguous categories ("animal", "unknown", "other", "object"), render a few sample crops and inspect them. Assign them only if they are consistently one class; otherwise discard
+- Present the full mapping table (category → fish / non-fish / discard, with counts) to the user and get confirmation before writing the script
+
+### Class definitions
+
+| Output class | id | Definition | Examples |
+|---|---|---|---|
+| `fish` | 1 | Any cartilaginous, ray-finned, or bony fish | sharks, rays, skates, tunas, groupers, eels, salmon, seahorses, any fish species name |
+| `non-fish` | 2 | Any marine animal bigger than ~3 cm that is **not** a fish | turtles, dolphins, whales, seals, manatees, crabs, lobsters, shrimp, octopus, squid, cuttlefish, jellyfish, starfish, sea urchins |
+| discard | — | Everything else | corals, algae, plants, rocks, debris, plastic, humans/divers, equipment, bait, animals smaller than ~3 cm |
+
+Watch for misleading names: jellyfish, starfish, cuttlefish, crayfish are `non-fish`; dolphins, whales, manatees are `non-fish` despite looking like fish.
 
 If anything disqualifies the dataset (no fish annotations, above-water only, classification-only), STOP and inform the user.
 
@@ -143,7 +154,7 @@ Create `datasets/<shortname>.py` following the **exact 4-step pattern** used by 
 <Dataset Name>
 Source: <source URL>
 Split logic: <description of split strategy>
-Categories kept: <which categories are kept>
+Category mapping: <source categories → fish / non-fish; everything else discarded>
 """
 
 import json
@@ -156,7 +167,11 @@ from datasets.utils import (
 )
 
 DATASET_SHORTNAME = "<shortname>"
-CATEGORIES_FILTER = [...]  # or None if all categories are fish
+# Every source category must be listed here explicitly; unlisted categories are discarded.
+CATEGORIES_FILTER = {
+    "<source category>": "fish",
+    "<source category>": "non-fish",
+}
 
 settings = Settings()
 
@@ -176,7 +191,7 @@ def main():
     processing_dir = settings.intermediate_dir / DATASET_SHORTNAME
     processing_dir.mkdir(parents=True, exist_ok=True)
     # ... convert to COCO if needed
-    # ... compress_annotations_to_single_category()
+    # ... compress_annotations_to_single_category() (see "Category mapping" rule below)
     # ... add_dataset_shortname_prefix_to_image_names()
 
     # 3. PREVIEW
@@ -195,7 +210,7 @@ if __name__ == "__main__":
 
 - **1-indexed COCO annotations**: Category IDs start at 1, not 0. Use `convert_coco_annotations_from_0_indexed_to_1_indexed` if the source is 0-indexed.
 - **Prefix image filenames** with `DATASET_SHORTNAME` using `add_dataset_shortname_prefix_to_image_names` — this prevents filename collisions when datasets are merged.
-- **Single "fish" category**: Always compress to a single category using `compress_annotations_to_single_category`.
+- **Category mapping**: Output categories are `{"id": 1, "name": "fish"}` and `{"id": 2, "name": "non-fish"}`. Every source category must appear in `CATEGORIES_FILTER` mapped to `"fish"` or `"non-fish"`; unlisted categories are discarded. Note: `compress_annotations_to_single_category` currently only emits the `fish` category — until the shared utilities support `non-fish`, pass it the fish keys (`[name for name, cls in CATEGORIES_FILTER.items() if cls == "fish"]`) and tell the user that `non-fish` annotations are dropped for now.
 - **COCO bbox format**: `[x, y, width, height]` (top-left corner + dimensions). Convert from `[xmin, ymin, xmax, ymax]` if needed.
 - **Idempotent guards**: Add `if path.exists(): return` checks to avoid re-downloading or re-processing on rerun.
 - **Manual download fallback**: If the dataset requires login or term acceptance, have `download_data()` check if files already exist and print instructions if not.
@@ -204,7 +219,7 @@ if __name__ == "__main__":
 
 | Source Format | Conversion Approach |
 |---|---|
-| COCO JSON | Direct use, just compress categories |
+| COCO JSON | Direct use, just map categories |
 | Pascal VOC XML | `supervision.DetectionDataset.from_pascal_voc()` → export to COCO |
 | YOLO TXT | `supervision.DetectionDataset.from_yolo()` → export to COCO |
 | CSV with bbox columns | Build COCO dict manually (see deep_vision example) |
@@ -270,7 +285,7 @@ Add an entry under "Complete Datasets" (or "Partial Datasets" if manual steps ar
 - **Source**: [<name>](<url>)
 - **Download**: Automatic / Manual - <instructions>
 - **Annotations**: <format> → <conversion if any>
-- **Category filter**: <categories kept or None>
+- **Category mapping**: <source category → fish / non-fish; list discarded categories too>
 - **Split**: By <split strategy> (<details>)
 ```
 
@@ -284,7 +299,7 @@ Present a final summary to the user:
 
 - **Dataset**: shortname, full name, source URL
 - **Script**: `datasets/<shortname>.py`
-- **Categories**: what was kept/filtered
+- **Categories**: full mapping of source categories to fish / non-fish / discard
 - **Split strategy**: what was used and why
 - **Preview**: path to preview image
 - **Docs updated**: README.md, DATASETS.md, merge_all_datasets.py (if applicable)

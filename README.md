@@ -27,8 +27,25 @@ We welcome contributions! If you know of an underwater fish dataset that isn't l
 A dataset must meet the following requirements to be included:
 
 - **Underwater imagery** — images must be captured below the water surface (above-water and aerial fish images are rejected)
-- **Contains fish** — the dataset must include annotations (bounding boxes or segmentation masks) on fish or fish-like organisms
+- **Contains fish** — the dataset must include annotations (bounding boxes or segmentation masks) on fish (see [Class definitions](#class-definitions))
 - **Publicly available** — the data must be downloadable without requiring special access or paid subscriptions
+
+
+
+### Class definitions
+
+Every annotation in the final dataset belongs to one of two categories:
+
+| id | name | Definition | Examples |
+|----|------|------------|----------|
+| 1 | `fish` | Any cartilaginous, ray-finned, or bony fish | sharks, rays, skates, tunas, groupers, eels, salmon, seahorses |
+| 2 | `non-fish` | Any marine animal bigger than ~3 cm that is **not** a fish | turtles, dolphins, whales, seals, manatees, crabs, lobsters, shrimp, octopus, squid, jellyfish, starfish, sea urchins |
+
+Anything that is neither (corals, algae, plants, rocks, debris, divers/humans, equipment, bait, animals smaller than ~3 cm) is discarded.
+
+Note that some animals with "fish" in their name are **not** fish (jellyfish, starfish, cuttlefish, crayfish → `non-fish`), and some fish-shaped animals are **not** fish (dolphins, whales, manatees → `non-fish`).
+
+**When contributing a dataset, you must list every class in the source annotations and assign each one to `fish`, `non-fish`, or discard.** Include this mapping in your script (see `CATEGORIES_FILTER` below) and in your pull request description, so reviewers can check it. Generic or ambiguous classes (e.g. "animal", "unknown", "other") should be inspected visually: assign them if they are consistently one or the other, otherwise discard them and mention it in the PR.
 
 
 
@@ -36,12 +53,11 @@ A dataset must meet the following requirements to be included:
 
 All datasets are normalized to a common format before merging. Your processing script must apply the following:
 
-1. **Single category** — all fish-related annotations must be compressed into a single category: `{"id": 1, "name": "fish"}`. Regardless of how many species or sub-categories the source dataset has, we merge them all into one. Use `compress_annotations_to_single_category()` from `datasets/utils/`.
+1. **Map every source class** — assign each source category to `fish` (id 1), `non-fish` (id 2), or discard, following the [Class definitions](#class-definitions) above. Regardless of how many species or sub-categories the source dataset has, they all collapse into these two categories. Define the mapping at module level via `CATEGORIES_FILTER` in your script.
 2. **1-indexed annotations** — COCO category and annotation IDs must be 1-indexed (not 0-indexed). Use `convert_coco_annotations_from_0_indexed_to_1_indexed()` if needed.
-3. **Filter out non-fish categories** — if the source dataset contains non-fish categories (e.g. coral, crab, starfish), filter them out and keep only fish-related annotations. Define a `CATEGORIES_FILTER` list in your script to specify which source categories to keep.
-4. **Prefix image filenames** — all image filenames must be prefixed with the dataset shortname (e.g. `noaa_puget_000001.jpg`) to avoid filename collisions when datasets are merged. Use `add_dataset_shortname_prefix_to_image_names()`.
-5. **Train/val split** — split the dataset into training and validation sets. When possible, split by location, camera, video, or deployment rather than by random image selection. Use `split_coco_dataset_into_train_validation()`.
-6. **COCO output format** — the final annotations must be in COCO format with bounding boxes.
+3. **Prefix image filenames** — all image filenames must be prefixed with the dataset shortname (e.g. `noaa_puget_000001.jpg`) to avoid filename collisions when datasets are merged. Use `add_dataset_shortname_prefix_to_image_names()`.
+4. **Train/val split** — split the dataset into training and validation sets. When possible, split by location, camera, video, or deployment rather than by random image selection. Use `split_coco_dataset_into_train_validation()`.
+5. **COCO output format** — the final annotations must be in COCO format with bounding boxes.
 
 
 
@@ -69,9 +85,9 @@ If you've come across a dataset that matches the acceptance criteria above but d
 3. **Use shared utilities** from `datasets/utils/` — see existing scripts like [roboflow_fish.py](./datasets/roboflow_fish.py) for a straightforward example.
 4. **Define module-level constants**:
   - `DATASET_SHORTNAME` — a short, unique identifier (e.g. `"noaa_puget"`)
-  - `CATEGORIES_FILTER` — list of source category names to keep (or `None` if all categories are fish)
+  - `CATEGORIES_FILTER` — the mapping of every source category name to `fish` or `non-fish` (categories not listed are discarded)
 5. **Add a dataset entry** to this README under [Processed datasets](#processed-datasets), following the same metadata format as the existing entries.
-6. **Submit a pull request** with your script, the preview image, and the README update.
+6. **Submit a pull request** with your script, the preview image, the README update, and the full list of source classes with the `fish` / `non-fish` / discard decision for each.
 
 
 

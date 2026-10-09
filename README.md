@@ -125,6 +125,8 @@ Farrell DM, Ferriss B, Sanderson B, Veggerby K, Robinson L, Trivedi A, Pathak S,
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [noaa_puget.py](./datasets/noaa_puget.py)
 
+<img src="./previews/noaa_puget_sample_image.png" alt="NOAA Puget Sound Nearshore Fish 2017-2018 sample" width="600">
+
 
 
 #### MIT Sea Grant River Herring
@@ -142,6 +144,8 @@ Images of freshwater fish taken from underwater videos with 91,482 bounding boxe
 - Annotation information: 91,482 bounding boxes
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [mit_river_herring.py](./datasets/mit_river_herring.py)
+
+<img src="./previews/mit_river_herring_sample_image.png" alt="MIT Sea Grant River Herring sample" width="600">
 
 
 
@@ -161,6 +165,8 @@ Scoulding B, Maguire K, Orenstein E, Jackett C, CSIRO.  [Tasmanian Orange Roughy
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [torsi.py](./datasets/torsi.py)
 
+<img src="./previews/torsi_sample_image.png" alt="Tasmanian Orange Roughy Stereo Image Machine Learning Dataset (TORSI) sample" width="600">
+
 
 
 #### CoralScapes
@@ -176,6 +182,8 @@ Scoulding B, Maguire K, Orenstein E, Jackett C, CSIRO.  [Tasmanian Orange Roughy
 - Image information: 2,027 images
 - Annotation information: 174,000 segmentation annotations, of which 20,849 are fish
 - Code to render sample annotated image: [coralscapes.py](./datasets/coralscapes.py)
+
+<img src="./previews/coralscapes-sample.jpg" alt="CoralScapes sample" width="600">
 
 
 
@@ -193,6 +201,8 @@ Simon K. [ProjectNatick - Microsoft's Self-sufficient Underwater Datacenters](ht
 - Annotation information: 998 bounding boxes
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [project_natick.py](./datasets/project_natick.py)
+
+<img src="./previews/project_natick_sample_image.png" alt="Project Natick Underwater Video sample" width="600">
 
 
 
@@ -212,6 +222,8 @@ Solawetz J Fish object detection dataset. Roboflow. 2023.
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [roboflow_fish.py](./datasets/roboflow_fish.py)
 
+<img src="./previews/roboflow_fish_sample_image.png" alt="Roboflow Fish Dataset sample" width="600">
+
 
 
 #### DeepFish
@@ -228,6 +240,8 @@ Saleh A, Laradji IH, Konovalov DA, Bradley M, Vazquez D, Sheaves M. A realistic 
 - Image information: 311 images with segmentation masks
 - Annotation information: 388 segmentation masks
 - Code to render sample annotated image: [deepfish.py](./datasets/deepfish.py)
+
+<img src="./previews/deepfish_sample_image.jpg" alt="DeepFish sample" width="600">
 
 
 
@@ -247,6 +261,8 @@ Allken V, Rosen S. [Deep Vision fish dataset](https://doi.org/10.21335/NMDC-5517
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [deep_vision.py](./datasets/deep_vision.py)
 
+<img src="./previews/deep_vision_sample_image.png" alt="Deep Vision Fish Dataset sample" width="600">
+
 
 
 #### The Brackish Dataset
@@ -264,6 +280,8 @@ Pedersen M, Haurum JB, Gade R, Moeslund TB, Madsen N.  Detection of Marine Anima
 - Annotation information: 35,565  bounding boxes
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [brackish.py](./datasets/brackish.py)
+
+<img src="./previews/brackish_dataset_sample_image.png" alt="The Brackish Dataset sample" width="600">
 
 
 
@@ -284,6 +302,8 @@ Kavasidis I, Palazzo S, Di Salvo R, Giordano D, Spampinato C. A semi-automatic t
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [f4k.py](./datasets/f4k.py)
 
+<img src="./previews/f4k_detection_tracking_sample.jpg" alt="F4K Detection and Tracking sample" width="600">
+
 
 
 #### FishCLEF-2015
@@ -301,6 +321,8 @@ Joly A, Goeau H, Glotin H, Spampinato C, Bonnet P, Vellinga W-P, Planquè R, Rau
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [fishclef.py](./datasets/fishclef.py)
 
+<img src="./previews/fishclef_sample_image.png" alt="FishCLEF-2015 sample" width="600">
+
 
 
 #### VIAME FishTrack
@@ -314,6 +336,8 @@ Several thousand BRUV images with bounding boxes on fish and bait
 - Image information: ~20,000
 - Annotation information: bounding boxes
 - Code to render sample annotated image: [viame_fishtrack.py](./datasets/viame_fishtrack.py)
+
+<img src="./previews/viame_fishtrack_sample_image.png" alt="VIAME FishTrack sample" width="600">
 
 
 
@@ -333,6 +357,8 @@ Jansen A, Walden D, Walker S, Buccella C.  [A deep learning dataset for underwat
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [kakadu.py](./datasets/kakadu.py)
 
+<img src="./previews/kakadu_sample_image.png" alt="Object detection of tropical freshwater fish in Australia (Kakadu) sample" width="600">
+
 
 
 #### AAU Zebrafish Re-Identification Dataset
@@ -350,6 +376,8 @@ Bruslund HJ, Karpova A, Pedersen M, Hein BS, Moeslund TB. Re-identification of z
 - Annotation information: AAU VAP bounding boxes
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [zebrafish.py](./datasets/zebrafish.py)
+
+<img src="./previews/Zebrafish_sample_image.png" alt="AAU Zebrafish Re-Identification Dataset sample" width="600">
 
 
 
@@ -369,6 +397,8 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [orange_chromide.py](./datasets/orange_chromide.py)
 
+<img src="./previews/orange_chromide_sample_image.png" alt="Orange Chromide Pond Fish Detection sample" width="600">
+
 
 
 #### FathomNet Database
@@ -387,6 +417,8 @@ The FathomNet Database is an open-source image database that can be used to trai
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [fathomnet.py](./datasets/fathomnet.py)
 
+<img src="./previews/fathomnet_sample_image.png" alt="FathomNet Database sample" width="600">
+
 
 
 #### Marine Detect (FishInv and Megafauna)
@@ -398,6 +430,8 @@ Two Roboflow datasets with bounding boxes on fish, sharks, rays, turtles and oth
 - Categories/species: fish, shark, ray, turtle, and various reef fish families
 - Vehicle type: underwater cameras
 - Code to render sample annotated image: [marine_detect.py](./datasets/marine_detect.py)
+
+<img src="./previews/marine_detect_fishinv_sample_image.png" alt="Marine Detect (FishInv and Megafauna) sample" width="600">
 
 
 
@@ -415,6 +449,8 @@ Atlas WI, Ma S, Chou YC, Connors K, Scurfield D, Nam B, Ma X, Cleveland M, Doire
 - Image information: 1567 images
 - Annotation information: bounding boxes
 - Typical animal size in pixels: N/A
+
+<img src="./previews/salmon_computer_vision_sample_image.jpg" alt="Salmon Computer Vision sample" width="600">
 
 
 
@@ -436,6 +472,8 @@ Shi, X., Tanwari, K. A., Krepski, T., Shi, Z., & Czerniawski, R. (2025). PomerFi
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [pomerfish.py](./datasets/pomerfish.py)
 
+<img src="./previews/pomerfish_sample_image.png" alt="PomerFish sample" width="600">
+
 
 
 #### OBSEA
@@ -451,6 +489,8 @@ Boxes on fish and other objects in images from the OBSEA seafloor observatory in
 - Annotation information: 34,728 fish/fish-like bounding boxes after filtering
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [obsea.py](./datasets/obsea.py)
+
+<img src="./previews/obsea_sample_image.png" alt="OBSEA sample" width="600">
 
 
 

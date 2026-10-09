@@ -1,8 +1,13 @@
 """
 NOAA Puget Sound Nearshore Fish Dataset
 Source: https://storage.googleapis.com/public-datasets-lila/noaa-psnf/
-Split logic: By camera (train_test_split on unique camera identifiers)
-Categories kept: fish
+Split logic: By camera (train_test_split on the SDxx camera ID, first token of filename)
+Category mapping:
+  fish: fish
+  non-fish: crab
+  discard: empty (no-animal marker without bbox), fish_or_crab, unknown
+Images containing fish_or_crab or unknown boxes are dropped entirely (they never
+contain fish or crab boxes), so unlabelled animals are not kept as background.
 """
 
 import json
@@ -16,7 +21,7 @@ from datasets.utils import (
     download_file,
     extract_downloaded_file,
     CompressionType,
-    compress_annotations_to_single_category,
+    map_annotations_to_fish_and_non_fish,
     split_coco_dataset_into_train_validation,
     add_dataset_shortname_prefix_to_image_names,
     convert_coco_annotations_from_0_indexed_to_1_indexed,
@@ -26,29 +31,51 @@ from datasets.utils import (
 
 
 DATASET_SHORTNAME = "noaa_puget"
-CATEGORIES_FILTER = ["fish"]
+CATEGORIES_FILTER = {
+    "fish": "fish",
+    "crab": "non-fish",
+}
+# Images with any of these annotations are dropped
+AMBIGUOUS_CATEGORIES = ["fish_or_crab", "unknown"]
 
 settings = Settings()
 
 
-def clean_annotations(annotations_path: Path):
+def drop_images_with_ambiguous_annotations(annotations_path: Path, output_path: Path):
+    """
+    Drops images containing any AMBIGUOUS_CATEGORIES annotation, together with all
+    their annotations. Discarding only the annotations would leave real animals
+    unlabelled in the image.
+    """
+    if output_path.exists():
+        print(f"Filtered annotation file already exists at {output_path}")
+        return output_path
+
     with open(annotations_path, "r") as f:
-        annotations = json.load(f)
+        coco_data = json.load(f)
 
-    cleaned_annotations = []
-    print(f"Number of annotations: {len(annotations['annotations'])}")
+    ambiguous_category_ids = {
+        c["id"] for c in coco_data["categories"] if c["name"] in AMBIGUOUS_CATEGORIES
+    }
+    ambiguous_image_ids = {
+        a["image_id"]
+        for a in coco_data["annotations"]
+        if a["category_id"] in ambiguous_category_ids
+    }
+    coco_data["images"] = [
+        i for i in coco_data["images"] if i["id"] not in ambiguous_image_ids
+    ]
+    coco_data["annotations"] = [
+        a for a in coco_data["annotations"] if a["image_id"] not in ambiguous_image_ids
+    ]
+    print(
+        f"Dropped {len(ambiguous_image_ids)} images with {AMBIGUOUS_CATEGORIES} annotations"
+    )
 
-    for annotation in annotations["annotations"]:
-        if "bbox" not in annotation or len(annotation["bbox"]) == 0:
-            print(f"No bbox found for {annotation['image_id']}")
-        else:
-            cleaned_annotations.append(annotation)
+    with open(output_path, "w") as f:
+        json.dump(coco_data, f)
 
-    annotations["annotations"] = cleaned_annotations
-
-    with open(annotations_path, "w") as f:
-        print(f"Number of annotations: {len(annotations['annotations'])}")
-        json.dump(annotations, f)
+    return output_path
 
 
 def download_data(data_dir: Path):
@@ -73,13 +100,13 @@ def get_unique_camera_names(image_folder: Path) -> Set:
     for image_path in image_folder.glob("*.jpg"):
         camera_name = remove_dataset_shortname_prefix_from_image_filename(
             image_path.stem, DATASET_SHORTNAME
-        ).split("_")[2]
+        ).split("_")[0]
         camera_names.add(camera_name)
     return camera_names
 
 
 def get_list_of_cameras_to_include_in_train_set(image_folder: Path) -> list[str]:
-    camera_names = list(get_unique_camera_names(image_folder))
+    camera_names = sorted(get_unique_camera_names(image_folder))
     train_camera_names, _ = train_test_split(
         list(camera_names),
         test_size=settings.train_val_split_ratio,
@@ -109,21 +136,24 @@ def main():
         raw_annotations_path, annotations_path_1_indexed
     )
 
-    compressed_annotations_path = (
-        processing_dir / "noaa_puget_compressed_annotations.json"
+    filtered_annotations_path = processing_dir / "noaa_puget_filtered_annotations.json"
+    drop_images_with_ambiguous_annotations(
+        annotations_path_1_indexed, filtered_annotations_path
     )
-    compressed_annotations_path = compress_annotations_to_single_category(
-        annotations_path_1_indexed, CATEGORIES_FILTER, compressed_annotations_path
+
+    mapped_annotations_path = processing_dir / "noaa_puget_mapped_annotations.json"
+    map_annotations_to_fish_and_non_fish(
+        filtered_annotations_path, CATEGORIES_FILTER, mapped_annotations_path
     )
 
     add_dataset_shortname_prefix_to_image_names(
         images_path=raw_images_path,
-        annotations_path=compressed_annotations_path,
+        annotations_path=mapped_annotations_path,
         dataset_shortname=DATASET_SHORTNAME,
     )
 
     # 3. PREVIEW
-    save_preview_image(raw_images_path, compressed_annotations_path, DATASET_SHORTNAME)
+    save_preview_image(raw_images_path, mapped_annotations_path, DATASET_SHORTNAME)
 
     # 4. SPLIT
     train_camera_names = get_list_of_cameras_to_include_in_train_set(raw_images_path)
@@ -131,7 +161,7 @@ def main():
     should_the_image_be_included_in_train_set = (
         lambda image_name: remove_dataset_shortname_prefix_from_image_filename(
             image_name, DATASET_SHORTNAME
-        ).split("_")[2]
+        ).split("_")[0]
         in train_camera_names
     )
 
@@ -146,7 +176,7 @@ def main():
 
     split_coco_dataset_into_train_validation(
         raw_images_path,
-        compressed_annotations_path,
+        mapped_annotations_path,
         train_dataset_path,
         val_dataset_path,
         should_the_image_be_included_in_train_set,

@@ -2,7 +2,11 @@
 VIAME FishTrack Dataset
 Source: https://viame.kitware.com/
 Split logic: Pre-split by URL (train and val downloaded separately)
-Categories kept: All fish (non_fish categories excluded at download time)
+Category mapping:
+  fish: micropterus_salmoides, unspecified_fish, etelis_coruscans, hyporthodus_quernus,
+    pristipomoides_zonatus, pristipomoides_auricilla, seriola, caranx_melampygus
+  non-fish: non_fish_animal
+  discard: non_fish_bait, non_fish_plant (and any species not in CATEGORIES_FILTER)
 
 Converts VIAME CSV annotations to COCO format. Extracts frames from videos.
 No split function needed as train/val are separate downloads.
@@ -19,18 +23,29 @@ import pandas as pd
 import supervision as sv
 
 from datasets.settings import Settings
-from datasets.utils import download_and_extract
+from datasets.utils import (
+    download_and_extract,
+    add_dataset_shortname_prefix_to_image_names,
+    save_preview_image,
+)
 
 
 DATASET_SHORTNAME = "viame_fishtrack"
+CATEGORIES_FILTER = {
+    "micropterus_salmoides": "fish",
+    "unspecified_fish": "fish",
+    "etelis_coruscans": "fish",
+    "hyporthodus_quernus": "fish",
+    "pristipomoides_zonatus": "fish",
+    "pristipomoides_auricilla": "fish",
+    "seriola": "fish",
+    "caranx_melampygus": "fish",
+    "non_fish_animal": "non-fish",
+}
 TESTING = False
 all_species = set()
 
 settings = Settings()
-
-
-def _is_non_fish(species: str) -> bool:
-    return species.startswith("non_fish")
 
 
 def build_image_id(video_path: Path, frame_id: str) -> str:
@@ -133,7 +148,7 @@ def get_frame_from_images(
         coco_data["images"].append(
             {
                 "id": frame_id,
-                "file_name": str(new_frame_path),
+                "file_name": new_frame_path.name,
                 "height": height,
                 "width": width,
             }
@@ -172,9 +187,10 @@ def viame_to_coco(camera_path: Path, images_dir: Path, coco_data: dict):
         species = row["10-11+: Repeated Species"]
         if species not in all_species:
             all_species.add(species)
-            print(f"Processing species: {species}")
-        if not pd.notna(species) or _is_non_fish(species):
-            print(f"Skipping row because of non-fish category: {species}")
+            print(
+                f"Processing species: {species} -> {CATEGORIES_FILTER.get(species, 'discard')}"
+            )
+        if species not in CATEGORIES_FILTER:
             continue
 
         try:
@@ -206,7 +222,7 @@ def viame_to_coco(camera_path: Path, images_dir: Path, coco_data: dict):
             {
                 "id": annotation_id,
                 "image_id": frame_id,
-                "category_id": 1,
+                "category_id": Settings.category_name_to_id[CATEGORIES_FILTER[species]],
                 "bbox": [xmin, ymin, width, height],
                 "area": width * height,
                 "iscrowd": 0,
@@ -223,8 +239,11 @@ def download_data_and_build_coco_dataset(
         raw_data_download_path, data_url, DATASET_SHORTNAME
     )
 
-    fish_category = {"id": 1, "name": "fish"}
-    coco_data = {"images": [], "annotations": [], "categories": [fish_category]}
+    coco_data = {
+        "images": [],
+        "annotations": [],
+        "categories": Settings.coco_categories,
+    }
 
     images_output_path = coco_dataset_path / "JPEGImages"
     images_output_path.mkdir()
@@ -240,6 +259,10 @@ def download_data_and_build_coco_dataset(
     with open(annotations_path, "w") as f:
         json.dump(coco_data, f)
 
+    add_dataset_shortname_prefix_to_image_names(
+        images_output_path, annotations_path, DATASET_SHORTNAME
+    )
+
     return images_output_path, annotations_path
 
 
@@ -253,8 +276,8 @@ def main():
     """
     Downloads the VIAME FishTrack data.
     No need to split in train and val, as the VIAME FishTrack data is already split.
-    No need to compress the annotations into fish only, as the
-    download_data_and_build_coco_dataset function already does this.
+    No need to map the annotations to fish / non-fish afterwards, as
+    viame_to_coco already applies CATEGORIES_FILTER.
     """
     # Download the train data
     train_data_name = f"{DATASET_SHORTNAME}{settings.train_dataset_suffix}"
@@ -265,11 +288,12 @@ def main():
     train_coco_dataset_path.mkdir(parents=True, exist_ok=True)
 
     train_data_url = "https://viame.kitware.com/api/v1/dive_dataset/export?folderIds=[%2265a19f85cf5a99794ea9ccfb%22,%2265a1a15fcf5a99794eaaa790%22,%2265a1a028cf5a99794eaa2419%22,%2265a19f70cf5a99794ea9c1f7%22,%2265a19f59cf5a99794ea9b5b4%22,%2265a19f70cf5a99794ea9c20c%22,%2265a1a160cf5a99794eaaa7e7%22,%2265a1a123cf5a99794eaa925a%22,%2265a19f85cf5a99794ea9cd00%22,%2265a1a040cf5a99794eaa3185%22,%2265a19f9bcf5a99794ea9d8e3%22,%2265a1a13acf5a99794eaa9c17%22,%2265a1a16dcf5a99794eaaabd2%22,%2265a1a160cf5a99794eaaa7db%22,%2265a1a162cf5a99794eaaa858%22,%2265a1a11bcf5a99794eaa8dbb%22,%2265a19f83cf5a99794ea9cc04%22,%2265a19fcecf5a99794ea9f433%22,%2265a1a144cf5a99794eaa9f0c%22,%2265a1a0dccf5a99794eaa7ac8%22]"
-    download_data_and_build_coco_dataset(
+    train_images_path, train_annotations_path = download_data_and_build_coco_dataset(
         raw_data_download_path=train_raw_data_path,
         coco_dataset_path=train_coco_dataset_path,
         data_url=train_data_url,
     )
+    save_preview_image(train_images_path, train_annotations_path, DATASET_SHORTNAME)
 
     # Download the val data
     val_data_name = f"{DATASET_SHORTNAME}{settings.val_dataset_suffix}"

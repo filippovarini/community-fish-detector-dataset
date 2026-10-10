@@ -8,7 +8,10 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
 - **Source**: [Roboflow](https://public.roboflow.com/ds/vGBLxigwno?key=bhFPGoB3VB)
 - **Download**: Automatic
 - **Annotations**: COCO format (from Roboflow train/val/test splits merged into one)
-- **Category filter**: `small_fish`, `fish`
+- **Category mapping**:
+  - fish: `fish`, `small_fish`
+  - non-fish: `crab`, `starfish`, `jellyfish`, `shrimp`
+  - discard: `animals` (Roboflow supercategory, no annotations)
 - **Split**: By deployment site (extracted from image filename prefix before `_jpg`)
 
 ### deep_vision

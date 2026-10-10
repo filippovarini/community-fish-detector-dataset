@@ -2,7 +2,10 @@
 Brackish Dataset
 Source: https://public.roboflow.com/ds/vGBLxigwno?key=bhFPGoB3VB
 Split logic: By deployment site (train_test_split on unique deployment identifiers)
-Categories kept: small_fish, fish
+Category mapping:
+  fish: fish, small_fish
+  non-fish: crab, starfish, jellyfish, shrimp
+  discard: animals (Roboflow supercategory, no annotations)
 """
 
 import json
@@ -17,7 +20,7 @@ from datasets.utils import (
     download_file,
     extract_downloaded_file,
     convert_coco_annotations_from_0_indexed_to_1_indexed,
-    compress_annotations_to_single_category,
+    map_annotations_to_fish_and_non_fish,
     split_coco_dataset_into_train_validation,
     add_dataset_shortname_prefix_to_image_names,
     remove_dataset_shortname_prefix_from_image_filename,
@@ -26,7 +29,14 @@ from datasets.utils import (
 
 
 DATASET_SHORTNAME = "brackish_dataset"
-CATEGORIES_FILTER = ["small_fish", "fish"]
+CATEGORIES_FILTER = {
+    "fish": "fish",
+    "small_fish": "fish",
+    "crab": "non-fish",
+    "starfish": "non-fish",
+    "jellyfish": "non-fish",
+    "shrimp": "non-fish",
+}
 
 settings = Settings()
 
@@ -138,9 +148,10 @@ def get_unique_deployments(image_folder: Path) -> Set:
 
 
 def get_list_of_cameras_to_include_in_train_set(image_folder: Path) -> list[str]:
-    deployments = list(get_unique_deployments(image_folder))
+    # Sorted so the split does not depend on set iteration order
+    deployments = sorted(get_unique_deployments(image_folder))
     train_deployments, _ = train_test_split(
-        list(deployments),
+        deployments,
         test_size=settings.train_val_split_ratio,
         random_state=settings.random_state,
     )
@@ -170,19 +181,19 @@ def main():
         coco_annotations_path, coco_annotations_path_1_indexed
     )
 
-    compressed_annotations_path = processing_dir / "annotations_coco_compressed.json"
-    compress_annotations_to_single_category(
-        coco_annotations_path_1_indexed, CATEGORIES_FILTER, compressed_annotations_path
+    mapped_annotations_path = processing_dir / "annotations_coco_mapped.json"
+    map_annotations_to_fish_and_non_fish(
+        coco_annotations_path_1_indexed, CATEGORIES_FILTER, mapped_annotations_path
     )
 
     add_dataset_shortname_prefix_to_image_names(
         coco_images_path,
-        compressed_annotations_path,
+        mapped_annotations_path,
         DATASET_SHORTNAME,
     )
 
     # 3. PREVIEW
-    save_preview_image(coco_images_path, compressed_annotations_path, DATASET_SHORTNAME)
+    save_preview_image(coco_images_path, mapped_annotations_path, DATASET_SHORTNAME)
 
     # 4. SPLIT
     train_deployments = get_list_of_cameras_to_include_in_train_set(coco_images_path)
@@ -204,7 +215,7 @@ def main():
 
     split_coco_dataset_into_train_validation(
         coco_images_path,
-        compressed_annotations_path,
+        mapped_annotations_path,
         train_dataset_path,
         val_dataset_path,
         should_the_image_be_included_in_train_set,

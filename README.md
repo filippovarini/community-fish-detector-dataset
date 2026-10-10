@@ -275,6 +275,9 @@ Pedersen M, Haurum JB, Gade R, Moeslund TB, Madsen N.  Detection of Marine Anima
 - License: CC BY-SA 4.0
 - Metadata raw format: AAU, COCO, YOLO
 - Categories/species: fish, small fish, crab, shrimp, jellyfish, starfish
+  - fish: `fish`, `small_fish`
+  - non-fish: `crab`, `starfish`, `jellyfish`, `shrimp`
+  - discarded: none
 - Vehicle type: underwater cameras in brackish water
 - Image information: 12,444 RGB images
 - Annotation information: 35,565  bounding boxes

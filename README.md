@@ -314,7 +314,10 @@ Joly A, Goeau H, Glotin H, Spampinato C, Bonnet P, Vellinga W-P, Planquè R, Rau
 
 - Data downloadable via https from Zenodo ([download link](https://zenodo.org/records/15202605/files/fishclef_2015_release.zip?download=1)). Note, the dataset was [originally hosted on SharePoint](https://github.com/perceivelab/FishCLEF-2015). We uploaded it to Zenodo to make it downloadable programmatically.
 - Metadata raw format: XML
-- Categories/species: marine ray-finned fish 
+- Categories/species: marine ray-finned fish (29 reef fish species names, e.g. Dascyllus reticulatus, Chaetodon lunulatus, Amphiprion clarkii)
+  - fish: all 29 species names, including `NULL` (unidentified fish)
+  - non-fish: none
+  - discarded: none
 - Vehicle type: N/A
 - Image information: 20,000 images
 - Annotation information: 14,000 bounding boxes

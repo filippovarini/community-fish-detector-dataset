@@ -2,7 +2,14 @@
 FishCLEF 2015 Dataset
 Source: https://zenodo.org/records/15202605/files/fishclef_2015_release.zip?download=1
 Split logic: By video ID (train_test_split on unique video filenames)
-Categories kept: All (majority are "Null" = general fish)
+Category mapping:
+  fish: all 29 species names in the XMLs (reef fish), including "NULL" (fish of
+    unidentified species). Names are kept as spelled in the source, which has a few
+    inconsistent spellings (e.g. "Chaetodon Lununatus" / "Chaetodon Lunulatus").
+  non-fish: none
+  discard: none
+The training set XMLs store the species in "fish_species", the test set XMLs in
+"species_name"; both are read.
 
 Frame extraction from .flv videos. One frame per annotated frame in the XML.
 """
@@ -20,7 +27,7 @@ from sklearn.model_selection import train_test_split
 from datasets.settings import Settings
 from datasets.utils import (
     download_and_extract,
-    compress_annotations_to_single_category,
+    map_annotations_to_fish_and_non_fish,
     split_coco_dataset_into_train_validation,
     add_dataset_shortname_prefix_to_image_names,
     remove_dataset_shortname_prefix_from_image_filename,
@@ -30,7 +37,37 @@ from datasets.utils import (
 
 DATASET_SHORTNAME = "fishclef"
 DATA_URL = "https://zenodo.org/records/15202605/files/fishclef_2015_release.zip?download=1"
-CATEGORIES_FILTER = None
+CATEGORIES_FILTER = {
+    "Abudefduf Vaigiensis": "fish",
+    "Acanthurus Nigrofuscus": "fish",
+    "Amphiprion Clarkii": "fish",
+    "Canthigaster Valentini": "fish",
+    "Chaetodon Auripes": "fish",
+    "Chaetodon Lunulatus": "fish",
+    "Chaetodon Lununatus": "fish",
+    "Chaetodon Speculum": "fish",
+    "Chaetodon Trifascialis": "fish",
+    "Chromis Chrysura": "fish",
+    "Dascyllus Aruanus": "fish",
+    "Dascyllus Reticulatus": "fish",
+    "Dascyllus reticulatus": "fish",
+    "Hemigumnus Malapterus": "fish",
+    "Hemigymnus Fasciatus": "fish",
+    "Lethrinus Ornatus": "fish",
+    "Myripristis Kuntee": "fish",
+    "NULL": "fish",
+    "Neoglyphidodon Nigroris": "fish",
+    "Neoniphon Sammara": "fish",
+    "Pempheris Vanicolensis": "fish",
+    "Plectorhinchus Vittatus": "fish",
+    "Plectrogly-Phidodon Dickii": "fish",
+    "Plectrogly-phidodon Dickii": "fish",
+    "Pomacentrus Moluccensis": "fish",
+    "Scaridae": "fish",
+    "Scolopsis Bilineata": "fish",
+    "Siganus Fuscescens": "fish",
+    "Zebrasoma Scopas": "fish",
+}
 
 settings = Settings()
 
@@ -75,7 +112,8 @@ def convert_xml_to_coco(videos_dir: Path, xml_file, output_dir=None):
         images.append(image_info)
 
         for obj in frame.findall("object"):
-            species = obj.get("fish_species")
+            # The training set uses "fish_species", the test set "species_name"
+            species = obj.get("fish_species") or obj.get("species_name")
             if species not in categories:
                 categories[species] = len(categories) + 1
 
@@ -284,7 +322,10 @@ def extract_frames_from_videos(download_dir: Path, frames_dir: Path, coco_data: 
 
 
 def get_list_of_videos_to_include_in_train_set(raw_download_path: Path):
-    all_video_ids = [video_path.stem for video_path in raw_download_path.rglob("*.flv")]
+    # Sorted so the split does not depend on filesystem listing order
+    all_video_ids = sorted(
+        video_path.stem for video_path in raw_download_path.rglob("*.flv")
+    )
     train_video_ids, _ = train_test_split(
         all_video_ids,
         test_size=settings.train_val_split_ratio,
@@ -318,19 +359,17 @@ def main():
 
     extract_frames_from_videos(raw_download_path, coco_images_path, coco_annotations)
 
-    compressed_annotations_path = (
-        processing_dir / "fishclef_compressed_annotations.json"
-    )
-    compressed_annotations_path = compress_annotations_to_single_category(
-        coco_annotations_path, CATEGORIES_FILTER, compressed_annotations_path
+    mapped_annotations_path = processing_dir / "fishclef_mapped_annotations.json"
+    map_annotations_to_fish_and_non_fish(
+        coco_annotations_path, CATEGORIES_FILTER, mapped_annotations_path
     )
 
     add_dataset_shortname_prefix_to_image_names(
-        coco_images_path, compressed_annotations_path, DATASET_SHORTNAME
+        coco_images_path, mapped_annotations_path, DATASET_SHORTNAME
     )
 
     # 3. PREVIEW
-    save_preview_image(coco_images_path, compressed_annotations_path, DATASET_SHORTNAME)
+    save_preview_image(coco_images_path, mapped_annotations_path, DATASET_SHORTNAME)
 
     # 4. SPLIT
     train_videos_ids = get_list_of_videos_to_include_in_train_set(raw_download_path)
@@ -352,7 +391,7 @@ def main():
 
     split_coco_dataset_into_train_validation(
         coco_images_path,
-        compressed_annotations_path,
+        mapped_annotations_path,
         train_dataset_path,
         val_dataset_path,
         should_the_image_be_included_in_train_set,

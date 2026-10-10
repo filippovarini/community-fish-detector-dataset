@@ -36,7 +36,11 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
 - **Source**: [Zenodo](https://zenodo.org/records/15202605/files/fishclef_2015_release.zip?download=1)
 - **Download**: Automatic
 - **Annotations**: XML -> COCO conversion, frames extracted from .flv videos
-- **Category filter**: None (majority "Null" = general fish)
+- **Category mapping**:
+  - fish: all 29 species names (reef fish), including `NULL` (unidentified fish)
+  - non-fish: none
+  - discard: none
+- **Species attribute**: `fish_species` in the training set XMLs, `species_name` in the test set XMLs (both read)
 - **Split**: By video ID
 
 ### mit_river_herring

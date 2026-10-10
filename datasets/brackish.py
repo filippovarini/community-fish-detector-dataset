@@ -148,9 +148,10 @@ def get_unique_deployments(image_folder: Path) -> Set:
 
 
 def get_list_of_cameras_to_include_in_train_set(image_folder: Path) -> list[str]:
-    deployments = list(get_unique_deployments(image_folder))
+    # Sorted so the split does not depend on set iteration order
+    deployments = sorted(get_unique_deployments(image_folder))
     train_deployments, _ = train_test_split(
-        list(deployments),
+        deployments,
         test_size=settings.train_val_split_ratio,
         random_state=settings.random_state,
     )

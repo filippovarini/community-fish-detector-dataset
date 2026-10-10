@@ -425,13 +425,16 @@ The FathomNet Database is an open-source image database that can be used to trai
 
 Two Roboflow datasets with bounding boxes on fish, sharks, rays, turtles and other reef species
 
-- Data downloadable via Roboflow (manual download required)
-- Metadata raw format: COCO (after Roboflow export)
-- Categories/species: fish, shark, ray, turtle, and various reef fish families
+- Data downloadable via https from Azure blob storage ([FishInv](https://stpubtenakanclyw.blob.core.windows.net/marine-detect/FishInv-dataset.zip), [MegaFauna](https://stpubtenakanclyw.blob.core.windows.net/marine-detect/MegaFauna-dataset.zip))
+- Metadata raw format: YOLO
+- Categories/species: fish, shark, ray, turtle, various reef fish families, and reef invertebrates
+  - fish: `fish`, `bolbometopon_muricatum`, `chaetodontidae`, `cheilinus_undulatus`, `cromileptes_altivelis`, `haemulidae`, `lutjanidae`, `muraenidae`, `scaridae`, `serranidae`, `shark`, `ray`
+  - non-fish: `turtle`, `urchin`, `giant_clam`, `sea_cucumber`, `crown_of_thorns`, `lobster`
+  - discarded: none
 - Vehicle type: underwater cameras
 - Code to render sample annotated image: [marine_detect.py](./datasets/marine_detect.py)
 
-<img src="./previews/marine_detect_fishinv_sample_image.png" alt="Marine Detect (FishInv and Megafauna) sample" width="600">
+<img src="./previews/marine_detect_sample_image.png" alt="Marine Detect (FishInv and Megafauna) sample" width="600">
 
 
 

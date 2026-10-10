@@ -130,9 +130,12 @@ These datasets require manual download or have special dependencies.
 - **Split**: Random
 
 ### marine_detect
-- **Source**: Roboflow (two datasets: FishInv + Megafauna)
-- **Download**: Manual - download both datasets from Roboflow and place in `data/raw/marine_detect/`
-- **Annotations**: YOLO text -> COCO conversion, two datasets merged
-- **Category filter**: `turtle`, `ray`, `shark`, `bolbometopon_muricatum`, `chaetodontidae`, `cheilinus_undulatus`, `cromileptes_altivelis`, `fish`, `haemulidae`, `lutjanidae`, `muraenidae`, `scaridae`, `serranidae`
-- **Split**: By original split suffix in filename (train/valid/test)
-- **Special**: OzFish images are skipped to avoid duplication
+- **Source**: [Orange marine-detect](https://github.com/Orange-OpenSource/marine-detect) (two datasets: [FishInv](https://stpubtenakanclyw.blob.core.windows.net/marine-detect/FishInv-dataset.zip) + [MegaFauna](https://stpubtenakanclyw.blob.core.windows.net/marine-detect/MegaFauna-dataset.zip))
+- **Download**: Automatic
+- **Annotations**: YOLO (normalised centre/size) -> COCO conversion. The two datasets are merged by filename: shared images (byte-identical) get the annotations of both
+- **Category mapping**:
+  - fish: `fish`, `bolbometopon_muricatum`, `chaetodontidae`, `cheilinus_undulatus`, `cromileptes_altivelis`, `haemulidae`, `lutjanidae`, `muraenidae`, `scaridae`, `serranidae`, `shark`, `ray`
+  - non-fish: `turtle`, `urchin`, `giant_clam`, `sea_cucumber`, `crown_of_thorns`, `lobster`
+  - discard: none
+- **Split**: By original split: val if the image is in `valid`/`test` of either source dataset, train otherwise
+- **Special**: OzFish images are skipped to avoid duplication. EXIF orientation tags are removed (labels are relative to the stored pixels). Images without annotations are kept

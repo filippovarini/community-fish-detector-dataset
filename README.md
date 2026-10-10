@@ -332,6 +332,9 @@ Several thousand BRUV images with bounding boxes on fish and bait
 - Data downloadable from Viame ([download link](https://viame.kitware.com/#/collection/65a140e8a4c218785d408b42))
 - Metadata raw format: N/A
 - Categories/species: General Fish, Fish Species, Bait and Algae
+  - fish: `micropterus_salmoides`, `unspecified_fish`, `etelis_coruscans`, `hyporthodus_quernus`, `pristipomoides_zonatus`, `pristipomoides_auricilla`, `seriola`, `caranx_melampygus`
+  - non-fish: `non_fish_animal`
+  - discarded: `non_fish_bait`, `non_fish_plant`
 - Vehicle type: BRUV
 - Image information: ~20,000
 - Annotation information: bounding boxes

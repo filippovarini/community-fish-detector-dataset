@@ -71,7 +71,10 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
 - **Source**: [VIAME](https://viame.kitware.com/)
 - **Download**: Automatic (separate train/val URLs)
 - **Annotations**: VIAME CSV -> COCO conversion, frames extracted from videos
-- **Category filter**: Non-fish excluded at download time
+- **Category mapping**:
+  - fish: `micropterus_salmoides`, `unspecified_fish`, `etelis_coruscans`, `hyporthodus_quernus`, `pristipomoides_zonatus`, `pristipomoides_auricilla`, `seriola`, `caranx_melampygus`
+  - non-fish: `non_fish_animal`
+  - discard: `non_fish_bait`, `non_fish_plant`
 - **Split**: Pre-split by URL (train and val downloaded separately)
 
 ### zebrafish

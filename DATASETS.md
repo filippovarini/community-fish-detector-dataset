@@ -135,10 +135,14 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
 
 ### pomerfish
 - **Source**: [Zenodo](https://zenodo.org/records/17432128)
-- **Download**: Automatic (`PomerFish.rar`, 25.1 GB via `unar`)
-- **Annotations**: COCO format (already provided, 1-indexed)
-- **Category filter**: None (all 10 categories are freshwater fish species)
-- **Split**: By video/deployment ID (extracted from `dataset_<id>_frame_<n>.PNG` filename pattern, 27 unique IDs)
+- **Download**: Automatic (`PomerFish.rar`, 25.1 GB, resumable download). Only `PomerFishObj` is extracted, with `unrar` (`unar` truncates files over 1.5 MB in this archive, which corrupted 80 images)
+- **Annotations**: COCO format (`PomerFishObj/combined_standard.json`, 14,989 images, 21,267 boxes). PomerFishSeg is not used: its filenames have no video id. 3,273 frames with no fish are kept
+- **Category mapping**:
+  - fish: all 10 classes (`Perca fluviatilis`, `Thymallus thymallus`, `Salmo trutta morpha trutta (male)`, `Salmo trutta morpha trutta (female)`, `Salmoninae (Juvenile)`, `Salmo trutta morpha fario (Adult)`, `Salmo trutta morpha fario (juvenile)`, `Rutilus rutilus`, `Oncorhynchus mykiss`, `Leuciscus idus`). Some source names contain non-breaking spaces
+  - non-fish: none
+  - discard: none
+- **Split**: By video, the filename part before `_frame_` (e.g. `dataset_116`, `dataset_121-2`; 37 videos), 20% of videos to val
+- **Known issue**: `dataset_156` (1,129 frames, train) shows dense schools of perch and roach with only 2-4 fish boxed per frame; it is kept as is
 
 ## Partial Datasets
 

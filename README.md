@@ -498,7 +498,8 @@ Shi, X., Tanwari, K. A., Krepski, T., Shi, Z., & Czerniawski, R. (2025). PomerFi
   - discarded: none
 - Vehicle type: GoPro Hero 5 (in-situ freshwater)
 - Image information: 14,989 images from 37 videos (3,273 frames with no fish are kept)
-- Annotation information: 21,267 bounding boxes. In one video (dataset_156, dense schools of perch and roach) only a few fish per frame are boxed
+- Annotation information: 21,267 bounding boxes
+- Known issue: a small subset of the images has wrong annotations. In one video (dataset_156: 1,129 frames, ~8% of the images, all in train), the fish swim in dense schools of perch and roach but only 2-4 fish per frame are boxed, so most fish in these frames are unlabelled
 - Typical animal size in pixels: ~500 (median long side of the boxes)
 - Code to render sample annotated image: [pomerfish.py](./datasets/pomerfish.py)
 

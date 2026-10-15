@@ -477,10 +477,14 @@ Shi, X., Tanwari, K. A., Krepski, T., Shi, Z., & Czerniawski, R. (2025). PomerFi
 - License: CC-BY-4.0
 - Metadata raw format: COCO JSON
 - Categories/species: Perca fluviatilis, Thymallus thymallus, Salmo trutta (male/female), Salmoninae (Juvenile), Salmo trutta morpha fario (Adult/juvenile), Rutilus rutilus, Oncorhynchus mykiss, Leuciscus idus
+  - fish: all 10 classes
+  - non-fish: none
+  - discarded: none
 - Vehicle type: GoPro Hero 5 (in-situ freshwater)
-- Image information: 14,989 images
+- Image information: 14,989 images from 37 videos (3,273 frames with no fish are kept)
 - Annotation information: 21,267 bounding boxes
-- Typical animal size in pixels: N/A
+- Known issue: a small subset of the images has wrong annotations. In one video (dataset_156: 1,129 frames, ~8% of the images, all in train), the fish swim in dense schools of perch and roach but only 2-4 fish per frame are boxed, so most fish in these frames are unlabelled
+- Typical animal size in pixels: ~500 (median long side of the boxes)
 - Code to render sample annotated image: [pomerfish.py](./datasets/pomerfish.py)
 
 <img src="./previews/pomerfish_sample_image.png" alt="PomerFish sample" width="600">

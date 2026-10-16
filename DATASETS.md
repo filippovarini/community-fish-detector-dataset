@@ -153,6 +153,16 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: none
 - **Split**: By video (the frame filename without `_frame_<n>`, 1,673 videos; sorted names, `random_state`). The source's own train/valid/test split is also by video
 
+### fjordfish
+- **Source**: [Zenodo](https://zenodo.org/records/17950781)
+- **Download**: Automatic (`FjordFish.zip`, 6.1 GB)
+- **Annotations**: YOLO TXT -> COCO conversion (28 classes in `data.yaml`; source train/val folders merged, labels matched to images by file stem because `2515.jpg` is in `images/train` but its label is in `labels/val`). Mixed resolutions: BRUV and mesocosm video frames plus diver DSLR photos
+- **Category mapping**:
+  - fish: `ballan`, `cuckoo_female`, `cuckoo_male`, `corkwing_female`, `corkwing_male`, `goldsinny`, `rock_cook`, `labrids_unknown`, `cod`, `cod_yoy`, `haddock`, `pollack`, `poor_cod`, `saithe`, `whiting`, `gadines_unknown`, `spiny_dogfish`, `sharks_unknown` (no boxes), `ling`, `two_spot_goby`, `black_goby`, `sand_goby`
+  - non-fish: `brown_crab`, `green_crab`, `hermit` (hermit crabs), `lobster`, `decapods_unknown` (all crabs on inspection)
+  - discard: `unknown` (no boxes)
+- **Split**: By blocks of 100 consecutive image ids (`<id> // 100`, 31 blocks; sorted, `random_state`). Images are named `1.jpg`...`3002.jpg` in source order, so neighbouring ids are frames of the same video or photos of the same series; no video/site id is published. The authors' train/val folders are a random per-image split and are ignored
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

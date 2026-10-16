@@ -552,6 +552,29 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 
 
 
+#### FjordFish
+
+3,002 images of North Atlantic coastal fish from baited and unbaited remote underwater video surveys along the Norwegian and Swedish coasts, a cod mesocosm at the Flødevigen research station, and diver photos, with 6,350 bounding boxes in 27 classes
+
+Poling JD, Sørdalen TK, Halvorsen K, Thormar J, Perry D, Larsen T. [FjordFish](https://doi.org/10.5281/zenodo.17950781). Zenodo, 2025. Described in: Poling JD, Perry D, Halvorsen KT, Malde K, Thormar J, Larsen T, Sørdalen TK. [Annotation strategy trade-offs for deep learning-based underwater fish detection](https://doi.org/10.1016/j.ecoinf.2026.103891). Ecological Informatics, 2026
+
+- Data downloadable via https from Zenodo ([download link](https://zenodo.org/records/17950781/files/FjordFish.zip?download=1))
+- License: CC BY 4.0
+- Metadata raw format: YOLO TXT
+- Categories/species: wrasses (ballan, cuckoo, corkwing, goldsinny, rock cook), gadids (cod, haddock, pollack, poor cod, saithe, whiting, ling), spiny dogfish, gobies, crabs and lobster (27 classes)
+  - fish: ballan, cuckoo_female, cuckoo_male, corkwing_female, corkwing_male, goldsinny, rock_cook, labrids_unknown, cod, cod_yoy, haddock, pollack, poor_cod, saithe, whiting, gadines_unknown, spiny_dogfish, sharks_unknown, ling, two_spot_goby, black_goby, sand_goby
+  - non-fish: brown_crab, green_crab, hermit (hermit crab), lobster, decapods_unknown
+  - discarded: unknown (no boxes)
+- Vehicle type: BRUV / stationary cameras, mesocosm camera, diver
+- Image information: 3,002 images (mostly 1920x1080; also 2448x2048, 3840x2160 and diver photos up to 7360x4912)
+- Annotation information: 6,350 bounding boxes (6,101 fish, 249 non-fish)
+- Typical animal size in pixels: N/A
+- Code to render sample annotated image: [fjordfish.py](./datasets/fjordfish.py)
+
+<img src="./previews/fjordfish_sample_image.png" alt="FjordFish sample" width="600">
+
+
+
 ### Datasets that were not included in the Community Fish Detection Dataset
 
 - [Fishnet.AI](https://www.fishnet.ai/): ~163k bounding boxes on ~35k images of fish and people on fishing vessels.  Excluded because images are above-water.
@@ -578,7 +601,6 @@ Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 - [J-EDI](https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html) (~8k images with 19 deep-sea animal categories)
 - [OBSEA](https://zenodo.org/records/14888328) (~35k boxes on ~4k images from a cabled observatory in the Mediterranean)
 - [DIGI4ECO](https://zenodo.org/records/20701225) (~126k boxes on ~6k video frames from the Adriatic Sea, the Mediterranean Sea, and Galway Bay)
-- [FjordFish](https://zenodo.org/records/17950781) (~6k boxes on ~3k images from a BRUV in the North Atlantic)
 - [SFISHTRACK](https://github.com/JosepSanchezCano/SFISHTRACK) (~24k frames with segmentation masks)
 - [Caribbean Fish](https://warplab.github.io/corefish/) (~15K images with ~90k bounding boxes collected in 5 different Caribbean coral reefs over 8 years)
 

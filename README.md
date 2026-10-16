@@ -552,6 +552,30 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 
 
 
+#### CoReFish (Caribbean Coral Reef Fish)
+
+Expert-annotated fish boxes and tracks in diver-transect videos from 5 coral reef sites in the US Virgin Islands National Park (St. John), surveyed every year from 2016 to 2023
+
+Cai L, Greene A, Yang D, Aoki N, Jarriel SD, Ha J, Formel N, Mooney TA, Girdhar Y. [Species-level Detection and Tracking of Caribbean Coral Reef Fish](https://warplab.github.io/corefish/static/pdf/iccvw-corefish.pdf). ICCV 2025 Workshops (CV4Ecology).
+
+- Home: [https://warplab.github.io/corefish/](https://warplab.github.io/corefish/)
+- Data downloadable via HTTPS from Google Drive ([download link](https://drive.google.com/file/d/1LENr6D8XW8ivusF2riS0v27Grwa1Uj2q/view?usp=sharing), 40 GB zip)
+- License: CC BY-NC-SA 4.0
+- Metadata raw format: COCO JSON (fish-only and species-level files), YOLO TXT
+- Categories/species: fish; 54 Caribbean reef fish species on a subset of tracks
+  - fish: fish (the species labels are all fish and are not used)
+  - non-fish: none
+  - discarded: none
+- Vehicle type: diver (Olympus PEN E-PL5 on a PVC transect frame)
+- Image information: 14,580 frames (1920x1080) from 162 transects, 3,652 of them without fish; 14,490 used (one transect's images are missing from the zip)
+- Annotation information: 100,074 bounding boxes (100,003 used)
+- Typical animal size in pixels: ~29 px (median box long side)
+- Code to render sample annotated image: [corefish.py](./datasets/corefish.py)
+
+<img src="./previews/corefish_sample_image.png" alt="CoReFish sample" width="600">
+
+
+
 ### Datasets that were not included in the Community Fish Detection Dataset
 
 - [Fishnet.AI](https://www.fishnet.ai/): ~163k bounding boxes on ~35k images of fish and people on fishing vessels.  Excluded because images are above-water.
@@ -580,5 +604,4 @@ Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 - [DIGI4ECO](https://zenodo.org/records/20701225) (~126k boxes on ~6k video frames from the Adriatic Sea, the Mediterranean Sea, and Galway Bay)
 - [FjordFish](https://zenodo.org/records/17950781) (~6k boxes on ~3k images from a BRUV in the North Atlantic)
 - [SFISHTRACK](https://github.com/JosepSanchezCano/SFISHTRACK) (~24k frames with segmentation masks)
-- [Caribbean Fish](https://warplab.github.io/corefish/) (~15K images with ~90k bounding boxes collected in 5 different Caribbean coral reefs over 8 years)
 

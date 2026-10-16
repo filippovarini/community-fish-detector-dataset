@@ -153,6 +153,16 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: none
 - **Split**: By video (the frame filename without `_frame_<n>`, 1,673 videos; sorted names, `random_state`). The source's own train/valid/test split is also by video
 
+### corefish
+- **Source**: [CoReFish project page](https://warplab.github.io/corefish/) (Google Drive file `corefish_dataset.zip`)
+- **Download**: Automatic, with a manual fallback (40 GB zip from Google Drive). Google Drive often refuses anonymous downloads of this file ("Quota exceeded"); the script then stops and prints how to download it signed in (in a browser, or on the server with the browser's "Copy as cURL" request) to `data/raw/corefish/corefish_dataset.zip`. The zip is kept in `data/raw/` and the frames are extracted straight from it into `data/processing/`; it can be deleted by hand afterwards
+- **Annotations**: COCO format (`coco_fishonly.json`, single category `fish`, 1-indexed). 14,580 frames (162 diver transects x 90 frames at 3 fps), 100,074 boxes. Frames without fish (3,652) are kept. Image names are the source path flattened with `__`. Transect `Summer2016/JoelsShoal30mTransects061016/P6100007_0m_26s` (90 frames, 71 boxes) is annotated but its images are missing from the zip (the folder `P6100005_0m_20s` is there instead and does not match the boxes), so it is dropped. `coco_species.json` (54 species on part of the tracks, all fish) and the YOLO labels are not used
+- **Category mapping**:
+  - fish: `fish`
+  - non-fish: none
+  - discard: none
+- **Split**: The authors' split (`{train,val,test}_fishonly_split.txt`), which is by survey trip: their train -> train (7,290 frames), their val + test -> val (7,200 frames). Each transect and survey trip lies in one split
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

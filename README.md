@@ -552,6 +552,29 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 
 
 
+#### WIO-ReefFish
+
+1,000 ultra-high-definition frames from diver-operated video transects on coral reefs in Kenya (2023) and Tanzania (2025), with 6,768 boxes on fish of 24 reef fish families
+
+Gerard J, Branger L, Huyghe F, Kochzius M, Otwoma L, Bergacker S, op't Roodt L, Rumisha C, Di Bella L (2026). [WIO-ReefFish: A High-Resolution Dataset for Taxon-Aware Coral Reef Fish Detection in the Western Indian Ocean](https://doi.org/10.5281/zenodo.21360120). Zenodo.
+
+- Data downloadable via HTTPS from Zenodo ([download link](https://zenodo.org/records/21360120/files/WIO-ReefFish_v1.0.0.zip?download=1))
+- License: CC BY 4.0
+- Metadata raw format: YOLO TXT
+- Categories/species: 23 reef fish families and the parrotfish subfamily Scarinae (only fish of these families are boxed)
+  - fish: all 24 classes (Acanthuridae, Anthiadidae, Aulostomidae, Balistidae, Caesionidae, Chaetodontidae, Epinephelidae, Haemulidae, Holocentridae, Kyphosidae, Labridae, Lethrinidae, Lutjanidae, Microdesmidae, Monacanthidae, Mullidae, Pempheridae, Pomacanthidae, Pomacentridae, Priacanthidae, Scarinae, Siganidae, Tetraodontidae, Zanclidae)
+  - non-fish: none
+  - discarded: none
+- Vehicle type: diver (GoPro, line-intercept transects)
+- Image information: 1,000 images (3840x2160) from 10 locations
+- Annotation information: 6,768 bounding boxes
+- Typical animal size in pixels: ~90 px (median box long side)
+- Code to render sample annotated image: [wio_reef_fish.py](./datasets/wio_reef_fish.py)
+
+<img src="./previews/wio_reef_fish_sample_image.png" alt="WIO-ReefFish sample" width="600">
+
+
+
 ### Datasets that were not included in the Community Fish Detection Dataset
 
 - [Fishnet.AI](https://www.fishnet.ai/): ~163k bounding boxes on ~35k images of fish and people on fishing vessels.  Excluded because images are above-water.
@@ -573,7 +596,6 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 
 Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 
-- [WIO-ReefFish](https://zenodo.org/records/21360120) (~6.8k boxes on 1k images with 24k labeled fish taxa from the Indian Ocean)
 - [Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)](https://ouvert.canada.ca/data/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70) (~24k images of marine fish in Canada, with ~24k boxes)
 - [J-EDI](https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html) (~8k images with 19 deep-sea animal categories)
 - [OBSEA](https://zenodo.org/records/14888328) (~35k boxes on ~4k images from a cabled observatory in the Mediterranean)

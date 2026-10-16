@@ -153,6 +153,16 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: none
 - **Split**: By video (the frame filename without `_frame_<n>`, 1,673 videos; sorted names, `random_state`). The source's own train/valid/test split is also by video
 
+### wio_reef_fish
+- **Source**: [Zenodo](https://zenodo.org/records/21360120)
+- **Download**: Automatic (`WIO-ReefFish_v1.0.0.zip`, 636 MB, resumes an interrupted download, MD5 checked)
+- **Annotations**: YOLO TXT -> COCO conversion (source train/valid/test merged). 1,000 frames at 3840x2160 from 50 diver-operated video transects in Kenya (2023) and Tanzania (2025), 6,768 boxes. Class ids follow `data.yaml`; the per-class box counts are checked against `metadata/annotations_summary.csv`. Only fish of the 24 families are boxed, so fish of other families may be unlabelled
+- **Category mapping**:
+  - fish: all 24 classes (`Acanthuridae`, `Anthiadidae`, `Aulostomidae`, `Balistidae`, `Caesionidae`, `Chaetodontidae`, `Epinephelidae`, `Haemulidae`, `Holocentridae`, `Kyphosidae`, `Labridae`, `Lethrinidae`, `Lutjanidae`, `Microdesmidae`, `Monacanthidae`, `Mullidae`, `Pempheridae`, `Pomacanthidae`, `Pomacentridae`, `Priacanthidae`, `Scarinae`, `Siganidae`, `Tetraodontidae`, `Zanclidae`)
+  - non-fish: none
+  - discard: none
+- **Split**: By location. The video id (filename before `_frame_<n>`) gives the location through the authors' `alternative_splits/transect/VIDEO_ASSIGNMENT.csv` (47 videos, 10 locations). Diani (Kenya) and Mikindani (Tanzania) go to val (223 images, 1,341 boxes); the other 8 locations go to train (777 images, 5,427 boxes). Videos `GX011330`, `GX011332`, `GX011334` (12 images) are missing from the CSV; by GoPro file number they were filmed between the Kunduchi and Kilwa videos, so they go to train and neither location is in val. The source's headline split is random by frame and is not used
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

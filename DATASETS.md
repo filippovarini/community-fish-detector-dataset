@@ -153,6 +153,16 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: none
 - **Split**: By video (the frame filename without `_frame_<n>`, 1,673 videos; sorted names, `random_state`). The source's own train/valid/test split is also by video
 
+### n_marine
+- **Source**: [Government of Canada Open Data Portal](https://open.canada.ca/data/en/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70)
+- **Download**: Automatic (15 PNG zips, ~23 GB, plus `nmarine_csv.zip`; resumable). The zips are kept in `data/raw/` and never extracted there: images are read from them straight into `data/processing/` as `<video>_<frame>.png`. The server's firewall rejects range requests near the end of a zip, so a resume that fails there needs the `.part` file deleted
+- **Annotations**: One CSV per video (`img`, `TL_x/TL_y/BR_x/BR_y` in pixels, `marine_class`, `species`) -> COCO conversion. Boxes are clipped to the 1920x1080 frame (some extend up to ~25 px outside). 20,936 annotated frames + 3,000 background frames (frames in the zips with no CSV row), which are kept as images without annotations
+- **Category mapping**:
+  - fish: `Cod` (Gadus morhua), `Roughhead_grenadier` (Macrourus berglax), `Atlantic_halibut` (Hippoglossus hippoglossus), `Redfish_mentella` (Sebastes mentella), `Thorny_skate` (Amblyraja radiata), `Striped_wolffish` (Anarhichas lupus), `Spinytail_skate` (Bathyraja spinicauda), `Wolffish` (Anarhichas denticulatus)
+  - non-fish: `Whelk` (Buccinum undatum, a crawling sea snail; 869 boxes, all from one video)
+  - discard: none
+- **Split**: By camera deployment. Videos are named `<camera>_<YYYYMMDD>_<HHMMSS>` and consecutive 5-minute videos of one deployment film the same pot. 5 deployments: camera 097 on 16-17 Jul (one deployment past midnight), 097 on 19 Jul, 116 on 21 Jul, 130 on 19 Jul, 136 on 19 Jul. Camera 097 on 19 Jul (3,494 annotated frames, ~17%) -> val, the rest -> train
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

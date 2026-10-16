@@ -552,6 +552,29 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 
 
 
+#### Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)
+
+23,936 frames from baited, lit cameras on crab pots at 400-500 m depth in the Northeast Newfoundland Slope Closure (Canada), with 23,890 boxes on 8 groundfish species and whelks
+
+Morris CJ, Ayyagari KD, Porter D, Nguyen QK, Hanlon J, Whidden C. [Newfoundland Marine Refuge Fish Classification Dataset (N-Marine)](https://open.canada.ca/data/en/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70). Government of Canada Open Data Portal. 2025.
+
+- Data downloadable via HTTPS from the Government of Canada Open Data Portal ([download link](https://open.canada.ca/data/en/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70)): 15 PNG zips (~23 GB) and `nmarine_csv.zip`
+- License: Open Government Licence - Canada
+- Metadata raw format: one CSV per video (pixel corner coordinates and YOLO-style normalised boxes)
+- Categories/species: Atlantic cod, roughhead grenadier, Atlantic halibut, deepwater redfish, thorny skate, striped wolffish, spinytail skate, northern wolffish, whelk
+  - fish: Cod, Roughhead_grenadier, Atlantic_halibut, Redfish_mentella, Thorny_skate, Striped_wolffish, Spinytail_skate, Wolffish (northern wolffish)
+  - non-fish: Whelk (Buccinum undatum)
+  - discarded: none
+- Vehicle type: baited camera with lights on crab pots (4 cameras, 185 five-minute videos)
+- Image information: 23,936 images (1920x1080), including 3,000 background images without animals
+- Annotation information: 23,890 bounding boxes (23,021 fish, 869 non-fish)
+- Typical animal size in pixels: ~390 px (median box long side)
+- Code to render sample annotated image: [n_marine.py](./datasets/n_marine.py)
+
+<img src="./previews/n_marine_sample_image.png" alt="N-MARINE sample" width="600">
+
+
+
 ### Datasets that were not included in the Community Fish Detection Dataset
 
 - [Fishnet.AI](https://www.fishnet.ai/): ~163k bounding boxes on ~35k images of fish and people on fishing vessels.  Excluded because images are above-water.
@@ -574,7 +597,6 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 Datasets that we're aware exist, but that we haven't evaluated or processed yet.
 
 - [WIO-ReefFish](https://zenodo.org/records/21360120) (~6.8k boxes on 1k images with 24k labeled fish taxa from the Indian Ocean)
-- [Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)](https://ouvert.canada.ca/data/dataset/2ae46860-f82a-4127-bb1f-b02e36ef6a70) (~24k images of marine fish in Canada, with ~24k boxes)
 - [J-EDI](https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html) (~8k images with 19 deep-sea animal categories)
 - [OBSEA](https://zenodo.org/records/14888328) (~35k boxes on ~4k images from a cabled observatory in the Mediterranean)
 - [DIGI4ECO](https://zenodo.org/records/20701225) (~126k boxes on ~6k video frames from the Adriatic Sea, the Mediterranean Sea, and Galway Bay)

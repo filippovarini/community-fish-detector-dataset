@@ -163,6 +163,16 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: `Diver`, `Delphinus (dead)` (a dolphin carcass on the seabed), `Posidonia oceanica (shot)` (seagrass), `Gateropodae` (small snail shells)
 - **Split**: By camera, from the filename. Cameras `AIPC608UW_10_167` and `C4k0193` -> val (834 images, 20%); the other cameras and the videos/images without a camera id -> train
 
+### digi4eco
+- **Source**: [Zenodo](https://doi.org/10.5281/zenodo.20701225) (`DIGI4ECO_tracking_dataset.zip`)
+- **Download**: Automatic (139 MB, resumes an interrupted download, checked against the Zenodo MD5)
+- **Annotations**: CVAT XML for video 1.1 (multi-object tracks over 4 MP4 videos) -> COCO conversion. Every annotated frame is extracted from the videos with OpenCV, and every box with `outside="0"` and `occluded="0"` becomes a COCO box; track ids are dropped. The visible box count of each XML is checked against its `annotation_stats`. Boxes with `occluded="1"` (11,798, 9.4% of the visible boxes, ~95% of them interpolated by CVAT) are dropped: in 96 random crops (24 per sequence) most showed no fish, only the pillar or rope the fish was behind, open water, or a closer fish hiding it; only about 1 in 5 showed part of the fish. Ancona, SmartBay1 and SmartBay2 decode to exactly their annotated frame count, so CVAT frame k is the k-th decoded frame. The OBSEA video has 148 frames for 150 annotated ones (timestamps on a 1/30 s grid with two gaps), so its frames are matched by timestamp and CVAT frames 1 and 148 (15 non-occluded boxes) are skipped. 5,849 images, 114,207 boxes; every frame keeps at least one box. Each COCO image entry has extra fields to allow dropping consecutive frames later: `video`, `frame_index` and `site`
+- **Category mapping**:
+  - fish: `Fish`, `Apogon sp` (2 tracks in SmartBay1, 62 boxes; cardinalfish, crops checked)
+  - non-fish: none
+  - discard: none
+- **Split**: By site, from the sequence name in the filename. Ancona (Adriatic Sea) -> val (1,200 images, 22,441 boxes, 20%); OBSEA and SmartBay1/SmartBay2 (Galway Bay, two cameras) -> train (4,649 images, 91,766 boxes). The OBSEA clip (camera ANERIS-EMUAS1, July 2025) is not from the cameras that `obsea` puts in val
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

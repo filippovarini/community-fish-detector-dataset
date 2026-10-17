@@ -555,6 +555,29 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 
 
 
+#### DIGI4ECO Underwater Fish Tracking
+
+5,849 frames from 4 underwater videos recorded at three European marine observatory sites (Adriatic Sea, NW Mediterranean, Galway Bay), with 114,207 fish bounding boxes from manually annotated tracks
+
+González-Villà S, Burns Font D, Aguzzi J, et al. [DIGI4ECO Underwater Fish Tracking Dataset](https://doi.org/10.5281/zenodo.20701225). Zenodo, 2026
+
+- Data downloadable via Zenodo ([download link](https://zenodo.org/records/20701225/files/DIGI4ECO_tracking_dataset.zip?download=1))
+- License: CC BY 4.0
+- Metadata raw format: CVAT XML for video 1.1 (multi-object tracks) over MP4 videos
+- Categories/species: Fish (all individuals, no species), plus 2 tracks labelled Apogon sp (cardinalfish)
+  - fish: Fish, Apogon sp
+  - non-fish: none
+  - discarded: none
+- Vehicle type: fixed underwater cameras (OBSEA cabled observatory, SmartBay Observatory, and a camera near an artificial structure offshore Pineto, Adriatic Sea)
+- Image information: 5,849 frames (1920x1080, OBSEA 1912x1080): Ancona 1,200, OBSEA 148, SmartBay1 2,400, SmartBay2 2,101
+- Annotation information: 114,207 fish bounding boxes (491 tracks); the 11,798 boxes flagged as occluded are dropped, as most of them show no visible fish
+- Typical animal size in pixels: ~104 (median long side of the fish boxes)
+- Code to render sample annotated image: [digi4eco.py](./datasets/digi4eco.py)
+
+<img src="./previews/digi4eco_sample_image.png" alt="DIGI4ECO Underwater Fish Tracking sample" width="600">
+
+
+
 ### Datasets that were not included in the Community Fish Detection Dataset
 
 - [Fishnet.AI](https://www.fishnet.ai/): ~163k bounding boxes on ~35k images of fish and people on fishing vessels.  Excluded because images are above-water.

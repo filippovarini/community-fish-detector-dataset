@@ -764,6 +764,29 @@ Wilson KC, Lurbur M, Yochum N (2025). [Automated fish detection in videos to sup
 
 
 
+#### TrashCan 1.0
+
+7,212 frames from JAMSTEC deep-sea ROV videos (J-EDI archive, largely in the Sea of Japan), annotated with instance masks for underwater trash, ROVs, plants and animals. Only the fish, eel, crab and starfish annotations are used.
+
+Hong J, Fulton M, Sattar J (2020). [TrashCan 1.0: An Instance-Segmentation Labeled Dataset of Trash Observations](https://doi.org/10.13020/g1gx-y834). Data Repository for the University of Minnesota (DRUM). Paper: [TrashCan: A Semantically-Segmented Dataset towards Visual Detection of Marine Debris](https://arxiv.org/abs/2007.08097).
+
+- Data downloadable via HTTPS from the University of Minnesota data repository ([download link](https://conservancy.umn.edu/server/api/core/bitstreams/fffa78cc-3abf-42b9-b019-bc15a953a8e9/content), 553 MB)
+- License: free for academic teaching and research; commercial use requires permission from JAMSTEC. Attribution to the authors and to JAMSTEC is required, including in derivative datasets
+- Metadata raw format: COCO JSON with instance segmentation masks
+- Categories/species: 22 classes: deep-sea animals (fish, eel, crab, starfish, shells, other), plants, ROV parts and 16 trash types
+  - fish: animal_fish, animal_eel
+  - non-fish: animal_crab, animal_starfish
+  - discarded: animal_etc (mix of squid, shrimp, crabs, anemones and unclear objects), animal_shells (mostly dead shells), plant, rov, all trash_* classes
+- Vehicle type: ROV (JAMSTEC)
+- Image information: 7,212 images (480x270 or 480x360) from 312 videos; 6,049 have no fish or non-fish and are kept as background
+- Annotation information: 1,814 bounding boxes (1,107 fish, 707 non-fish)
+- Typical animal size in pixels: ~85 (median long side of the fish boxes)
+- Code to render sample annotated image: [trashcan.py](./datasets/trashcan.py)
+
+<img src="./previews/trashcan_sample_image.png" alt="TrashCan sample" width="600">
+
+
+
 ### Datasets that were not included in the Community Fish Detection Dataset
 
 - [Fishnet.AI](https://www.fishnet.ai/): ~163k bounding boxes on ~35k images of fish and people on fishing vessels.  Excluded because images are above-water.

@@ -253,6 +253,16 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: `Giant_clam`, `Sea_anemone`, `Sponges` (sessile); `Homo_Sapiens`, `Human_object`, `Waste`, `Trample`, `Useless`; all coral (`Acropora_*`, `Non-acropora_*`, `Living_coral`, `Dead_coral`, `Bleached_coral`, `Soft_coral`, `Gorgonian`), algae (`Algal_Assemblage`, `Algae_*`), seagrass (`Syringodium_isoetifolium`) and substrate (`Sand`, `Rubble`, `Rock`) classes
 - **Split**: By site, from the second token of the file name (`<date>_<site>_<vehicle>_...`). Mayotte (`MYT`) -> val (322 images, 3,356 fish, 33 non-fish); Reunion (`REU-Hermitage`), Europa Island (`ATF-Europa`) and Mauritius (`MUS-*`) -> train (877 images, 5,138 fish, 1,191 non-fish). Frames from the same session are often consecutive video frames, so many are near-duplicates
 
+### trashcan
+- **Source**: [TrashCan 1.0, Data Repository for the University of Minnesota](https://conservancy.umn.edu/items/6dd6a960-c44a-4510-a679-efb8c82ebfb7) (DOI: https://doi.org/10.13020/g1gx-y834; paper: https://arxiv.org/abs/2007.08097)
+- **Download**: Automatic (`dataset.zip`, 553 MB, resumable). The two `*_checkpoints.zip` files (~9.5 GB each, model weights) are not downloaded
+- **Annotations**: COCO instance segmentation (1-indexed) -> COCO boxes only (the source `bbox` of each mask). The "instance version" is used; the "material version" differs only in how trash is labelled. The official `train` (6,065 images) and `val` (1,147 images) files are merged: 7,212 images (480x270 or 480x360) from 312 JAMSTEC ROV videos. The 6,049 images with no fish or non-fish (trash, ROV and plant only) are kept as background
+- **Category mapping** (instance version, crops checked):
+  - fish: `animal_fish` (764), `animal_eel` (343; eels and eelpouts)
+  - non-fish: `animal_crab` (309), `animal_starfish` (398; mostly brittle stars, some sea stars)
+  - discard: `animal_etc` (235; mix of squid, shrimp, crabs, anemones, a fish and unclear blobs), `animal_shells` (249; mostly dead clam shells and mussel beds), `plant`, `rov`, and all 16 `trash_*` classes
+- **Split**: By video ID (`vid_<video>_frame<frame>.jpg`), 80/20 over the 312 sorted video IDs with `random_state`. Expected: train 249 videos / 5,884 images (930 fish, 553 non-fish), val 63 videos / 1,328 images (177 fish, 154 non-fish). The official split is per image and 113 of its 115 val videos also appear in train, so it is ignored. Frames are sampled from the same ROV video, so frames within a video are often similar
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

@@ -253,6 +253,17 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: `Giant_clam`, `Sea_anemone`, `Sponges` (sessile); `Homo_Sapiens`, `Human_object`, `Waste`, `Trample`, `Useless`; all coral (`Acropora_*`, `Non-acropora_*`, `Living_coral`, `Dead_coral`, `Bleached_coral`, `Soft_coral`, `Gorgonian`), algae (`Algal_Assemblage`, `Algae_*`), seagrass (`Syringodium_isoetifolium`) and substrate (`Sand`, `Rubble`, `Rock`) classes
 - **Split**: By site, from the second token of the file name (`<date>_<site>_<vehicle>_...`). Mayotte (`MYT`) -> val (322 images, 3,356 fish, 33 non-fish); Reunion (`REU-Hermitage`), Europa Island (`ATF-Europa`) and Mauritius (`MUS-*`) -> train (877 images, 5,138 fish, 1,191 non-fish). Frames from the same session are often consecutive video frames, so many are near-duplicates
 
+### norfisk
+- **Source**: [DataverseNO, NorFisk Dataset v1.1](https://doi.org/10.18710/H5G3K5) (found via [B2FIND](https://b2find.eudat.eu/dataset/9ac082a3-9a1f-5f92-acf4-61d8f3183985)), CC0 1.0
+- **Download**: Automatic (`NorFisk_v1.0.zip`, 2.6 GB, resumable, from the Dataverse access API, file id 86889)
+- **Annotations**: one TXT per image (`file_name,class,xmin,ymin,xmax,ymax,width,height`, no header) -> COCO. 12,514 PNG images (`saithe/img/saithe.<n>.png`, `salmonid/img/salmonid.<n>.png`), 12,514 boxes
+- **Known issue — missing labels**: the images are not full video frames but crops around one fish (101-3190 px wide, median 376), with exactly one box each. Other fish visible in the crop are NOT annotated. In a 40-image sample, about a quarter had unlabelled fish; it is frequent in the crowded salmonid crops (inside the pens) and occasional in the saithe crops (open water). The dataset is included anyway, at the user's request; consider down-weighting or dropping it if missed detections become a problem
+- **Category mapping**:
+  - fish: `salmonid` (9,487; farmed salmon and trout inside the net pens), `saithe` (3,027; wild, outside the pens)
+  - non-fish: none
+  - discard: none
+- **Split**: By blocks of 100 image numbers within each species (`<species>_<n // 100>`, 126 blocks; sorted, `random_state`, 20% of each species' blocks to val). Images were taken at 1 frame per second from ~49 h of video and are numbered in video order, but the video is not in the filename. Neighbouring numbers look alike, while numbers 100 apart are as different as random pairs, so a block keeps near-duplicate crops in one split. Result: train 9,915 (7,588 salmonid, 2,327 saithe), val 2,599 (1,899 salmonid, 700 saithe)
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

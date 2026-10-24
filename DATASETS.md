@@ -368,6 +368,16 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: none
 - **Split**: By blocks of 100 image numbers within each species (`<species>_<n // 100>`, 126 blocks; sorted, `random_state`, 20% of each species' blocks to val). Images were taken at 1 frame per second from ~49 h of video and are numbered in video order, but the video is not in the filename. Neighbouring numbers look alike, while numbers 100 apart are as different as random pairs, so a block keeps near-duplicate crops in one split. Result: train 9,915 (7,588 salmonid, 2,327 saithe), val 2,599 (1,899 salmonid, 700 saithe)
 
+### trashcan
+- **Source**: [TrashCan 1.0, Data Repository for the University of Minnesota](https://conservancy.umn.edu/items/6dd6a960-c44a-4510-a679-efb8c82ebfb7) (DOI: https://doi.org/10.13020/g1gx-y834; paper: https://arxiv.org/abs/2007.08097)
+- **Download**: Automatic (`dataset.zip`, 553 MB, resumable). The two `*_checkpoints.zip` files (~9.5 GB each, model weights) are not downloaded
+- **Annotations**: COCO instance segmentation (1-indexed) -> COCO boxes only (the source `bbox` of each mask). The "instance version" is used; the "material version" differs only in how trash is labelled. The official `train` (6,065 images) and `val` (1,147 images) files are merged: 7,212 images (480x270 or 480x360) from 312 JAMSTEC ROV videos. The 6,049 images with no fish or non-fish (trash, ROV and plant only) are kept as background
+- **Category mapping** (instance version, crops checked):
+  - fish: `animal_fish` (764), `animal_eel` (343; eels and eelpouts)
+  - non-fish: `animal_crab` (309), `animal_starfish` (398; mostly brittle stars, some sea stars)
+  - discard: `animal_etc` (235; mix of squid, shrimp, crabs, anemones, a fish and unclear blobs), `animal_shells` (249; mostly dead clam shells and mussel beds), `plant`, `rov`, and all 16 `trash_*` classes
+- **Split**: By video ID (`vid_<video>_frame<frame>.jpg`), 80/20 over the 312 sorted video IDs with `random_state`. Expected: train 249 videos / 5,884 images (930 fish, 553 non-fish), val 63 videos / 1,328 images (177 fish, 154 non-fish). The official split is per image and 113 of its 115 val videos also appear in train, so it is ignored. Frames are sampled from the same ROV video, so frames within a video are often similar
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

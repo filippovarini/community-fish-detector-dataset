@@ -21,19 +21,21 @@ Frames with no boxes left after mapping (mostly background/diver-only frames) ar
 """
 
 import json
-import os
 import re
 import shutil
 import zipfile
 from pathlib import Path
 
-import requests
 from PIL import Image
 from tqdm import tqdm
 
 from datasets.settings import Settings
 from datasets.utils import (
     HttpRangeFile,
+    get_dryad_credentials_help,
+    get_dryad_download_request,
+    has_dryad_credentials,
+    read_dryad_credentials,
     map_annotations_to_fish_and_non_fish,
     split_coco_dataset_into_train_validation,
     add_dataset_shortname_prefix_to_image_names,
@@ -43,8 +45,6 @@ from datasets.utils import (
 DATASET_SHORTNAME = "med_fish_census"
 DATA_PAGE_URL = "https://datadryad.org/dataset/doi:10.5061/dryad.f7m0cfz6f"
 DRYAD_FILE_ID = 3732300  # autoUC_Data.zip
-DRYAD_TOKEN_URL = "https://datadryad.org/oauth/token"
-DRYAD_DOWNLOAD_URL = f"https://datadryad.org/api/v2/files/{DRYAD_FILE_ID}/download"
 
 FISH_SPECIES = [
     "Chromis_chromis", "Diplodus_vulgaris", "Coris_julis", "Symphodus_tinca", "Spicara_smaris",
@@ -80,47 +80,6 @@ coco_annotations_path = processing_dir / settings.coco_file_name
 mapped_annotations_path = processing_dir / "med_fish_census_mapped_annotations.json"
 
 
-def read_dryad_credentials() -> dict:
-    """DRYAD_* variables from the environment, falling back to the repo's .env file"""
-    credentials = {}
-    env_file = Path(__file__).resolve().parent.parent / ".env"
-    if env_file.exists():
-        for line in env_file.read_text().splitlines():
-            key, sep, value = line.partition("=")
-            if sep and key.strip().startswith("DRYAD_"):
-                credentials[key.strip()] = value.strip().strip("\"'")
-    credentials.update({k: v for k, v in os.environ.items() if k.startswith("DRYAD_")})
-    return credentials
-
-
-def get_dryad_download_request(credentials: dict):
-    """
-    Returns a function that gives (url, headers) for the zip: a fresh bearer token is used to
-    resolve the API download link to its signed S3 URL, which is called again when it expires.
-    """
-
-    def get_token() -> str:
-        if "DRYAD_CLIENT_ID" in credentials and "DRYAD_CLIENT_SECRET" in credentials:
-            response = requests.post(DRYAD_TOKEN_URL, data={
-                "client_id": credentials["DRYAD_CLIENT_ID"],
-                "client_secret": credentials["DRYAD_CLIENT_SECRET"],
-                "grant_type": "client_credentials",
-            }, timeout=60)
-            response.raise_for_status()
-            return response.json()["access_token"]
-        return credentials["DRYAD_TOKEN"]
-
-    def get_request():
-        headers = {"Authorization": f"Bearer {get_token()}"}
-        response = requests.get(DRYAD_DOWNLOAD_URL, headers=headers, allow_redirects=False, timeout=60)
-        if response.is_redirect:
-            return response.headers["Location"], {}
-        response.raise_for_status()
-        return DRYAD_DOWNLOAD_URL, headers
-
-    return get_request
-
-
 def download_data():
     """Extract Data_T from the local zip if there is one, otherwise from the remote zip"""
     if extraction_done_path.exists():
@@ -138,29 +97,13 @@ def download_data():
             )
         print(f"Extracting Data_T from the local zip {zip_path}")
         zip_file = open(zip_path, "rb")
-    elif "DRYAD_TOKEN" in credentials or (
-        "DRYAD_CLIENT_ID" in credentials and "DRYAD_CLIENT_SECRET" in credentials
-    ):
+    elif has_dryad_credentials(credentials):
         print(f"Extracting Data_T from the remote zip (Dryad file {DRYAD_FILE_ID})")
-        zip_file = HttpRangeFile(get_dryad_download_request(credentials))
+        zip_file = HttpRangeFile(get_dryad_download_request(DRYAD_FILE_ID, credentials))
     else:
-        raise RuntimeError(f"""
-Dryad only serves files to signed-in browsers or to API clients with a token. Either:
-
-  1. Use the Dryad API (only the 4.4 GB Data_T folder is downloaded, not the 121.7 GB zip):
-     - Sign in to https://datadryad.org with ORCID, go to My account > API and create an
-       API account
-     - Put its credentials in the repo's .env file (git-ignored) or in the environment:
-         DRYAD_CLIENT_ID=...
-         DRYAD_CLIENT_SECRET=...
-       (or DRYAD_TOKEN=<a token copied from the account page>, valid for 10 hours)
-
-  2. Or download the whole autoUC_Data.zip (121.7 GB) manually from
-       {DATA_PAGE_URL}
-     and move it to {zip_path}
-     The script picks it up automatically and extracts Data_T from it.
-
-Then rerun this script.""")
+        raise RuntimeError(get_dryad_credentials_help(
+            DATA_PAGE_URL, zip_path, "the 4.4 GB Data_T folder"
+        ))
 
     with zip_file, zipfile.ZipFile(zip_file) as zf:
         # Data_T plus the class name lists, which are at the zip root

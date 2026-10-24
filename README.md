@@ -16,6 +16,8 @@ This repository contains a list of datasets with annotated marine/freshwater ima
 
 This effort was supported by the following folks: [Filippo Varini](https://www.linkedin.com/in/filippo-varini/), [Dan Morris](https://dmorris.net), [Kevin Barnard](https://www.mbari.org/person/kevin-barnard/), [Laura Chrobak](https://www.mbari.org/person/laura-chrobak/), [Oceane Boulais](https://www.oceaneboulais.net/), [Alexander Merdian-Tarko](https://alexvmt.github.io/), [Devi Ayyagari](https://www.linkedin.com/in/kameswari-devi-ayyagari-031820b7/), [Sonny Burniston](https://www.linkedin.com/in/sonny-burniston/), [Mona Dhiflaoui](https://www.linkedin.com/in/mona-dhiflaoui/), [Joshua Chen](https://www.linkedin.com/in/jiashu-chen-w/)
 
+See [DATASET_COMPILATION.md](DATASET_COMPILATION.md) for how the datasets are processed, deduplicated and merged.
+
 Email [Filippo](mailto:fppvrn@gmail.com) if anything seems off, or if you know of datasets we're missing.
 
 ## Contributing a new dataset

@@ -18,8 +18,14 @@ datasets/                          # Unified dataset processing pipeline
     split.py                      # split_coco_dataset_into_train_validation, get_train_images_with_random_splitting
   <dataset>.py                    # Per-dataset unified script (download + process + preview + split)
 
+quality_checks/                    # Checks on data/final before merging
+  check_rgb.py                    # RGB/BGR channel-order check (sampled images + contact sheets)
+  deduplicate.py                  # SSCD duplicate search across and within datasets
+  select_duplicates.py            # Applies the dedup decisions -> images_to_remove.csv
+
 previews/                          # Sample annotated images output directory
 DATASETS.md                        # Per-dataset processing details
+DATASET_COMPILATION.md             # Pipeline: process -> deduplicate -> merge
 ```
 
 ## Pipeline Overview
@@ -31,7 +37,7 @@ Each `datasets/<dataset>.py` script follows a single unified 4-step pattern:
 3. **Preview** — saves a sample annotated image to `previews/`
 4. **Split** — splits into train/val by location/source identifier when possible
 
-Final output: COCO-format datasets with two categories ("fish", "non-fish"), merged via `datasets/merge_all_datasets.py`.
+Final output: COCO-format datasets with two categories ("fish", "non-fish"), deduplicated with `quality_checks/` and merged via `datasets/merge_all_datasets.py`. See [DATASET_COMPILATION.md](DATASET_COMPILATION.md) for the full pipeline and the deduplication decisions.
 
 ## Class Definitions
 

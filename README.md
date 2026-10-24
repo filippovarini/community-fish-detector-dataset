@@ -968,6 +968,29 @@ Li H, Lian S, Li Z, Cong R, Li C, Yang LT, Zhang W, Kwong S. [Advancing Marine R
 
 
 
+#### NorFisk Dataset
+
+12,514 underwater crops of farmed salmonids (inside net pens) and wild saithe (outside the pens) from ~49 hours of GoPro video at Norwegian fish farms (2017-2020, 1-50 m depth). **Each image is a crop around one fish with exactly one box; other fish visible in the crop are not annotated** (frequent in the crowded salmonid crops, occasional in the saithe crops).
+
+Crescitelli AM (2020). NorFisk Dataset (version 1.1). DataverseNO. [https://doi.org/10.18710/H5G3K5](https://doi.org/10.18710/H5G3K5)
+
+- Data downloadable via HTTPS from DataverseNO ([download link](https://dataverse.no/api/access/datafile/86889))
+- License: CC0 1.0
+- Metadata raw format: one CSV-style TXT per image (`file_name,class,xmin,ymin,xmax,ymax,width,height`)
+- Categories/species: salmonids (farmed Atlantic salmon and trout), saithe (Pollachius virens)
+  - fish: salmonid, saithe
+  - non-fish: none
+  - discarded: none
+- Vehicle type: GoPro Hero 4/5/8 cameras inside and outside fish farm net pens
+- Image information: 12,514 PNG crops (9,487 salmonid, 3,027 saithe), 101-3190 px wide (median 376)
+- Annotation information: 12,514 bounding boxes (one per image)
+- Typical animal size in pixels: ~225 px (median box long side, within the crop)
+- Code to render sample annotated image: [norfisk.py](./datasets/norfisk.py)
+
+<img src="./previews/norfisk_sample_image.png" alt="NorFisk sample" width="600">
+
+
+
 ### Datasets that were not included in the Community Fish Detection Dataset
 
 - [Fishnet.AI](https://www.fishnet.ai/): ~163k bounding boxes on ~35k images of fish and people on fishing vessels.  Excluded because images are above-water.

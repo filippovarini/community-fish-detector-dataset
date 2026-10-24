@@ -357,6 +357,17 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: `Gastropoda sp` (265; pale snails of 2-3 cm crawling on the mat in the 17 Apr recordings: size doubtful, crops checked)
 - **Split**: By sampling day (each day has one farm and one control recording; the Roboflow split is random across frames of the same recording). 4 May -> val (239 frames, 26%; 235 fish / 83 non-fish boxes); 6 Mar, 12 Apr and 17 Apr -> train (671 frames; 1,222 / 124). 6 Mar is almost only gobies, 12 Apr holds every hermit crab and 17 Apr only snails, so 4 May is the day with both fish and crabs
 
+### norfisk
+- **Source**: [DataverseNO, NorFisk Dataset v1.1](https://doi.org/10.18710/H5G3K5) (found via [B2FIND](https://b2find.eudat.eu/dataset/9ac082a3-9a1f-5f92-acf4-61d8f3183985)), CC0 1.0
+- **Download**: Automatic (`NorFisk_v1.0.zip`, 2.6 GB, resumable, from the Dataverse access API, file id 86889)
+- **Annotations**: one TXT per image (`file_name,class,xmin,ymin,xmax,ymax,width,height`, no header) -> COCO. 12,514 PNG images (`saithe/img/saithe.<n>.png`, `salmonid/img/salmonid.<n>.png`), 12,514 boxes
+- **Known issue — missing labels**: the images are not full video frames but crops around one fish (101-3190 px wide, median 376), with exactly one box each. Other fish visible in the crop are NOT annotated. In a 40-image sample, about a quarter had unlabelled fish; it is frequent in the crowded salmonid crops (inside the pens) and occasional in the saithe crops (open water). The dataset is included anyway, at the user's request; consider down-weighting or dropping it if missed detections become a problem
+- **Category mapping**:
+  - fish: `salmonid` (9,487; farmed salmon and trout inside the net pens), `saithe` (3,027; wild, outside the pens)
+  - non-fish: none
+  - discard: none
+- **Split**: By blocks of 100 image numbers within each species (`<species>_<n // 100>`, 126 blocks; sorted, `random_state`, 20% of each species' blocks to val). Images were taken at 1 frame per second from ~49 h of video and are numbered in video order, but the video is not in the filename. Neighbouring numbers look alike, while numbers 100 apart are as different as random pairs, so a block keeps near-duplicate crops in one split. Result: train 9,915 (7,588 salmonid, 2,327 saithe), val 2,599 (1,899 salmonid, 700 saithe)
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

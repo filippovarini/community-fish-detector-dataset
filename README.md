@@ -693,6 +693,27 @@ González-Villà S, Burns Font D, Aguzzi J, et al. [DIGI4ECO Underwater Fish Tra
 
 <img src="./previews/digi4eco_sample_image.png" alt="DIGI4ECO Underwater Fish Tracking sample" width="600">
 
+#### YOLO-BRUV
+
+2,640 frames from 19 baited remote underwater video (BRUV) recordings on sand and shell seabed at offshore wind farms in the Moray Firth, Scotland (PrePARED project), with 13,070 fish boxes (mostly dab/flounder and haddock) and 2,674 non-fish boxes (mostly hermit crabs and starfish)
+
+Lambrette M. [YOLO-BRUV training data and scripts](https://doi.org/10.5281/zenodo.19594599). Zenodo, 2026. Footage from Bicknell AW, Gierhart S, Witt MJ. [Site and species dependent effects of offshore windfarms on fish populations](https://doi.org/10.1016/j.marenvres.2025.106977). Marine Environmental Research 205, 2025
+
+- Data downloadable via Zenodo ([download link](https://zenodo.org/records/19594599/files/YOLO-BRUV_data.zip?download=1))
+- License: CC BY 4.0
+- Metadata raw format: EventMeasure point exports (tab-separated text, one row per animal with a box), JPEG frames
+- Categories/species: 21 species-level labels and an empty-frame marker
+  - fish: dab/flounder, haddock, unidentified flatfish, gobies, short-spined sea scorpion, grey gurnard, small-spotted catshark, plaice, dragonet, cod, ling, whiting, flapper skate, dab, poor cod
+  - non-fish: hermit crab, common starfish, edible crab, brittle star, common whelk, squid
+  - discarded: the marker used to export empty frames ("Botryllus spp")
+- Vehicle type: BRUV (GoPro on a baited frame, one camera)
+- Image information: 2,640 frames (1920x1080) from 19 recordings; 455 of them have no animal (kept as background). Of the 2,708 exported frames, 68 annotated with points instead of boxes are dropped, and 12 frames exported twice are kept once
+- Annotation information: 13,070 fish and 2,674 non-fish bounding boxes
+- Typical animal size in pixels: ~124 (median long side of the fish boxes)
+- Code to render sample annotated image: [yolo_bruv.py](./datasets/yolo_bruv.py)
+
+<img src="./previews/yolo_bruv_sample_image.png" alt="YOLO-BRUV sample" width="600">
+
 
 
 #### Labelled Mediterranean Fish Dataset (DEEPECOMAR)
@@ -762,6 +783,50 @@ Wilson KC, Lurbur M, Yochum N (2025). [Automated fish detection in videos to sup
 
 <img src="./previews/afsc_salmon_pollock_sample_image.png" alt="AFSC Salmon and Pollock sample" width="600">
 
+#### KSO Mussel Farm BRUV
+
+910 frames from 8 baited remote underwater video (BRUV) recordings of a downward-facing GoPro over a black mat with bait, at a blue-mussel farm and a control site on the Swedish west coast (8-18 m, February-May 2024), with 1,457 fish boxes (gobies, flatfish) and 207 non-fish boxes (crabs). The boxes miss about a third of the animals, mostly gobies in busy frames
+
+Dalipi X, Burman E, Germishuys J, Anton V, Strand Å, Obst M. [Object detection model for epibenthic species in low-trophic aquacultures (LTA): A case study on the Swedish west coast](https://doi.org/10.5281/zenodo.14713926). Zenodo, 2025 (COOL BLUE project)
+
+- Data downloadable via Zenodo ([download link](https://zenodo.org/records/14713926/files/coolblue_LTA_model.zip?download=1))
+- License: CC BY 4.0
+- Metadata raw format: YOLO (Roboflow export, one polygon label)
+- Categories/species: Gobiidae sp, Pleuronectiformes sp, Hyas araneus, Paguridae sp, Portunoidea sp, Gastropoda sp
+  - fish: Gobiidae sp, Pleuronectiformes sp
+  - non-fish: Hyas araneus (spider crab), Paguridae sp (hermit crabs), Portunoidea sp (swimming crabs)
+  - discarded: Gastropoda sp (small pale snails of 2-3 cm: size doubtful)
+- Vehicle type: BRUV (GoPro 9 on a tripod looking down at a black mat with a bait box)
+- Image information: 910 frames (640x360, resized by Roboflow) from 8 recordings on 4 days; 328 frames have no box (kept as background)
+- Annotation information: 1,457 fish and 207 non-fish bounding boxes
+- Typical animal size in pixels: ~47 (median long side of the fish boxes)
+- Code to render sample annotated image: [kso_mussel_bruv.py](./datasets/kso_mussel_bruv.py)
+
+<img src="./previews/kso_mussel_bruv_sample_image.png" alt="KSO Mussel Farm BRUV sample" width="600">
+
+
+
+#### Griffith Seagrass Fish (Luderick Seagrass)
+
+4,280 frames from remote underwater video in seagrass meadows of two estuaries on the Gold Coast, Queensland, Australia (2019), with 9,429 boxes and segmentation masks on luderick and bream. Frames were extracted from video at 5 fps, so consecutive frames are often near-duplicates.
+
+Ditria EM, Connolly RM, Jinks EL, Lopez-Marcano S (2021). [Annotated Video Footage for Automated Identification and Counting of Fish in Unconstrained Seagrass Habitats](https://doi.org/10.3389/fmars.2021.629485). Frontiers in Marine Science 8:629485. Data: [PANGAEA](https://doi.org/10.1594/PANGAEA.926930)
+
+- Data downloadable via https from PANGAEA ([download link](https://download.pangaea.de/dataset/926930/files/Fish_automated_identification_and_counting.zip))
+- License: CC BY 4.0
+- Metadata raw format: COCO JSON (boxes and polygons), plus a per-image CSV with site, deployment, date and coordinates
+- Categories/species: luderick (Girella tricuspidata), yellowfin bream (Acanthopagrus australis)
+  - fish: luderick, bream
+  - non-fish: none
+  - discarded: none
+- Vehicle type: fixed remote underwater video (Haldex action camera, 1080p) on seagrass beds
+- Image information: 4,280 images (1920x1080); every image has at least one fish
+- Annotation information: 9,429 fish bounding boxes (9,304 luderick, 125 bream)
+- Typical animal size in pixels: ~183 (median long side of the fish boxes)
+- Code to render sample annotated image: [griffith_seagrass.py](./datasets/griffith_seagrass.py)
+
+<img src="./previews/griffith_seagrass_sample_image.png" alt="Griffith Seagrass Fish sample" width="600">
+
 
 
 #### Mediterranean Fish Census (autoUC)
@@ -784,6 +849,168 @@ Bürgi K, Bouveyron C, Lingrand D, Derijard B, Precioso F, Sabourault C (2025). 
 - Code to render sample annotated image: [med_fish_census.py](./datasets/med_fish_census.py)
 
 <img src="./previews/med_fish_census_sample_image.png" alt="Mediterranean Fish Census sample" width="600">
+
+
+
+#### EyeSea Underwater Video
+
+Frames from monitoring video at three water power sites (a tidal turbine in Scotland, a hydropower dam fish ladder in Washington, and a river turbine in Alaska), with fish bounding boxes drawn by PNNL staff
+
+Xu W, Matzner S. [Underwater Fish Detection using Deep Learning for Water Power Applications](https://doi.org/10.1109/CSCI46756.2018.00067). International Conference on Computational Science and Computational Intelligence (CSCI), 2018
+
+- Home: [https://data.pnnl.gov/group/nodes/dataset/12978](https://data.pnnl.gov/group/nodes/dataset/12978)
+- Data downloadable via https from PNNL DataHub ([download link](https://g-83fdd0.1beed.03c0.data.globus.org/cartuids/12978_d072f8e31a3fede18c0b6a6d98d50042.tar), 87 GB tar, includes the source videos)
+- License: N/A
+- Metadata raw format: Pascal VOC XML (one file per PNG frame)
+- Categories/species: fish (no species); the paper lists unknown species at Voith Hydro, Chinook and Sockeye salmon at Wells Dam, adult and smolt salmon at Igiugig
+  - fish: fish (the single class)
+  - non-fish: none
+  - discarded: none
+- Vehicle type: fixed underwater cameras: Voith Hydro HyTide tidal turbine at the Fall of Warness, Orkney, Scotland (grayscale, 720x576, 15 fps); fish passage window at Wells Dam, Columbia River, Washington (1280x960, 30 fps); ORPC RivGen turbine in the Kvichak River at Igiugig, Alaska (352x240, 10 fps)
+- Image information: 70,195 PNG video frames (Voith Hydro 15,918, Wells Dam 24,000, Igiugig 30,277), 48,125 of them without fish; consecutive frames are very similar. Voith Hydro frames are a 2x2 mosaic of the turbine's camera views
+- Annotation information: 45,652 fish bounding boxes (Voith Hydro 20,914, Wells Dam 23,496, Igiugig 1,242)
+- Typical animal size in pixels: N/A
+- Code to render sample annotated image: [eyesea.py](./datasets/eyesea.py)
+
+<img src="./previews/eyesea_sample_image.png" alt="EyeSea Underwater Video sample" width="600">
+
+
+
+#### Seaclear Marine Debris Dataset
+
+8,610 images of marine litter on the shallow (1-10 m) seabed, from ROVs at five sites in Croatia (Bistrina, Jakljan, Lokrum, Slano) and France (Marseille), annotated for 40 debris, animal, plant and robot-part categories. Fish are few and small: 985 boxes in 81 images, almost all at Lokrum.
+
+Đuraš A, Wolf BJ, Ilioudi A, Palunko I, De Schutter B (2024). [A Dataset for Detection and Segmentation of Underwater Marine Debris in Shallow Waters](https://doi.org/10.1038/s41597-024-03759-2). Scientific Data 11.
+
+- Data downloadable via [4TU.ResearchData](https://doi.org/10.4121/4f1dff25-e157-4399-a5d4-478055461689) (single .rar) or the [Kaggle mirror](https://www.kaggle.com/datasets/jocelyndumlao/seaclear-marine-debris-detection-and-segmentation) (1.6 GB zip, used by the script via kagglehub)
+- License: CC BY 4.0
+- Metadata raw format: COCO JSON (instance polygons), images in one folder per site and camera
+- Categories/species: 32 debris classes (`<instance>_<material>`), 4 robot classes, plant, unknown_instance and 6 animal classes (fish, sea urchin, sea cucumber, starfish, shells, sponge)
+  - fish: animal_fish
+  - non-fish: animal_urchin, animal_etc (sea cucumbers, crops checked), animal_starfish
+  - discarded: animal_shells (empty shells, oysters, snails), animal_sponge, plant, unknown_instance (debris), all debris and rov_* classes
+- Vehicle type: ROVs (BlueROV2 with Bluerobotics Low-Light HD and Paralenz Vaquita cameras; SST Mini-Tortuga with SIP-E323CV camera)
+- Image information: 8,610 images (1920x1080); Marseille (3,441 images) has no animal labels, and these images are kept as background
+- Annotation information: 11,213 bounding boxes kept from the polygons (985 fish, 10,228 non-fish) out of 31,555
+- Typical animal size in pixels: ~43 (median long side of the fish boxes)
+- Code to render sample annotated image: [seaclear.py](./datasets/seaclear.py)
+
+<img src="./previews/seaclear_sample_image.png" alt="Seaclear sample" width="600">
+
+
+
+#### Roboflow Aquarium Dataset
+
+638 photos taken through the glass of tanks at two US aquariums (Henry Doorly Zoo, Omaha and National Aquarium, Baltimore) in late 2020, with 4,817 bounding boxes on fish, sharks, stingrays, jellyfish, starfish, penguins and puffins
+
+Dwyer B. [Aquarium Combined](https://universe.roboflow.com/brad-dwyer/aquarium-combined). Roboflow Universe, 2020
+
+- Data downloadable via https from a Kaggle mirror of the Roboflow export ([download link](https://www.kaggle.com/datasets/slavkoprytula/aquarium-data-cots)); Roboflow Universe needs an API key
+- License: CC BY 4.0
+- Metadata raw format: YOLO TXT (Roboflow YOLOv5 export)
+- Categories/species: fish, shark, stingray, jellyfish, starfish, penguin, puffin (7 classes)
+  - fish: fish, shark, stingray
+  - non-fish: jellyfish, starfish
+  - discarded: penguin, puffin (birds, mostly photographed out of the water)
+- Vehicle type: handheld camera/phone at public aquariums (through tank glass)
+- Image information: 638 images (1024x768 and 1024x576, portrait or landscape, resized by Roboflow); 136 contain only birds and are kept as background
+- Annotation information: 4,017 bounding boxes (3,207 fish, 810 non-fish); 800 bird boxes discarded
+- Typical animal size in pixels: ~96 (median long side of the fish boxes)
+- Code to render sample annotated image: [roboflow_aquarium.py](./datasets/roboflow_aquarium.py)
+
+<img src="./previews/roboflow_aquarium_sample_image.png" alt="Roboflow Aquarium Dataset sample" width="600">
+
+
+
+#### RUOD-R (re-annotated Real-world Underwater Object Detection)
+
+13,112 underwater photos from many sources (seabed-harvesting videos, diving videos, aquariums, web photos) with 104,202 fish and 67,937 non-fish boxes, from the RUOD-R re-annotation of the RUOD benchmark (about 3.5x the boxes of the original annotations, mostly small objects and fish in schools)
+
+Awad A, Saleem A, Aljnadi Y, Lucas E, Paheding S, Havens TC. [RUOD-R: A High-Fidelity Re-Annotated Benchmark for Underwater Object Detection](https://doi.org/10.1109/ACCESS.2026.3685121). IEEE Access, 2026. Images from Fu C, Liu R, Fan X, Chen P, Fu H, Yuan W, Zhu M, Luo Z. [Rethinking general underwater object detection: Datasets, challenges, and solutions](https://doi.org/10.1016/j.neucom.2022.10.039). Neurocomputing 517, 2023
+
+- Data downloadable via GitHub: annotations from the RUOD-R repository ([download link](https://github.com/RSSL-MTU/RUOD-R/tree/988939f93734b378f82d15a9a2f7371dae475363/Annotations/RUOD-R/COCO)), images from the RUOD releases ([download link](https://github.com/xiaoDetection/RUOD/releases/tag/untagged-4f7c7ab75187d68b6449))
+- License: N/A (none stated by either repository)
+- Metadata raw format: COCO JSON
+- Categories/species: 10 classes
+  - fish: fish (except 89 boxes on dolphins)
+  - non-fish: echinus (sea urchin), holothurian (sea cucumber), starfish, cuttlefish, turtle, jellyfish, and the 89 "fish" boxes on dolphins
+  - discarded: scallop, corals, diver
+- Vehicle type: mixed (divers, ROV/seabed-harvesting cameras, aquariums, web photos)
+- Image information: 13,112 images at 3,048 different sizes (225 to 8,088 px wide); of the 14,000 RUOD photos, 887 byte-identical copies and 1 misannotated photo are dropped
+- Annotation information: 104,202 fish and 67,937 non-fish bounding boxes; 296 photos have more than 100 boxes (up to 1,667 fish in one school)
+- Typical animal size in pixels: ~25 (median long side of the fish boxes)
+- Code to render sample annotated image: [ruod_r.py](./datasets/ruod_r.py)
+
+<img src="./previews/ruod_r_sample_image.png" alt="RUOD-R sample" width="600">
+
+
+
+#### UIIS10K (Underwater Image Instance Segmentation)
+
+9,498 underwater photos (reefs, open water, aquariums, deep-sea ROV video, murky lakes) gathered from the web and other public datasets (UIIS, TrashCan, USOD10K, USIS10K), with 19,937 fish and 1,399 non-fish boxes from instance segmentation masks. Its 10 classes do not follow ours, so 2,928 boxes are relabelled after review (marine mammals, penguins and crocodiles labelled "fish", a "mollusk" class mixing starfish, sea urchins and octopus with clams, anemones and rays)
+
+Li H, Lian S, Li Z, Cong R, Li C, Yang LT, Zhang W, Kwong S. [Advancing Marine Research: UWSAM Framework and UIIS10K Dataset for Precise Underwater Instance Segmentation](https://arxiv.org/abs/2505.15581). arXiv:2505.15581, 2025. Extends UIIS from Lian S, Li H, Cong R, Li S, Zhang W, Kwong S. WaterMask: Instance Segmentation for Underwater Imagery. ICCV 2023
+
+- Data downloadable via Hugging Face ([download link](https://huggingface.co/datasets/LiamLian0727/UIIS10K/resolve/5c4316368a8e420db754d1ab37c205a42985ba47/UIIS10K.zip))
+- License: Apache-2.0
+- Metadata raw format: COCO JSON with instance polygons (train and test files)
+- Categories/species: fish, reptiles, arthropoda, mollusk, corals, plants, ruins, garbage, robots, human; boxes in the wrong class are relabelled first (see [DATASETS.md](./DATASETS.md#uiis10k))
+  - fish: fish, plus the rays, eels and other fish found in the other classes
+  - non-fish: reptiles (sea turtles, sea snakes), arthropoda (crabs, shrimp, lobsters), and the relabelled marine mammals, penguins, crocodiles and iguanas, octopus/squid/cuttlefish, crustaceans, starfish, sea urchins, sea cucumbers and jellyfish
+  - discarded: corals, plants, ruins, garbage, robots, human, and the relabelled shells and clams, anemones, corals and sponges, nudibranchs and unidentifiable boxes
+- Vehicle type: mixed (diver photos, ROV and towed deep-sea cameras, aquarium photos, web images)
+- Image information: 9,498 images at 156 different sizes (256 to 2,048 px wide, 8,032 at 640x480); of the 10,048 UIIS10K photos, 359 that are also in RUOD and 191 copies of other UIIS10K photos are dropped. 3,285 photos keep no box (corals, divers, wrecks or trash only)
+- Annotation information: 19,937 fish and 1,399 non-fish bounding boxes
+- Typical animal size in pixels: ~50 (median long side of the fish boxes)
+- Code to render sample annotated image: [uiis10k.py](./datasets/uiis10k.py)
+
+<img src="./previews/uiis10k_sample_image.png" alt="UIIS10K sample" width="600">
+
+
+
+#### NorFisk Dataset
+
+12,514 underwater crops of farmed salmonids (inside net pens) and wild saithe (outside the pens) from ~49 hours of GoPro video at Norwegian fish farms (2017-2020, 1-50 m depth). **Each image is a crop around one fish with exactly one box; other fish visible in the crop are not annotated** (frequent in the crowded salmonid crops, occasional in the saithe crops).
+
+Crescitelli AM (2020). NorFisk Dataset (version 1.1). DataverseNO. [https://doi.org/10.18710/H5G3K5](https://doi.org/10.18710/H5G3K5)
+
+- Data downloadable via HTTPS from DataverseNO ([download link](https://dataverse.no/api/access/datafile/86889))
+- License: CC0 1.0
+- Metadata raw format: one CSV-style TXT per image (`file_name,class,xmin,ymin,xmax,ymax,width,height`)
+- Categories/species: salmonids (farmed Atlantic salmon and trout), saithe (Pollachius virens)
+  - fish: salmonid, saithe
+  - non-fish: none
+  - discarded: none
+- Vehicle type: GoPro Hero 4/5/8 cameras inside and outside fish farm net pens
+- Image information: 12,514 PNG crops (9,487 salmonid, 3,027 saithe), 101-3190 px wide (median 376)
+- Annotation information: 12,514 bounding boxes (one per image)
+- Typical animal size in pixels: ~225 px (median box long side, within the crop)
+- Code to render sample annotated image: [norfisk.py](./datasets/norfisk.py)
+
+<img src="./previews/norfisk_sample_image.png" alt="NorFisk sample" width="600">
+
+
+
+#### TrashCan 1.0
+
+7,212 frames from JAMSTEC deep-sea ROV videos (J-EDI archive, largely in the Sea of Japan), annotated with instance masks for underwater trash, ROVs, plants and animals. Only the fish, eel, crab and starfish annotations are used.
+
+Hong J, Fulton M, Sattar J (2020). [TrashCan 1.0: An Instance-Segmentation Labeled Dataset of Trash Observations](https://doi.org/10.13020/g1gx-y834). Data Repository for the University of Minnesota (DRUM). Paper: [TrashCan: A Semantically-Segmented Dataset towards Visual Detection of Marine Debris](https://arxiv.org/abs/2007.08097).
+
+- Data downloadable via HTTPS from the University of Minnesota data repository ([download link](https://conservancy.umn.edu/server/api/core/bitstreams/fffa78cc-3abf-42b9-b019-bc15a953a8e9/content), 553 MB)
+- License: free for academic teaching and research; commercial use requires permission from JAMSTEC. Attribution to the authors and to JAMSTEC is required, including in derivative datasets
+- Metadata raw format: COCO JSON with instance segmentation masks
+- Categories/species: 22 classes: deep-sea animals (fish, eel, crab, starfish, shells, other), plants, ROV parts and 16 trash types
+  - fish: animal_fish, animal_eel
+  - non-fish: animal_crab, animal_starfish
+  - discarded: animal_etc (mix of squid, shrimp, crabs, anemones and unclear objects), animal_shells (mostly dead shells), plant, rov, all trash_* classes
+- Vehicle type: ROV (JAMSTEC)
+- Image information: 7,212 images (480x270 or 480x360) from 312 videos; 6,049 have no fish or non-fish and are kept as background
+- Annotation information: 1,814 bounding boxes (1,107 fish, 707 non-fish)
+- Typical animal size in pixels: ~85 (median long side of the fish boxes)
+- Code to render sample annotated image: [trashcan.py](./datasets/trashcan.py)
+
+<img src="./previews/trashcan_sample_image.png" alt="TrashCan sample" width="600">
 
 
 

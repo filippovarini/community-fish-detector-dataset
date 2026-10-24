@@ -1014,6 +1014,29 @@ Hong J, Fulton M, Sattar J (2020). [TrashCan 1.0: An Instance-Segmentation Label
 
 
 
+#### Tassie BRUV
+
+1,912 frames from 28 baited remote underwater videos (BRUVs) set next to boat moorings and control locations at three sites in Tasmania, Australia (Sandy Bay, North West Bay, Battery Point), with 5,222 boxes on 19 temperate reef and sand fish species grouped into 8 classes. Southern sand flathead, often half-buried in the sand, makes up 73% of the boxes. The frames are 50 random frames per video plus extra frames with rare species
+
+Maslen B, Popovic G, Wang D, Jansen A, Warton D (2025). [The Motion Picture: Leveraging Movement to Enhance AI Object Detection in Ecology](https://doi.org/10.1002/ece3.71996). Ecology and Evolution 15(8), e71996. Data: Maslen B, Popovic G, Wang D, Warton D, Langley M (2025). Tassie BRUV: A benchmark data set for computer vision and movement quantification algorithms. Dryad, [doi:10.5061/dryad.sbcc2frf7](https://doi.org/10.5061/dryad.sbcc2frf7)
+
+- Data downloadable via the Dryad API (needs a free Dryad API account) or manually from Dryad ([dataset page](https://datadryad.org/dataset/doi:10.5061/dryad.sbcc2frf7)): `Tassie_BRUV.zip` is 73.8 GB, of which only the 0.2 GB of labelled frames is used (the rest is the source videos and movement-augmented copies of the frames)
+- License: CC0 1.0
+- Metadata raw format: YOLO TXT (`training_data_species_grouped`, 8 grouped classes)
+- Categories/species: 19 fish species in 8 groups (e.g. southern sand flathead, Australian salmon, snapper, draughtboard shark, King George whiting, skates and rays, morid cods, leatherjackets)
+  - fish: all 8 classes (Carcharhiniformes, Chyrosophyrs auratus, Moridae, Perciformes_sandy, Perciformes_silver, Ray, Scorpaeniformes, Tetradontiformes)
+  - non-fish: none
+  - discarded: none
+- Vehicle type: baited remote underwater video (BRUV) on the sea floor
+- Image information: 1,912 images (1920x1080) from 28 videos, including 708 frames without fish kept as background
+- Annotation information: 5,222 bounding boxes (all fish)
+- Typical animal size in pixels: ~240 (median long side of the boxes; rays on the bait arm fill the frame)
+- Code to render sample annotated image: [tassie_bruv.py](./datasets/tassie_bruv.py)
+
+<img src="./previews/tassie_bruv_sample_image.png" alt="Tassie BRUV sample" width="600">
+
+
+
 ### Datasets that were not included in the Community Fish Detection Dataset
 
 - [Fishnet.AI](https://www.fishnet.ai/): ~163k bounding boxes on ~35k images of fish and people on fishing vessels.  Excluded because images are above-water.

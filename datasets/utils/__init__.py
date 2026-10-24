@@ -11,6 +11,12 @@ from datasets.utils.download import (
     extract_downloaded_file,
     HttpRangeFile,
 )
+from datasets.utils.dryad import (
+    get_dryad_credentials_help,
+    get_dryad_download_request,
+    has_dryad_credentials,
+    read_dryad_credentials,
+)
 from datasets.utils.images import (
     add_dataset_shortname_prefix_to_image_names,
     copy_images_to_processing,

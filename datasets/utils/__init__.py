@@ -9,6 +9,7 @@ from datasets.utils.download import (
     download_file,
     download_file_resumable,
     extract_downloaded_file,
+    HttpRangeFile,
 )
 from datasets.utils.images import (
     add_dataset_shortname_prefix_to_image_names,

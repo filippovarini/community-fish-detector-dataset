@@ -1,3 +1,4 @@
+import io
 import requests
 import zipfile
 import tarfile
@@ -127,3 +128,86 @@ def download_and_extract(
     extract_downloaded_file(download_path, data_dir, compression_type)
 
     return data_dir
+
+
+class HttpRangeFile(io.RawIOBase):
+    """
+    Read-only, seekable file over HTTP Range requests, so zipfile.ZipFile can list a remote
+    zip and extract single members without downloading the whole archive. Reads are served
+    from a small cache of block_size blocks, so extracting members in archive order costs
+    about one request per block.
+
+    get_request returns (url, headers) and is called again when the server answers 401/403,
+    e.g. because a signed URL or bearer token has expired.
+    """
+
+    def __init__(self, get_request, block_size: int = 16 * 1024 * 1024, cache_blocks: int = 4, max_attempts: int = 10):
+        self.get_request = get_request
+        self.block_size = block_size
+        self.cache_blocks = cache_blocks
+        self.max_attempts = max_attempts
+        self.session = requests.Session()
+        self.url, self.headers = get_request()
+        self.cache: dict[int, bytes] = {}
+        self.position = 0
+        response = self._get_range(0, 0)
+        self.size = int(response.headers["Content-Range"].split("/")[-1])
+
+    def _get_range(self, start: int, end: int) -> requests.Response:
+        for attempt in range(1, self.max_attempts + 1):
+            try:
+                response = self.session.get(
+                    self.url, headers={**self.headers, "Range": f"bytes={start}-{end}"}, timeout=120
+                )
+                if response.status_code in (401, 403):
+                    self.url, self.headers = self.get_request()
+                    continue
+                response.raise_for_status()
+                if response.status_code != 206:
+                    raise RuntimeError(f"Server ignored the Range header for {self.url}")
+                return response
+            except (requests.ConnectionError, requests.Timeout, requests.exceptions.ChunkedEncodingError) as e:
+                print(f"Connection broken ({e}); retrying in 30 s")
+                time.sleep(30)
+        raise RuntimeError(f"Range request {start}-{end} failed after {self.max_attempts} attempts")
+
+    def _block(self, index: int) -> bytes:
+        if index not in self.cache:
+            if len(self.cache) >= self.cache_blocks:
+                self.cache.pop(next(iter(self.cache)))
+            start = index * self.block_size
+            end = min(start + self.block_size, self.size) - 1
+            self.cache[index] = self._get_range(start, end).content
+        return self.cache[index]
+
+    def readable(self):
+        return True
+
+    def seekable(self):
+        return True
+
+    def tell(self):
+        return self.position
+
+    def seek(self, offset: int, whence: int = io.SEEK_SET):
+        base = {io.SEEK_SET: 0, io.SEEK_CUR: self.position, io.SEEK_END: self.size}[whence]
+        self.position = max(0, base + offset)
+        return self.position
+
+    def read(self, n: int = -1) -> bytes:
+        if n is None or n < 0:
+            n = self.size - self.position
+        n = min(n, self.size - self.position)
+        chunks = []
+        while n > 0:
+            index, offset = divmod(self.position, self.block_size)
+            chunk = self._block(index)[offset : offset + n]
+            chunks.append(chunk)
+            self.position += len(chunk)
+            n -= len(chunk)
+        return b"".join(chunks)
+
+    def readinto(self, buffer) -> int:
+        data = self.read(len(buffer))
+        buffer[: len(data)] = data
+        return len(data)

@@ -346,6 +346,17 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: `corals`, `plants`, `ruins`, `garbage`, `robots`, `human`, `mollusk` (no box left), and the relabelled `human`, `shell`, `anemone`, `coral or sponge`, `nudibranch` (size doubtful), `plant`, `object`, `unclear`
 - **Split**: The UIIS10K split (train -> train, test -> val). The photos have no location, video or source information and the file names are shuffled (consecutive photos are unrelated), so the random official split is kept, after dropping copies. Photos of the same shot that are not copies (thumbnail correlation 0.90-0.96, e.g. two frames of one deep-sea video with a different object in view) go to the split of the one with the most boxes (3 photos moved from train to val): val 1,907 images (3,845 fish / 268 non-fish boxes, 20%), train 7,591 (16,092 / 1,131). No val photo has a train photo with correlation >= 0.90 or a byte-identical copy
 
+### kso_mussel_bruv
+- **Source**: [Zenodo 14713926](https://doi.org/10.5281/zenodo.14713926) (`coolblue_LTA_model.zip`, folder `model_dataset`)
+- **Download**: Automatic (415 MB, resumes an interrupted download, checked against the Zenodo MD5); only `model_dataset/{train,valid,test}/{images,labels}` is extracted (not the YOLOv8 weights or the result videos)
+- **Annotations**: YOLO (Roboflow export, 6 classes; one label is a polygon, converted to its box) -> COCO, the three Roboflow splits merged. 910 frames (640x360) named `<farm|control>_<day>_<month>_frame_<n>`, from 8 recordings (farm and control on 6 Mar, 12 Apr, 17 Apr and 4 May 2024); the Roboflow suffix `_jpg.rf.<hash>` is dropped from the file names. Boxes are clipped to the image. Each COCO image keeps `site`, `day`, `frame`, `recording` and `roboflow_split`. 328 frames without boxes are kept
+- **Missing boxes**: in a hand count on 64 frames (6-8 per recording, boxes over ~3 cm only) the human boxes miss 29% of the animals (33-36% in 4 recordings, none in the 17 Apr ones), mostly gobies in busy frames and animals on the algae beside the mat. Only the original human boxes are used
+- **Category mapping**:
+  - fish: `Gobiidae sp` (1,443), `Pleuronectiformes sp` (14)
+  - non-fish: `Portunoidea sp` (83, swimming and shore crabs), `Paguridae sp` (69, hermit crabs), `Hyas araneus` (55, spider crab)
+  - discard: `Gastropoda sp` (265; pale snails of 2-3 cm crawling on the mat in the 17 Apr recordings: size doubtful, crops checked)
+- **Split**: By sampling day (each day has one farm and one control recording; the Roboflow split is random across frames of the same recording). 4 May -> val (239 frames, 26%; 235 fish / 83 non-fish boxes); 6 Mar, 12 Apr and 17 Apr -> train (671 frames; 1,222 / 124). 6 Mar is almost only gobies, 12 Apr holds every hermit crab and 17 Apr only snails, so 4 May is the day with both fish and crabs
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

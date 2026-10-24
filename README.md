@@ -1028,12 +1028,6 @@ Hong J, Fulton M, Sattar J (2020). [TrashCan 1.0: An Instance-Segmentation Label
 - [BrackishMOT](https://www.kaggle.com/datasets/maltepedersen/brackishmot): Same data as the Brackish Dataset.
 - Brackish Underwater Dataset: Same data as the Brackish Dataset.
 - [CoralScapes](https://josauder.github.io/coralscapes/): 2,075 images from Red Sea coral reefs with semantic segmentation masks. Excluded because CoralscapesV2 includes all of its images but one, with more classes and fish instance masks.
-
-
-
-### Unprocessed datasets
-
-Datasets that we're aware exist, but that we haven't evaluated or processed yet.
-- [J-EDI](https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html) (~8k images with 19 deep-sea animal categories)
-- [SFISHTRACK](https://github.com/JosepSanchezCano/SFISHTRACK) (~24k frames with segmentation masks)
+- [J-EDI](https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html) (~8k images with 19 deep-sea animal categories). Excluded because website is unreachable.
+- [SFISHTRACK](https://github.com/JosepSanchezCano/SFISHTRACK) (~24k frames with segmentation masks). Excluded because the annotations are misaligned with the frames.
 

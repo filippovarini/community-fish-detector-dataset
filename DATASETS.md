@@ -378,6 +378,16 @@ Each dataset script in `datasets/` follows a 4-step pattern: Download -> Process
   - discard: `animal_etc` (235; mix of squid, shrimp, crabs, anemones, a fish and unclear blobs), `animal_shells` (249; mostly dead clam shells and mussel beds), `plant`, `rov`, and all 16 `trash_*` classes
 - **Split**: By video ID (`vid_<video>_frame<frame>.jpg`), 80/20 over the 312 sorted video IDs with `random_state`. Expected: train 249 videos / 5,884 images (930 fish, 553 non-fish), val 63 videos / 1,328 images (177 fish, 154 non-fish). The official split is per image and 113 of its 115 val videos also appear in train, so it is ignored. Frames are sampled from the same ROV video, so frames within a video are often similar
 
+### tassie_bruv
+- **Source**: [Dryad, doi:10.5061/dryad.sbcc2frf7](https://datadryad.org/dataset/doi:10.5061/dryad.sbcc2frf7) (paper: https://doi.org/10.1002/ece3.71996)
+- **Download**: Automatic with Dryad API credentials, as for med_fish_census (shared helpers in `datasets/utils/dryad.py`). Only `training_data_species_grouped` (1,912 frames + labels, 0.2 GB) and `meta_data` are read from `Tassie_BRUV.zip` (73.8 GB; the rest is the 28 source videos and five movement-augmented copies of the frames) with HTTP Range requests. Without credentials, download the zip manually to `data/raw/tassie_bruv/Tassie_BRUV.zip`; the script picks it up
+- **Annotations**: YOLO TXT -> COCO. `training_data_species_grouped/{images,labels}/{train,valid,test}`, class names from `data.yaml`; every frame has a label file. The species in each grouped class are listed in `meta_data/species_annotation_counts.csv`. The sibling folder `training_data_species_high_counts` labels only species with > 75 boxes and is not used. All frames are 1920x1080; 708 frames with empty label files are kept as background
+- **Category mapping**:
+  - fish: all 8 classes: `Scorpaeniformes` (3,843; southern sand flathead, ocean perch), `Perciformes_silver` (452; Australian salmon, trevally), `Chyrosophyrs auratus` (287; snapper), `Carcharhiniformes` (210; draughtboard and gummy sharks), `Perciformes_sandy` (120; King George whiting, gobies), `Ray` (115; stingrays, eagle ray, skates), `Moridae` (102; morid cods), `Tetradontiformes` (93; leatherjackets, pufferfish)
+  - non-fish: none
+  - discard: none
+- **Split**: By site, from the frame name (`<date>_BRUV[S]_<site>_...`). Train = Sandy Bay (`SB`, 17 videos, 1,233 frames, 4,522 boxes); val = North West Bay (`NWB`, 7 videos, 410 frames) and Battery Point (`BP`, 4 videos, 269 frames), together 679 frames (~36%) and 700 boxes. The authors' train/test/valid split is random over frames, so every video is in all three, and is ignored. Frames are 50 random + up to 100 extra "rare fish" frames per video, so frames of one video can be close in time
+
 ## Partial Datasets
 
 These datasets require manual download or have special dependencies.

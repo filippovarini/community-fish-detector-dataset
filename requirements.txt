@@ -2,6 +2,7 @@ ipykernel
 supervision
 opencv-python
 pandas
+pyyaml
 pyarrow
 numpy
 fathomnet

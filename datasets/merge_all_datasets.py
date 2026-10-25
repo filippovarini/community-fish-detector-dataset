@@ -5,12 +5,16 @@ Reads from the processed/final directory where each dataset has been split
 into train/val sets, and creates a single merged dataset with all images
 and annotations combined.
 
+Images are hardlinked rather than copied, so the merged dataset takes no
+extra disk space. Stops if the merged dataset directory already exists.
+
 Skips the duplicate images listed in data/quality/dedup/images_to_remove.csv
 (created by `python -m quality_checks.select_duplicates`, see DATASET_COMPILATION.md).
 """
 
 import csv
 import json
+import os
 import shutil
 from pathlib import Path
 
@@ -33,6 +37,16 @@ def load_images_to_remove() -> set[str]:
         return {row["file_name"] for row in csv.DictReader(f)}
 
 
+def link_image(src: Path, dst: Path):
+    """Hardlinks src to dst, falling back to a copy if hardlinks are not supported."""
+    try:
+        os.link(src, dst)
+    except FileExistsError:
+        raise  # same file name in two datasets; never overwrite
+    except OSError:
+        shutil.copy2(src, dst)
+
+
 def main():
     images_to_remove = load_images_to_remove()
     print(f"Skipping {len(images_to_remove):,} duplicate images listed in {REMOVE_LIST_PATH}")
@@ -41,9 +55,13 @@ def main():
     final_dataset_dir = settings.processed_dir
 
     merged_dataset_dir = settings.base_dir / "community_fish_detector"
-    merged_dataset_dir.mkdir(parents=True, exist_ok=True)
+    if merged_dataset_dir.exists():
+        raise FileExistsError(
+            f"{merged_dataset_dir} already exists. Delete it before merging again"
+        )
+    merged_dataset_dir.mkdir(parents=True)
     merged_images_dir = merged_dataset_dir / settings.images_folder_name
-    merged_images_dir.mkdir(parents=True, exist_ok=True)
+    merged_images_dir.mkdir()
     merged_annotations_file = merged_dataset_dir / settings.coco_file_name
 
     # Initialize the merged COCO dataset structure
@@ -80,10 +98,10 @@ def main():
                     n_removed += 1
                     continue
 
-                # Copy image to merged directory
+                # Hardlink image into merged directory (no extra disk space)
                 src_image = dataset / settings.images_folder_name / file_name
                 dst_image = merged_images_dir / file_name
-                shutil.copy2(src_image, dst_image)
+                link_image(src_image, dst_image)
 
                 # Update image info
                 old_image_id = image["id"]

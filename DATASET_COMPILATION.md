@@ -45,4 +45,4 @@ When datasets are added or reprocessed, rerun both deduplication commands before
 
 ## 3. Merging
 
-`datasets/merge_all_datasets.py` copies every image in `data/final/*` except those in `images_to_remove.csv` to `data/community_fish_detector/JPEGImages/`, and writes one COCO file with the two categories (fish, non-fish) and an `is_train` flag per image. It stops if `images_to_remove.csv` is missing.
+`datasets/merge_all_datasets.py` hardlinks (no extra disk space) every image in `data/final/*` except those in `images_to_remove.csv` to `data/community_fish_detector/JPEGImages/`, and writes one COCO file with the two categories (fish, non-fish) and an `is_train` flag per image. It stops if `images_to_remove.csv` is missing or `data/community_fish_detector/` already exists.

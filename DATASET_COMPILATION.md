@@ -6,7 +6,7 @@ How the Community Fish Detection dataset is built from the individual datasets, 
 1. Process each dataset   python -m datasets.<name>                   -> data/final/<name>_{train,val}/
 2. Deduplicate            python -m quality_checks.deduplicate        -> data/quality/dedup/pairs.csv, report.md
                           python -m quality_checks.select_duplicates  -> data/quality/dedup/images_to_remove.csv
-3. Merge                  python -m datasets.merge_all_datasets       -> data/community_fish_ai_take2/
+3. Merge                  python -m datasets.merge_all_datasets       -> data/community_fish_detector/
 ```
 
 ## 1. Dataset processing
@@ -45,4 +45,4 @@ When datasets are added or reprocessed, rerun both deduplication commands before
 
 ## 3. Merging
 
-`datasets/merge_all_datasets.py` copies every image in `data/final/*` except those in `images_to_remove.csv` to `data/community_fish_ai_take2/JPEGImages/`, and writes one COCO file with the two categories (fish, non-fish) and an `is_train` flag per image. It stops if `images_to_remove.csv` is missing.
+`datasets/merge_all_datasets.py` copies every image in `data/final/*` except those in `images_to_remove.csv` to `data/community_fish_detector/JPEGImages/`, and writes one COCO file with the two categories (fish, non-fish) and an `is_train` flag per image. It stops if `images_to_remove.csv` is missing.

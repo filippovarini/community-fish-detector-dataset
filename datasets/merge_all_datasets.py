@@ -40,7 +40,7 @@ def main():
 
     final_dataset_dir = settings.processed_dir
 
-    merged_dataset_dir = settings.base_dir / "community_fish_ai_take2"
+    merged_dataset_dir = settings.base_dir / "community_fish_detector"
     merged_dataset_dir.mkdir(parents=True, exist_ok=True)
     merged_images_dir = merged_dataset_dir / settings.images_folder_name
     merged_images_dir.mkdir(parents=True, exist_ok=True)

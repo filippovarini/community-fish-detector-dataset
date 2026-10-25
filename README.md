@@ -6,7 +6,7 @@
 - [Contributing a new dataset](#contributing-a-new-dataset)
 - [Fish datasets](#fish-datasets)
   - [Processed datasets](#processed-datasets)
-  - [Datasets that were added after the most recent CFD training](#datasets-that-were-added-after-the-most-recent-cfd-training)
+  - [Datasets added to CFDv2](#datasets-added-to-cfdv2)
   - [Skipped datasets](#skipped-datasets)
   - [Unprocessed datasets](#unprocessed-datasets)
 
@@ -468,7 +468,7 @@ Atlas WI, Ma S, Chou YC, Connors K, Scurfield D, Nam B, Ma X, Cleveland M, Doire
 
 
 
-### Datasets that were added after the most recent CFD training
+### Datasets added to CFDv2
 
 #### PomerFish
 

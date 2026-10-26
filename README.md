@@ -5,10 +5,9 @@
 - [Overview](#overview)
 - [Contributing a new dataset](#contributing-a-new-dataset)
 - [Fish datasets](#fish-datasets)
-  - [Processed datasets](#processed-datasets)
+  - [Datasets that were included in the Community Fish Detection Dataset](#datasets-that-were-included-in-the-community-fish-detection-dataset)
   - [Datasets added to CFDv2](#datasets-added-to-cfdv2)
-  - [Skipped datasets](#skipped-datasets)
-  - [Unprocessed datasets](#unprocessed-datasets)
+  - [Datasets that were not included in the Community Fish Detection Dataset](#datasets-that-were-not-included-in-the-community-fish-detection-dataset)
 
 ## Overview
 
@@ -32,8 +31,6 @@ A dataset must meet the following requirements to be included:
 - **Contains fish** — the dataset must include annotations (bounding boxes or segmentation masks) on fish (see [Class definitions](#class-definitions))
 - **Publicly available** — the data must be downloadable without requiring special access or paid subscriptions
 
-
-
 ### Class definitions
 
 Every annotation in the final dataset belongs to one of two categories:
@@ -47,9 +44,7 @@ Anything that is neither (corals, algae, plants, rocks, debris, divers/humans, e
 
 Note that some animals with "fish" in their name are **not** fish (jellyfish, starfish, cuttlefish, crayfish → `non-fish`), and some fish-shaped animals are **not** fish (dolphins, whales, manatees → `non-fish`).
 
-**When contributing a dataset, you must list every class in the source annotations and assign each one to `fish`, `non-fish`, or discard.** Include this mapping in your script (see `CATEGORIES_FILTER` below) and in your pull request description, so reviewers can check it. Generic or ambiguous classes (e.g. "animal", "unknown", "other") should be inspected visually: assign them if they are consistently one or the other, otherwise discard them and mention it in the PR.
-
-
+**When contributing a dataset, you must list every class in the source annotations and assign each one to** `fish`**,** `non-fish`**, or discard.** Include this mapping in your script (see `CATEGORIES_FILTER` below) and in your pull request description, so reviewers can check it. Generic or ambiguous classes (e.g. "animal", "unknown", "other") should be inspected visually: assign them if they are consistently one or the other, otherwise discard them and mention it in the PR.
 
 ### Processing rules
 
@@ -61,11 +56,7 @@ All datasets are normalized to a common format before merging. Your processing s
 4. **Train/val split** — split the dataset into training and validation sets. When possible, split by location, camera, video, or deployment rather than by random image selection. Use `split_coco_dataset_into_train_validation()`.
 5. **COCO output format** — the final annotations must be in COCO format with bounding boxes.
 
-
-
 ### How to contribute
-
-
 
 #### Option A: Just suggest a dataset (no coding required)
 
@@ -74,24 +65,20 @@ If you've come across a dataset that matches the acceptance criteria above but d
 - Add it to the [Unprocessed datasets](#unprocessed-datasets) list at the bottom of this README via a pull request, or
 - Email it to [Filippo](mailto:fppvrn@gmail.com) and we'll add it to the list
 
-
-
 #### Option B: Write a processing script
 
 1. **Install dependencies**: `pip install -r requirements.txt`
 2. **Create a script** at `datasets/<dataset_name>.py` that follows the 4-step pattern used by all other dataset scripts:
-  - **Download** — download and extract the raw data to `data/raw/<dataset_name>/`
-  - **Process** — convert annotations to COCO format, apply the processing rules above, and save to `data/processing/<dataset_name>/`
-  - **Preview** — generate a sample annotated image and save it to `previews/`
-  - **Split** — split into train/val and save to `data/final/<dataset_name>_train/` and `data/final/<dataset_name>_val/`
+   - **Download** — download and extract the raw data to `data/raw/<dataset_name>/`
+   - **Process** — convert annotations to COCO format, apply the processing rules above, and save to `data/processing/<dataset_name>/`
+   - **Preview** — generate a sample annotated image and save it to `previews/`
+   - **Split** — split into train/val and save to `data/final/<dataset_name>_train/` and `data/final/<dataset_name>_val/`
 3. **Use shared utilities** from `datasets/utils/` — see existing scripts like [roboflow_fish.py](./datasets/roboflow_fish.py) for a straightforward example.
 4. **Define module-level constants**:
-  - `DATASET_SHORTNAME` — a short, unique identifier (e.g. `"noaa_puget"`)
-  - `CATEGORIES_FILTER` — the mapping of every source category name to `fish` or `non-fish` (categories not listed are discarded)
+   - `DATASET_SHORTNAME` — a short, unique identifier (e.g. `"noaa_puget"`)
+   - `CATEGORIES_FILTER` — the mapping of every source category name to `fish` or `non-fish` (categories not listed are discarded)
 5. **Add a dataset entry** to this README under [Processed datasets](#processed-datasets), following the same metadata format as the existing entries.
 6. **Submit a pull request** with your script, the preview image, the README update, and the full list of source classes with the `fish` / `non-fish` / discard decision for each.
-
-
 
 #### Option C: Use Claude Code to generate the processing script
 
@@ -105,11 +92,7 @@ This is the fastest way to add a new dataset if you're already familiar with Cla
 
 ## Fish datasets
 
-
-
 ### Datasets that were included in the Community Fish Detection Dataset
-
-
 
 #### NOAA Puget Sound Nearshore Fish 2017-2018
 
@@ -130,9 +113,7 @@ Farrell DM, Ferriss B, Sanderson B, Veggerby K, Robinson L, Trivedi A, Pathak S,
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [noaa_puget.py](./datasets/noaa_puget.py)
 
-<img src="./previews/noaa_puget_sample_image.png" alt="NOAA Puget Sound Nearshore Fish 2017-2018 sample" width="600">
-
-
+![NOAA Puget Sound Nearshore Fish 2017-2018 sample](./previews/noaa_puget_sample_image.png)
 
 #### MIT Sea Grant River Herring
 
@@ -153,9 +134,7 @@ Images of freshwater fish taken from underwater videos with 91,482 bounding boxe
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [mit_river_herring.py](./datasets/mit_river_herring.py)
 
-<img src="./previews/mit_river_herring_sample_image.png" alt="MIT Sea Grant River Herring sample" width="600">
-
-
+![MIT Sea Grant River Herring sample](./previews/mit_river_herring_sample_image.png)
 
 #### Tasmanian Orange Roughy Stereo Image Machine Learning Dataset (TORSI)
 
@@ -176,9 +155,7 @@ Scoulding B, Maguire K, Orenstein E, Jackett C, CSIRO.  [Tasmanian Orange Roughy
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [torsi.py](./datasets/torsi.py)
 
-<img src="./previews/torsi_sample_image.png" alt="Tasmanian Orange Roughy Stereo Image Machine Learning Dataset (TORSI) sample" width="600">
-
-
+![Tasmanian Orange Roughy Stereo Image Machine Learning Dataset (TORSI) sample](./previews/torsi_sample_image.png)
 
 #### Project Natick Underwater Video
 
@@ -198,9 +175,7 @@ Simon K. [ProjectNatick - Microsoft's Self-sufficient Underwater Datacenters](ht
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [project_natick.py](./datasets/project_natick.py)
 
-<img src="./previews/project_natick_sample_image.png" alt="Project Natick Underwater Video sample" width="600">
-
-
+![Project Natick Underwater Video sample](./previews/project_natick_sample_image.png)
 
 #### Roboflow Fish Dataset
 
@@ -221,9 +196,7 @@ Solawetz J Fish object detection dataset. Roboflow. 2023.
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [roboflow_fish.py](./datasets/roboflow_fish.py)
 
-<img src="./previews/roboflow_fish_sample_image.png" alt="Roboflow Fish Dataset sample" width="600">
-
-
+![Roboflow Fish Dataset sample](./previews/roboflow_fish_sample_image.png)
 
 #### DeepFish
 
@@ -243,9 +216,7 @@ Saleh A, Laradji IH, Konovalov DA, Bradley M, Vazquez D, Sheaves M. A realistic 
 - Annotation information: 310 segmentation masks, 374 fish bounding boxes after connected component analysis
 - Code to render sample annotated image: [deepfish.py](./datasets/deepfish.py)
 
-<img src="./previews/deepfish_sample_image.png" alt="DeepFish sample" width="600">
-
-
+![DeepFish sample](./previews/deepfish_sample_image.png)
 
 #### Deep Vision Fish Dataset
 
@@ -266,9 +237,7 @@ Allken V, Rosen S. [Deep Vision fish dataset](https://doi.org/10.21335/NMDC-5517
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [deep_vision.py](./datasets/deep_vision.py)
 
-<img src="./previews/deep_vision_sample_image.png" alt="Deep Vision Fish Dataset sample" width="600">
-
-
+![Deep Vision Fish Dataset sample](./previews/deep_vision_sample_image.png)
 
 #### The Brackish Dataset
 
@@ -289,9 +258,7 @@ Pedersen M, Haurum JB, Gade R, Moeslund TB, Madsen N.  Detection of Marine Anima
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [brackish.py](./datasets/brackish.py)
 
-<img src="./previews/brackish_dataset_sample_image.png" alt="The Brackish Dataset sample" width="600">
-
-
+![The Brackish Dataset sample](./previews/brackish_dataset_sample_image.png)
 
 #### F4K Detection and Tracking
 
@@ -313,9 +280,7 @@ Kavasidis I, Palazzo S, Di Salvo R, Giordano D, Spampinato C. A semi-automatic t
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [f4k.py](./datasets/f4k.py)
 
-<img src="./previews/f4k_detection_tracking_sample.jpg" alt="F4K Detection and Tracking sample" width="600">
-
-
+![F4K Detection and Tracking sample](./previews/f4k_detection_tracking_sample.jpg)
 
 #### FishCLEF-2015
 
@@ -335,9 +300,7 @@ Joly A, Goeau H, Glotin H, Spampinato C, Bonnet P, Vellinga W-P, Planquè R, Rau
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [fishclef.py](./datasets/fishclef.py)
 
-<img src="./previews/fishclef_sample_image.png" alt="FishCLEF-2015 sample" width="600">
-
-
+![FishCLEF-2015 sample](./previews/fishclef_sample_image.png)
 
 #### VIAME FishTrack (FishTrack23)
 
@@ -355,9 +318,7 @@ Joly A, Goeau H, Glotin H, Spampinato C, Bonnet P, Vellinga W-P, Planquè R, Rau
 - Annotation information: ~725,000 bounding boxes in ~19,000 tracks
 - Code to render sample annotated image: [viame_fishtrack.py](./datasets/viame_fishtrack.py)
 
-<img src="./previews/viame_fishtrack_sample_image.png" alt="VIAME FishTrack sample" width="600">
-
-
+![VIAME FishTrack sample](./previews/viame_fishtrack_sample_image.png)
 
 #### Object detection of tropical freshwater fish in Australia (Kakadu)
 
@@ -378,9 +339,7 @@ Jansen A, Walden D, Walker S, Buccella C.  [A deep learning dataset for underwat
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [kakadu.py](./datasets/kakadu.py)
 
-<img src="./previews/kakadu_sample_image.png" alt="Object detection of tropical freshwater fish in Australia (Kakadu) sample" width="600">
-
-
+![Object detection of tropical freshwater fish in Australia (Kakadu) sample](./previews/kakadu_sample_image.png)
 
 #### AAU Zebrafish Re-Identification Dataset
 
@@ -401,9 +360,7 @@ Bruslund HJ, Karpova A, Pedersen M, Hein BS, Moeslund TB. Re-identification of z
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [zebrafish.py](./datasets/zebrafish.py)
 
-<img src="./previews/zebrafish_sample_image.png" alt="AAU Zebrafish Re-Identification Dataset sample" width="600">
-
-
+![AAU Zebrafish Re-Identification Dataset sample](./previews/zebrafish_sample_image.png)
 
 #### FathomNet Database
 
@@ -424,9 +381,7 @@ The FathomNet Database is an open-source image database that can be used to trai
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [fathomnet.py](./datasets/fathomnet.py)
 
-<img src="./previews/fathomnet_sample_image.png" alt="FathomNet Database sample" width="600">
-
-
+![FathomNet Database sample](./previews/fathomnet_sample_image.png)
 
 #### Marine Detect (FishInv and Megafauna)
 
@@ -441,9 +396,7 @@ Two Roboflow datasets with bounding boxes on fish, sharks, rays, turtles and oth
 - Vehicle type: underwater cameras
 - Code to render sample annotated image: [marine_detect.py](./datasets/marine_detect.py)
 
-<img src="./previews/marine_detect_sample_image.png" alt="Marine Detect (FishInv and Megafauna) sample" width="600">
-
-
+![Marine Detect (FishInv and Megafauna) sample](./previews/marine_detect_sample_image.png)
 
 #### Salmon Computer Vision
 
@@ -464,9 +417,7 @@ Atlas WI, Ma S, Chou YC, Connors K, Scurfield D, Nam B, Ma X, Cleveland M, Doire
 - Typical animal size in pixels: ~1100x500 (median box)
 - Code to render sample annotated image: [salmon_computer_vision.py](./datasets/salmon_computer_vision.py)
 
-<img src="./previews/salmon_computer_vision_sample_image.png" alt="Salmon Computer Vision sample" width="600">
-
-
+![Salmon Computer Vision sample](./previews/salmon_computer_vision_sample_image.png)
 
 ### Datasets added to CFDv2
 
@@ -486,9 +437,7 @@ Shi, X., Tanwari, K. A., Krepski, T., Shi, Z., & Czerniawski, R. (2025). PomerFi
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [pomerfish.py](./datasets/pomerfish.py)
 
-<img src="./previews/pomerfish_sample_image.png" alt="PomerFish sample" width="600">
-
-
+![PomerFish sample](./previews/pomerfish_sample_image.png)
 
 #### OBSEA
 
@@ -507,9 +456,7 @@ Boxes on fish and other objects in images from the OBSEA seafloor observatory in
 - Typical animal size in pixels: ~65 (median long side of the fish boxes)
 - Code to render sample annotated image: [obsea.py](./datasets/obsea.py)
 
-<img src="./previews/obsea_sample_image.png" alt="OBSEA sample" width="600">
-
-
+![OBSEA sample](./previews/obsea_sample_image.png)
 
 #### CoralscapesV2
 
@@ -531,9 +478,7 @@ Sauder J, Ruckli T, Strodomskyte G, et al. [CoralscapesV2: Panoptic and Fine-Gra
 - Typical animal size in pixels: fish ~22 px (median box long side)
 - Code to render sample annotated image: [coralscapes_v2.py](./datasets/coralscapes_v2.py)
 
-<img src="./previews/coralscapes_v2_sample_image.png" alt="CoralscapesV2 sample" width="600">
-
-
+![CoralscapesV2 sample](./previews/coralscapes_v2_sample_image.png)
 
 #### Orange Chromide Pond Fish Detection
 
@@ -554,9 +499,7 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [orange_chromide.py](./datasets/orange_chromide.py)
 
-<img src="./previews/orange_chromide_sample_image.png" alt="Orange Chromide Pond Fish Detection sample" width="600">
-
-
+![Orange Chromide Pond Fish Detection sample](./previews/orange_chromide_sample_image.png)
 
 #### PEBL Seaweed and Shellfish Farm Fauna
 
@@ -577,9 +520,7 @@ PEBL CIC (2026). PEBL Seaweed and Shellfish Farm Fauna. LILA BC.
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [pebl_farm_fauna.py](./datasets/pebl_farm_fauna.py)
 
-<img src="./previews/pebl_farm_fauna_sample_image.png" alt="PEBL Seaweed and Shellfish Farm Fauna sample" width="600">
-
-
+![PEBL Seaweed and Shellfish Farm Fauna sample](./previews/pebl_farm_fauna_sample_image.png)
 
 #### CoReFish (Caribbean Coral Reef Fish)
 
@@ -601,9 +542,7 @@ Cai L, Greene A, Yang D, Aoki N, Jarriel SD, Ha J, Formel N, Mooney TA, Girdhar 
 - Typical animal size in pixels: ~29 px (median box long side)
 - Code to render sample annotated image: [corefish.py](./datasets/corefish.py)
 
-<img src="./previews/corefish_sample_image.png" alt="CoReFish sample" width="600">
-
-
+![CoReFish sample](./previews/corefish_sample_image.png)
 
 #### FjordFish
 
@@ -624,9 +563,7 @@ Poling JD, Sørdalen TK, Halvorsen K, Thormar J, Perry D, Larsen T. [FjordFish](
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [fjordfish.py](./datasets/fjordfish.py)
 
-<img src="./previews/fjordfish_sample_image.png" alt="FjordFish sample" width="600">
-
-
+![FjordFish sample](./previews/fjordfish_sample_image.png)
 
 #### Newfoundland Marine Refuge Fish Classification Dataset (N-MARINE)
 
@@ -647,9 +584,7 @@ Morris CJ, Ayyagari KD, Porter D, Nguyen QK, Hanlon J, Whidden C. [Newfoundland 
 - Typical animal size in pixels: ~390 px (median box long side)
 - Code to render sample annotated image: [n_marine.py](./datasets/n_marine.py)
 
-<img src="./previews/n_marine_sample_image.png" alt="N-MARINE sample" width="600">
-
-
+![N-MARINE sample](./previews/n_marine_sample_image.png)
 
 #### WIO-ReefFish
 
@@ -670,9 +605,7 @@ Gerard J, Branger L, Huyghe F, Kochzius M, Otwoma L, Bergacker S, op't Roodt L, 
 - Typical animal size in pixels: ~90 px (median box long side)
 - Code to render sample annotated image: [wio_reef_fish.py](./datasets/wio_reef_fish.py)
 
-<img src="./previews/wio_reef_fish_sample_image.png" alt="WIO-ReefFish sample" width="600">
-
-
+![WIO-ReefFish sample](./previews/wio_reef_fish_sample_image.png)
 
 #### DIGI4ECO Underwater Fish Tracking
 
@@ -693,7 +626,7 @@ González-Villà S, Burns Font D, Aguzzi J, et al. [DIGI4ECO Underwater Fish Tra
 - Typical animal size in pixels: ~104 (median long side of the fish boxes)
 - Code to render sample annotated image: [digi4eco.py](./datasets/digi4eco.py)
 
-<img src="./previews/digi4eco_sample_image.png" alt="DIGI4ECO Underwater Fish Tracking sample" width="600">
+![DIGI4ECO Underwater Fish Tracking sample](./previews/digi4eco_sample_image.png)
 
 #### YOLO-BRUV
 
@@ -714,9 +647,7 @@ Lambrette M. [YOLO-BRUV training data and scripts](https://doi.org/10.5281/zenod
 - Typical animal size in pixels: ~124 (median long side of the fish boxes)
 - Code to render sample annotated image: [yolo_bruv.py](./datasets/yolo_bruv.py)
 
-<img src="./previews/yolo_bruv_sample_image.png" alt="YOLO-BRUV sample" width="600">
-
-
+![YOLO-BRUV sample](./previews/yolo_bruv_sample_image.png)
 
 #### Labelled Mediterranean Fish Dataset (DEEPECOMAR)
 
@@ -737,9 +668,7 @@ Catalán I, Alvarez-Ellacuria A. [Labelled Mediterranean Fish Dataset](https://d
 - Typical animal size in pixels: ~62 (median long side of the fish boxes)
 - Code to render sample annotated image: [deepecomar.py](./datasets/deepecomar.py)
 
-<img src="./previews/deepecomar_sample_image.png" alt="Labelled Mediterranean Fish Dataset sample" width="600">
-
-
+![Labelled Mediterranean Fish Dataset sample](./previews/deepecomar_sample_image.png)
 
 #### Seatizen Atlas (instance segmentation subset)
 
@@ -760,9 +689,7 @@ Contini M, Illien V, Julien M, Ravitchandirane M, Russias V, Lazennec A, Chevrie
 - Typical animal size in pixels: ~56 (median long side of the fish boxes)
 - Code to render sample annotated image: [seatizen_atlas.py](./datasets/seatizen_atlas.py)
 
-<img src="./previews/seatizen_atlas_sample_image.png" alt="Seatizen Atlas sample" width="600">
-
-
+![Seatizen Atlas sample](./previews/seatizen_atlas_sample_image.png)
 
 #### AFSC Salmon and Pollock Object Detection
 
@@ -783,7 +710,7 @@ Wilson KC, Lurbur M, Yochum N (2025). [Automated fish detection in videos to sup
 - Typical animal size in pixels: ~115 px (median box long side)
 - Code to render sample annotated image: [afsc_salmon_pollock.py](./datasets/afsc_salmon_pollock.py)
 
-<img src="./previews/afsc_salmon_pollock_sample_image.png" alt="AFSC Salmon and Pollock sample" width="600">
+![AFSC Salmon and Pollock sample](./previews/afsc_salmon_pollock_sample_image.png)
 
 #### KSO Mussel Farm BRUV
 
@@ -804,9 +731,7 @@ Dalipi X, Burman E, Germishuys J, Anton V, Strand Å, Obst M. [Object detection 
 - Typical animal size in pixels: ~47 (median long side of the fish boxes)
 - Code to render sample annotated image: [kso_mussel_bruv.py](./datasets/kso_mussel_bruv.py)
 
-<img src="./previews/kso_mussel_bruv_sample_image.png" alt="KSO Mussel Farm BRUV sample" width="600">
-
-
+![KSO Mussel Farm BRUV sample](./previews/kso_mussel_bruv_sample_image.png)
 
 #### Griffith Seagrass Fish (Luderick Seagrass)
 
@@ -827,9 +752,7 @@ Ditria EM, Connolly RM, Jinks EL, Lopez-Marcano S (2021). [Annotated Video Foota
 - Typical animal size in pixels: ~183 (median long side of the fish boxes)
 - Code to render sample annotated image: [griffith_seagrass.py](./datasets/griffith_seagrass.py)
 
-<img src="./previews/griffith_seagrass_sample_image.png" alt="Griffith Seagrass Fish sample" width="600">
-
-
+![Griffith Seagrass Fish sample](./previews/griffith_seagrass_sample_image.png)
 
 #### Mediterranean Fish Census (autoUC)
 
@@ -850,9 +773,7 @@ Bürgi K, Bouveyron C, Lingrand D, Derijard B, Precioso F, Sabourault C (2025). 
 - Typical animal size in pixels: ~60 (median long side of the fish boxes)
 - Code to render sample annotated image: [med_fish_census.py](./datasets/med_fish_census.py)
 
-<img src="./previews/med_fish_census_sample_image.png" alt="Mediterranean Fish Census sample" width="600">
-
-
+![Mediterranean Fish Census sample](./previews/med_fish_census_sample_image.png)
 
 #### EyeSea Underwater Video
 
@@ -874,9 +795,7 @@ Xu W, Matzner S. [Underwater Fish Detection using Deep Learning for Water Power 
 - Typical animal size in pixels: N/A
 - Code to render sample annotated image: [eyesea.py](./datasets/eyesea.py)
 
-<img src="./previews/eyesea_sample_image.png" alt="EyeSea Underwater Video sample" width="600">
-
-
+![EyeSea Underwater Video sample](./previews/eyesea_sample_image.png)
 
 #### Seaclear Marine Debris Dataset
 
@@ -897,9 +816,7 @@ Xu W, Matzner S. [Underwater Fish Detection using Deep Learning for Water Power 
 - Typical animal size in pixels: ~43 (median long side of the fish boxes)
 - Code to render sample annotated image: [seaclear.py](./datasets/seaclear.py)
 
-<img src="./previews/seaclear_sample_image.png" alt="Seaclear sample" width="600">
-
-
+![Seaclear sample](./previews/seaclear_sample_image.png)
 
 #### Roboflow Aquarium Dataset
 
@@ -920,9 +837,7 @@ Dwyer B. [Aquarium Combined](https://universe.roboflow.com/brad-dwyer/aquarium-c
 - Typical animal size in pixels: ~96 (median long side of the fish boxes)
 - Code to render sample annotated image: [roboflow_aquarium.py](./datasets/roboflow_aquarium.py)
 
-<img src="./previews/roboflow_aquarium_sample_image.png" alt="Roboflow Aquarium Dataset sample" width="600">
-
-
+![Roboflow Aquarium Dataset sample](./previews/roboflow_aquarium_sample_image.png)
 
 #### RUOD-R (re-annotated Real-world Underwater Object Detection)
 
@@ -943,9 +858,7 @@ Awad A, Saleem A, Aljnadi Y, Lucas E, Paheding S, Havens TC. [RUOD-R: A High-Fid
 - Typical animal size in pixels: ~25 (median long side of the fish boxes)
 - Code to render sample annotated image: [ruod_r.py](./datasets/ruod_r.py)
 
-<img src="./previews/ruod_r_sample_image.png" alt="RUOD-R sample" width="600">
-
-
+![RUOD-R sample](./previews/ruod_r_sample_image.png)
 
 #### UIIS10K (Underwater Image Instance Segmentation)
 
@@ -966,9 +879,7 @@ Li H, Lian S, Li Z, Cong R, Li C, Yang LT, Zhang W, Kwong S. [Advancing Marine R
 - Typical animal size in pixels: ~50 (median long side of the fish boxes)
 - Code to render sample annotated image: [uiis10k.py](./datasets/uiis10k.py)
 
-<img src="./previews/uiis10k_sample_image.png" alt="UIIS10K sample" width="600">
-
-
+![UIIS10K sample](./previews/uiis10k_sample_image.png)
 
 #### NorFisk Dataset
 
@@ -989,9 +900,7 @@ Crescitelli AM (2020). NorFisk Dataset (version 1.1). DataverseNO. [https://doi.
 - Typical animal size in pixels: ~225 px (median box long side, within the crop)
 - Code to render sample annotated image: [norfisk.py](./datasets/norfisk.py)
 
-<img src="./previews/norfisk_sample_image.png" alt="NorFisk sample" width="600">
-
-
+![NorFisk sample](./previews/norfisk_sample_image.png)
 
 #### TrashCan 1.0
 
@@ -1012,9 +921,7 @@ Hong J, Fulton M, Sattar J (2020). [TrashCan 1.0: An Instance-Segmentation Label
 - Typical animal size in pixels: ~85 (median long side of the fish boxes)
 - Code to render sample annotated image: [trashcan.py](./datasets/trashcan.py)
 
-<img src="./previews/trashcan_sample_image.png" alt="TrashCan sample" width="600">
-
-
+![TrashCan sample](./previews/trashcan_sample_image.png)
 
 #### Tassie BRUV
 
@@ -1035,9 +942,7 @@ Maslen B, Popovic G, Wang D, Jansen A, Warton D (2025). [The Motion Picture: Lev
 - Typical animal size in pixels: ~240 (median long side of the boxes; rays on the bait arm fill the frame)
 - Code to render sample annotated image: [tassie_bruv.py](./datasets/tassie_bruv.py)
 
-<img src="./previews/tassie_bruv_sample_image.png" alt="Tassie BRUV sample" width="600">
-
-
+![Tassie BRUV sample](./previews/tassie_bruv_sample_image.png)
 
 ### Datasets that were not included in the Community Fish Detection Dataset
 
@@ -1055,4 +960,5 @@ Maslen B, Popovic G, Wang D, Jansen A, Warton D (2025). [The Motion Picture: Lev
 - [CoralScapes](https://josauder.github.io/coralscapes/): 2,075 images from Red Sea coral reefs with semantic segmentation masks. Excluded because CoralscapesV2 includes all of its images but one, with more classes and fish instance masks.
 - [J-EDI](https://www.godac.jamstec.go.jp/jedi/e/dataset/jedi_organism_detection_dataset.html) (~8k images with 19 deep-sea animal categories). Excluded because website is unreachable.
 - [SFISHTRACK](https://github.com/JosepSanchezCano/SFISHTRACK) (~24k frames with segmentation masks). Excluded because the annotations are misaligned with the frames.
-
+- [IOCFish5K](https://github.com/GuoleiSun/Indiscernible-Object-Counting) 5K underwater images with 650k point annotations. Excluded because no bounding boxes, but in the future could convert point annotations to bboxes and include it. 
+- [OBSEA-2013](https://www.nature.com/articles/s41597-022-01906-1) ~70k images collected under the same OBSEA project. Rejected because annotations are too dirty. Include in the future if cleaned up.

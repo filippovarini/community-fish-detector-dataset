@@ -100,7 +100,7 @@ Images with 67,990 bounding boxes on fish and crustaceans
 
 Farrell DM, Ferriss B, Sanderson B, Veggerby K, Robinson L, Trivedi A, Pathak S, Muppalla S, Wang J, Morris D, Dodhia R. A labeled data set of underwater images of fish and crab species from five mesohabitats in Puget Sound WA USA. Scientific Data. 2023 Nov 13;10(1):799.
 
-- Data downloadable via via https from LILA ([download link](http://lila.science/wp-content/uploads/2022/07/noaa-estuary-thumb-800.png))
+- Data downloadable via via https from LILA ([download link](https://lila.science/datasets/noaa-puget-sound-nearshore-fish))
 - License: CDLA-permissive 1.0
 - Metadata raw format: COCO
 - Categories/species: fish and crustaceans
@@ -205,7 +205,7 @@ Solawetz J Fish object detection dataset. Roboflow. 2023.
 Saleh A, Laradji IH, Konovalov DA, Bradley M, Vazquez D, Sheaves M. A realistic fish-habitat dataset to evaluate algorithms for underwater visual analysis. Scientific Reports. 2020 Sep 4;10(1):14671.
 
 - Data downloadable via https from Queensland University ([download link](https://alzayats.github.io/DeepFish/)) (7.1GB)
-- License: Code is MIT, data is implied-MIT
+- License: CC BY 4.0 (code is MIT)
 - Metadata raw format: png (segmentation masks)
 - Categories/species: fish (species from tropical Australian habitats, e.g. Lutjanus, Caranx, Epinephelus, Gerres)
   - fish: fish
@@ -289,6 +289,7 @@ Kavasidis I, Palazzo S, Di Salvo R, Giordano D, Spampinato C. A semi-automatic t
 Joly A, Goeau H, Glotin H, Spampinato C, Bonnet P, Vellinga W-P, Planquè R, Rauber A, Palazzo S, Fisher R.  LifeCLEF 2015: multimedia life species identification challenges, International Conference of the Cross-Language Evaluation Forum for European Languages. 2015.
 
 - Data downloadable via https from Zenodo ([download link](https://zenodo.org/records/15202605/files/fishclef_2015_release.zip?download=1)). Note, the dataset was [originally hosted on SharePoint](https://github.com/perceivelab/FishCLEF-2015). We uploaded it to Zenodo to make it downloadable programmatically.
+- License: N/A (none stated by the original authors; the CC BY 4.0 tag on our Zenodo re-upload was not chosen by them)
 - Metadata raw format: XML
 - Categories/species: marine ray-finned fish (29 reef fish species names, e.g. Dascyllus reticulatus, Chaetodon lunulatus, Amphiprion clarkii)
   - fish: all 29 species names, including `NULL` (unidentified fish)
@@ -308,6 +309,7 @@ Joly A, Goeau H, Glotin H, Spampinato C, Bonnet P, Vellinga W-P, Planquè R, Rau
 
 - Paper: Dawkins et al., "FishTrack23: An Ensemble Underwater Dataset for Multi-Object Tracking", WACV 2024 ([paper](https://openaccess.thecvf.com/content/WACV2024/papers/Dawkins_FishTrack23_An_Ensemble_Underwater_Dataset_for_Multi-Object_Tracking_WACV_2024_paper.pdf))
 - Data downloadable from Viame ([download link](https://viame.kitware.com/#/collection/65a140e8a4c218785d408b42))
+- License: CC BY 4.0
 - Metadata raw format: VIAME CSV (tracks)
 - Categories/species: 155 labels, mostly fish species (148 fish species/genera/families, unspecified fish, crabs, other animals, bait and plants)
   - fish: all fish species, genus and family labels (e.g. `lutjanus_campechanus`, `micropterus_salmoides`, `etelis_coruscans`) and `unspecified_fish`
@@ -388,6 +390,7 @@ The FathomNet Database is an open-source image database that can be used to trai
 Two Roboflow datasets with bounding boxes on fish, sharks, rays, turtles and other reef species
 
 - Data downloadable via https from Azure blob storage ([FishInv](https://stpubtenakanclyw.blob.core.windows.net/marine-detect/FishInv-dataset.zip), [MegaFauna](https://stpubtenakanclyw.blob.core.windows.net/marine-detect/MegaFauna-dataset.zip))
+- License: mixed. Most images come from Roboflow Universe datasets (CC BY 4.0) and GBIF occurrence downloads (CC BY-NC 4.0); images from Tēnaka are copyrighted by Tēnaka. The repository code is AGPL-3.0
 - Metadata raw format: YOLO
 - Categories/species: fish, shark, ray, turtle, various reef fish families, and reef invertebrates
   - fish: `fish`, `bolbometopon_muricatum`, `chaetodontidae`, `cheilinus_undulatus`, `cromileptes_altivelis`, `haemulidae`, `lutjanidae`, `muraenidae`, `scaridae`, `serranidae`, `shark`, `ray`
@@ -508,7 +511,7 @@ Vijayalakshmi M, Sasithradevi A.  [Annotated underwater fish detection dataset f
 PEBL CIC (2026). PEBL Seaweed and Shellfish Farm Fauna. LILA BC.
 
 - Data downloadable via https from LILA BC ([download link](https://lilawildlife.blob.core.windows.net/lila-wildlife/community-fish-detection-dataset/pebl_farm_fauna_v1.0.zip))
-- License: N/A
+- License: CDLA-permissive 1.0
 - Metadata raw format: COCO Camera Traps JSON
 - Categories/species: fish, small bottom fish (gobies, dragonets), flatfish, hermit crabs, crabs, jellyfish, starfish, gastropods (elasmobranch, squid and shrimp categories have no boxes yet)
   - fish: Fish, Scooter (gobies and dragonets), Flatfish, Elasmobranch
@@ -530,7 +533,7 @@ Cai L, Greene A, Yang D, Aoki N, Jarriel SD, Ha J, Formel N, Mooney TA, Girdhar 
 
 - Home: [https://warplab.github.io/corefish/](https://warplab.github.io/corefish/)
 - Data downloadable via HTTPS from Google Drive ([download link](https://drive.google.com/file/d/1LENr6D8XW8ivusF2riS0v27Grwa1Uj2q/view?usp=sharing), 40 GB zip)
-- License: CC BY-NC-SA 4.0
+- License: CC BY-NC 4.0
 - Metadata raw format: COCO JSON (fish-only and species-level files), YOLO TXT
 - Categories/species: fish; 54 Caribbean reef fish species on a subset of tracks
   - fish: fish (the species labels are all fish and are not used)

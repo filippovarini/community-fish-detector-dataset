@@ -8,10 +8,17 @@ and annotations combined.
 Images are hardlinked rather than copied, so the merged dataset takes no
 extra disk space. Stops if the merged dataset directory already exists.
 
+Each image gets a "dataset" field with the id of its source dataset (the
+data/final folder name without the _train/_val suffix).
+
+Use --json-only to rebuild only the merged COCO json (overwriting it) without
+linking any image, e.g. after changing the json fields.
+
 Skips the duplicate images listed in data/quality/dedup/images_to_remove.csv
 (created by `python -m quality_checks.select_duplicates`, see DATASET_COMPILATION.md).
 """
 
+import argparse
 import csv
 import json
 import os
@@ -47,7 +54,7 @@ def link_image(src: Path, dst: Path):
         shutil.copy2(src, dst)
 
 
-def main():
+def main(json_only: bool = False):
     images_to_remove = load_images_to_remove()
     print(f"Skipping {len(images_to_remove):,} duplicate images listed in {REMOVE_LIST_PATH}")
     n_removed = 0
@@ -55,13 +62,17 @@ def main():
     final_dataset_dir = settings.processed_dir
 
     merged_dataset_dir = settings.base_dir / "community_fish_detector"
-    if merged_dataset_dir.exists():
-        raise FileExistsError(
-            f"{merged_dataset_dir} already exists. Delete it before merging again"
-        )
-    merged_dataset_dir.mkdir(parents=True)
     merged_images_dir = merged_dataset_dir / settings.images_folder_name
-    merged_images_dir.mkdir()
+    if json_only:
+        merged_dataset_dir.mkdir(parents=True, exist_ok=True)
+    else:
+        if merged_dataset_dir.exists():
+            raise FileExistsError(
+                f"{merged_dataset_dir} already exists. Delete it before merging again"
+                " (or use --json-only to rebuild only the json)"
+            )
+        merged_dataset_dir.mkdir(parents=True)
+        merged_images_dir.mkdir()
     merged_annotations_file = merged_dataset_dir / settings.coco_file_name
 
     # Initialize the merged COCO dataset structure
@@ -76,6 +87,9 @@ def main():
 
         if dataset.is_dir():
             is_train_dataset = dataset.name.endswith(settings.train_dataset_suffix)
+            dataset_id = dataset.name.removesuffix(
+                settings.train_dataset_suffix
+            ).removesuffix(settings.val_dataset_suffix)
 
             print(f"Processing {dataset.name} dataset. Is train: {is_train_dataset}...")
 
@@ -99,14 +113,16 @@ def main():
                     continue
 
                 # Hardlink image into merged directory (no extra disk space)
-                src_image = dataset / settings.images_folder_name / file_name
-                dst_image = merged_images_dir / file_name
-                link_image(src_image, dst_image)
+                if not json_only:
+                    src_image = dataset / settings.images_folder_name / file_name
+                    dst_image = merged_images_dir / file_name
+                    link_image(src_image, dst_image)
 
                 # Update image info
                 old_image_id = image["id"]
                 image["id"] = image["file_name"]
                 image["is_train"] = is_train_dataset
+                image["dataset"] = dataset_id
                 merged_coco["images"].append(image)
                 image_id_old_to_new_map[old_image_id] = image["id"]
 
@@ -136,4 +152,11 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--json-only",
+        action="store_true",
+        help="Only rebuild the merged COCO json; do not link images",
+    )
+    args = parser.parse_args()
+    main(json_only=args.json_only)

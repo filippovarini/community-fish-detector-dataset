@@ -114,7 +114,7 @@ This dataset is released under CDLA-permissive 1.0.
 [**CoReFish (Caribbean Coral Reef Fish)**](https://warplab.github.io/corefish/)
 
 14,580 frames from diver transect videos at 5 coral reef sites in the US Virgin Islands (2016-2023), with 100,074 expert-drawn fish boxes and tracks.
-This dataset is released under CC BY-NC 4.0.
+This dataset is released under CC BY-NC-SA 4.0.
 
 [**FjordFish**](https://doi.org/10.5281/zenodo.17950781)
 

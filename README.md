@@ -533,7 +533,7 @@ Cai L, Greene A, Yang D, Aoki N, Jarriel SD, Ha J, Formel N, Mooney TA, Girdhar 
 
 - Home: [https://warplab.github.io/corefish/](https://warplab.github.io/corefish/)
 - Data downloadable via HTTPS from Google Drive ([download link](https://drive.google.com/file/d/1LENr6D8XW8ivusF2riS0v27Grwa1Uj2q/view?usp=sharing), 40 GB zip)
-- License: CC BY-NC 4.0
+- License: CC BY-NC-SA 4.0
 - Metadata raw format: COCO JSON (fish-only and species-level files), YOLO TXT
 - Categories/species: fish; 54 Caribbean reef fish species on a subset of tracks
   - fish: fish (the species labels are all fish and are not used)
